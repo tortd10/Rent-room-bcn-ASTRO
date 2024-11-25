@@ -1,0 +1,31 @@
+---
+import RoomDetails from "./RoomDetails.astro";
+import RoomGallery from "./RoomGallery.astro";
+
+
+// Props del componente
+interface Room {
+  name: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+  details: string;
+}
+
+const { name, description, imageSrc, imageAlt, details } = Astro.props as Room;
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <!-- Galería de imágenes -->
+  <RoomGallery 
+    imageSrc={imageSrc} 
+    imageAlt={imageAlt} 
+  />
+
+  <!-- Detalles de la habitación -->
+  <RoomDetails 
+    name={name} 
+    description={description} 
+    details={details} 
+  />
+</div>

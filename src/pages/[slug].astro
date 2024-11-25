@@ -1,0 +1,44 @@
+---
+import Layout from '@layouts/Layout.astro';
+import { ROOMS } from '../data/rooms';
+import PDPRoom from '@components/PDPRoom.astro';
+
+// Función para generar las rutas dinámicas
+export async function getStaticPaths() {
+  return ROOMS.map(room => ({
+    params: { slug: room.slug },
+  }));
+}
+
+// Obtén el slug desde la URL
+const { slug } = Astro.params;
+
+// Busca la habitación correspondiente al slug
+const room = ROOMS.find(room => room.slug === slug);
+
+if (!room) {
+  throw new Error(`No se encontró la habitación con el slug: ${slug}`);
+}
+---
+
+<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+    <!-- <main class="bg-gray-50 py-12">
+    <div class="max-w-4xl mx-auto px-6 lg:px-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-6">{room.name}</h1>
+        <img 
+        src={room.imageSrc} 
+        alt={room.imageAlt} 
+        class="rounded-lg shadow-lg w-full mb-6"
+        />
+        <p class="text-lg text-gray-700">{room.details}</p>
+        <a href="/contacto" class="inline-block mt-4 bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">
+        Reservar Ahora
+        </a>
+    </div>
+    </main> -->
+    <main class="bg-gray-50 py-12">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+          <PDPRoom room={room} />
+        </div>
+    </main>
+</Layout>

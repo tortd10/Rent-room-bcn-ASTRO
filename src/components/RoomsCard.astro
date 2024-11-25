@@ -1,0 +1,25 @@
+---
+interface RoomProps {
+  name: string;
+  description: string;
+  imageSrc: string;
+  imageAlt: string;
+  href: string; // Será `/habitaciones/{slug}`
+}
+
+const { name, description, imageSrc, imageAlt, href } = Astro.props as RoomProps;
+---
+
+<a href={href} class="group block border border-gray-200 rounded-lg overflow-hidden shadow-sm bg-white room-card">
+  <div class="aspect-w-4 aspect-h-3">
+    <img 
+      src={imageSrc} 
+      alt={imageAlt} 
+      class="object-cover w-full h-full group-hover:opacity-90"
+    />
+  </div>
+  <div class="p-4">
+    <h2 class="text-lg font-medium text-gray-900">{name}</h2>
+    <p class="mt-2 text-sm text-gray-500">{description}</p>
+  </div>
+</a>

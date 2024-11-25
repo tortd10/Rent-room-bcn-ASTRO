@@ -2,36 +2,110 @@
 const OPTIONSBUTTONS = [
     {
         label: "HABITACIONES",
-        href: ""
+        href: "/Habitaciones"
     },
     {
         label: "SOBRE NOSOTROS",
-        href: ""
+        href: "/About"
     },
     {
         label: "CONTACTO",
-        href: ""
+        href: "/Contact"
     }
 ] as const;
 ---
-<header class="py-4 px-9 flex justify-between items-center w-full sticky bg-headerBg z-50 mb-4 backdrop-blur-xl top-0 right-0 left-0">
+<style>
+    .mobile-menu {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: var(--headerBg, white);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 1rem;
+        gap: 0.5rem;
+        width: 100%;
+        text-align: center;
+    }
+
+    .hidden {
+        display: none;
+    }
+
+    img {
+        width: 15rem; /* El logo siempre ocupa el 20% del ancho del contenedor */
+    }
+
+    @media (min-width: 768px) {
+        .desktop-menu {
+            display: flex;
+        }
+
+ 
+
+        .mobile-menu {
+            display: none; /* Siempre oculta el menú móvil en pantallas grandes */
+        }
+    }
+</style>
+
+<header class="py-4 px-9 flex justify-between items-center w-full sticky bg-headerBg z-50 backdrop-blur-xl top-0">
     <div class="md:max-w-[1400px] md:mx-auto w-full flex justify-between items-center">
         <!-- Logo -->
-        <img 
+        <a href="/">
+            <img 
             src="/logo.svg" 
-            alt="Logo RentRoomBcn" 
-            class="max-w-[25%]"
-        />
-        <div class="flex pr-28">
-            {
-                OPTIONSBUTTONS.map(({ label, href }) => (
-                    <a href={href} 
-                        class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4"
-                    >
-                        {label}
-                    </a>
-                ))
-            }
+            alt="Logo RentRoomBcn"
+            />
+        </a>
+
+        <!-- Desktop Menu -->
+        <div class="desktop-menu hidden md:flex">
+            {OPTIONSBUTTONS.map(({ label, href }) => (
+                <a href={href} 
+                    class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4"
+                >
+                    {label}
+                </a>
+            ))}
         </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="menu-button" class="md:hidden flex items-center p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+            </svg>
+        </button>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="mobile-menu hidden">
+        {OPTIONSBUTTONS.map(({ label, href }) => (
+            <a href={href} 
+                class="text-lg font-semibold text-primary hover:contrast-150 py-2"
+            >
+                {label}
+            </a>
+        ))}
     </div>
 </header>
+
+<script>
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    // Toggle menu on button click
+    menuButton.addEventListener('click', (event) => {
+        mobileMenu.classList.toggle('hidden');
+        event.stopPropagation(); // Prevent the click from bubbling up
+    });
+
+    // Close menu if clicked outside
+    document.addEventListener('click', (event) => {
+        if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+</script>
