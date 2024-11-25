@@ -1,0 +1,22 @@
+---
+interface Props {
+  roomId: string
+  roomPhoto: string
+  roomUrl: string
+  roomFlat: string
+}
+
+const { roomId, roomPhoto, roomUrl, roomFlat } = Astro.props
+---
+
+<rooms
+  class="rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-[length:100%] hover:bg-[length:105%] transition-[background-size]"
+  roomId={roomId}
+  roomPhoto={roomPhoto}
+  roomUrl={roomUrl}
+  data-roomFlat={roomFlat}
+  role="button"
+  tabindex="0"
+>
+  </div>
+</rooms>

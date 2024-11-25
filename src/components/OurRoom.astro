@@ -1,0 +1,198 @@
+---
+import SectionContainer from "./SectionContainer.astro"
+import Icon from "./ui/Icon.astro"
+import Rooms from "./Rooms.astro"
+
+const VIDEOS = [
+  {
+    roomId: "7222709244125007109",
+    roomPhoto: "",
+    roomUrl: "/img/thumbnails/ibai.webp",
+    roomFlat: "La relación de Ibai con Marcos",
+  },
+  {
+    roomId: "7258016065563807003",
+    roomPhoto: "",
+    roomUrl: "/img/thumbnails/jijantes.webp",
+    roomFlat: "Fichaje del nuevo reportero de Jijantes",
+  },
+  {
+    roomId: "7343332399662533920",
+    roomPhoto: "",
+    roomUrl: "/img/thumbnails/midudev.webp",
+    roomFlat: "Fichajes de la web de La Velada junto a Midudev",
+  },
+  {
+    roomId: "7265231719068880160",
+    roomPhoto: "",
+    roomUrl: "/img/thumbnails/cristinini.webp",
+    roomFlat: "Ganadora de la Beca Infojobs Cristinini",
+  },
+  {
+    roomId: "7285448407756393761",
+    roomPhoto: "",
+    roomUrl: "/img/thumbnails/marcos.webp",
+    roomFlat: "Entrevista a Marcos de Olañeta",
+  },
+] as const
+---
+
+<SectionContainer class="px-0">
+    <div class="flex items-center justify-between pb-6 md:pb-12">
+        <h2 class="sm:text-2xl md:text-4xl font-black text-balance tracking-tight text-7xl  text-primary">
+            Nuestras Habitaciones
+        </h2>
+
+        <div class="hidden md:flex items-center gap-x-4">
+            <button
+                class="bg-[#E2E2E5] text-[#636365] opacity-45 p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
+                id="left-button"
+                disabled="true"
+                aria-label="Ir al elemento anterior"
+            >
+                <Icon name="leftarrow" />
+            </button>
+            <button
+                class="bg-[#E2E2E5] text-[#636365] p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
+                id="right-button"
+                aria-label="Ir al siguiente elemento"
+            >
+                <Icon name="rightarrow" />
+            </button>
+        </div>
+    </div>
+
+    <div
+        class="relative carousel-container -mr-4 pr-4 md:mr-0 md:pr-0"
+        id="carousel-container"
+        style="--left-opacity: 0; --right-opacity: 1;"
+    >
+        <div
+            class="flex overflow-scroll custom-scrollbar gap-x-4 md:gap-x-8 snap-mandatory snap-x -mr-4 pr-4 md:mr-0 md:pr-0"
+            id="carousel"
+        >
+            {
+                VIDEOS.map(({ roomId, roomPhoto, roomUrl, roomFlat }) => (
+                <Rooms
+                    roomId={roomId}
+                    roomPhoto={roomPhoto}
+                    roomUrl={roomUrl}
+                    roomFlat={roomFlat}
+                />
+                ))
+            }
+        </div>
+    </div>
+</SectionContainer>
+
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+  
+    .custom-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  
+    .carousel-container:before {
+      background-image: linear-gradient(to left, transparent, #fff);
+      content: "";
+      height: 570px;
+      left: 0;
+      opacity: var(--left-opacity);
+      pointer-events: none;
+      position: absolute;
+      top: 0;
+      transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+      width: 64px;
+      z-index: 10;
+    }
+  
+    .carousel-container:after {
+      background-image: linear-gradient(to right, transparent, #fff);
+      content: "";
+      height: 570px;
+      opacity: var(--right-opacity);
+      pointer-events: none;
+      position: absolute;
+      right: 0;
+      top: 0;
+      transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+      width: 64px;
+      z-index: 10;
+    }
+  
+    @media (max-width: 768px) {
+      .carousel-container:before {
+        opacity: 0 !important;
+      }
+  
+      .carousel-container:after {
+        opacity: 0 !important;
+      }
+    }
+  </style>
+
+<script>
+    const rightButton = document.querySelector(
+      "#right-button"
+    ) as HTMLButtonElement
+    const leftButton = document.querySelector("#left-button") as HTMLButtonElement
+    const carousel = document.querySelector("#carousel") as HTMLDivElement
+    const carouselContainer = document.querySelector(
+      "#carousel-container"
+    ) as HTMLDivElement
+  
+    leftButton.addEventListener("click", () => {
+      carousel.scrollTo({
+        left: carousel.scrollLeft - 320,
+        behavior: "smooth",
+      })
+    })
+  
+    rightButton.addEventListener("click", () => {
+      carousel.scrollTo({
+        left: carousel.scrollLeft + 320,
+        behavior: "smooth",
+      })
+    })
+  
+    carousel.addEventListener("scroll", () => {
+      const tolerance = 2 // 0 + 2px to account for floating point errors
+  
+      const updateButtonState = (button: HTMLButtonElement, disable: boolean) => {
+        button.classList.toggle("opacity-45", disable)
+        button.disabled = disable
+      }
+  
+      const updateOpacity = (property: string, value: string) => {
+        carouselContainer.style.setProperty(property, value)
+      }
+  
+      if (carousel.scrollLeft <= tolerance) {
+        updateButtonState(leftButton, true)
+      } else {
+        updateButtonState(leftButton, false)
+      }
+  
+      if (
+        carousel.scrollLeft + carousel.clientWidth >=
+        carousel.scrollWidth - tolerance
+      ) {
+        updateButtonState(rightButton, true)
+        updateOpacity("--right-opacity", "0")
+      } else {
+        updateButtonState(rightButton, false)
+        updateOpacity("--right-opacity", "1")
+      }
+  
+      if (carousel.scrollLeft > tolerance) {
+        updateOpacity("--left-opacity", "1")
+      } else {
+        updateOpacity("--left-opacity", "0")
+      }
+    })
+  </script>
+  
+

@@ -1,0 +1,18 @@
+---
+const { mapImage, title, id } = Astro.props
+---
+
+  <article
+    class="flex items-center p-4 group min-w-[274px] md:p-6 h-64 w-auto rounded-2xl border border-texth2 overflow-hidden bg-white snap-center"
+  >
+    <div
+      class="flex items-center justify-center gap-4 transition-transform group-hover:scale-105"
+    >
+      <div class="flex items-center h-24">
+        <iframe src={mapImage} class="w-64 h-auto pr-5" loading="lazy"/>
+          <p class="font-medium md:font-semibold text-texth2">
+            {title}
+          </p>
+      </div>
+    </div>
+  </article>

@@ -1,0 +1,37 @@
+---
+const OPTIONSBUTTONS = [
+    {
+        label: "HABITACIONES",
+        href: ""
+    },
+    {
+        label: "SOBRE NOSOTROS",
+        href: ""
+    },
+    {
+        label: "CONTACTO",
+        href: ""
+    }
+] as const;
+---
+<header class="py-4 px-9 flex justify-between items-center w-full sticky bg-headerBg z-50 mb-4 backdrop-blur-xl top-0 right-0 left-0">
+    <div class="md:max-w-[1400px] md:mx-auto w-full flex justify-between items-center">
+        <!-- Logo -->
+        <img 
+            src="/logo.svg" 
+            alt="Logo RentRoomBcn" 
+            class="max-w-[25%]"
+        />
+        <div class="flex pr-28">
+            {
+                OPTIONSBUTTONS.map(({ label, href }) => (
+                    <a href={href} 
+                        class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4"
+                    >
+                        {label}
+                    </a>
+                ))
+            }
+        </div>
+    </div>
+</header>
