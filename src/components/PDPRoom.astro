@@ -8,10 +8,9 @@ interface Room {
   description: string;
   imageSrc: string;
   imageAlt: string;
-  details: string;
 }
 
-const { name, description, imageSrc, imageAlt, details } = Astro.props as Room;
+const { name, description, imageSrc, imageAlt } = Astro.props as Room;
 ---
 
 <div class="flex flex-col space-y-8">
@@ -36,7 +35,6 @@ const { name, description, imageSrc, imageAlt, details } = Astro.props as Room;
     <RoomDetails 
       name={name} 
       description={description} 
-      details={details} 
     />
   </div>
 </div>

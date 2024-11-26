@@ -1,22 +1,22 @@
 ---
 interface Props {
-  roomId: string
-  roomPhoto: string
-  roomUrl: string
-  roomFlat: string
+  slug: string;
+  imageSrc: string;
+  name: string;
 }
 
-const { roomId, roomPhoto, roomUrl, roomFlat } = Astro.props
+const { slug, imageSrc, name } = Astro.props;
 ---
 
-<rooms
+<a
   class="rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-[length:100%] hover:bg-[length:105%] transition-[background-size]"
-  roomId={roomId}
-  roomPhoto={roomPhoto}
-  roomUrl={roomUrl}
-  data-roomFlat={roomFlat}
-  role="button"
+  id={slug}
   tabindex="0"
+  role="button"
+  href={`/${slug}`}
+  style={`background-image: url(${imageSrc});`}
 >
+  <div class="absolute inset-0 bg-black/40 rounded-[16px] flex items-end p-4">
+    <h3 class="text-white text-xl font-bold ">{name}</h3>
   </div>
-</rooms>
+</a>
