@@ -3,9 +3,15 @@ import SectionContainer from "./SectionContainer.astro";
 ---
 
 <SectionContainer>
-  <form class="p-6 bg-gray-100 rounded-lg shadow-md" method="POST" id="contact-form">
+  <!-- Formulario -->
+  <form
+    id="contact-form"
+    class="p-6 bg-gray-100 rounded-lg shadow-md"
+    method="POST"
+    client:load
+  >
+    <!-- Campos del formulario -->
     <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
-      <!-- Campo de correo -->
       <div class="sm:col-span-1">
         <label for="email" class="block text-sm font-medium text-gray-900">
           Correo <span class="text-red-600">*</span>
@@ -13,7 +19,7 @@ import SectionContainer from "./SectionContainer.astro";
         <div class="mt-2">
           <input
             type="email"
-            name="email"
+            name="to_name"
             id="email"
             autocomplete="email"
             placeholder="Introduce tu correo"
@@ -22,8 +28,6 @@ import SectionContainer from "./SectionContainer.astro";
           />
         </div>
       </div>
-
-      <!-- Campo de nombre -->
       <div class="sm:col-span-1">
         <label for="name" class="block text-sm font-medium text-gray-900">
           Nombre <span class="text-red-600">*</span>
@@ -31,7 +35,7 @@ import SectionContainer from "./SectionContainer.astro";
         <div class="mt-2">
           <input
             type="text"
-            name="name"
+            name="from_name"
             id="name"
             autocomplete="name"
             placeholder="Introduce tu nombre"
@@ -41,8 +45,6 @@ import SectionContainer from "./SectionContainer.astro";
         </div>
       </div>
     </div>
-
-    <!-- Campo para habitación -->
     <div class="mt-6">
       <label for="room" class="block text-sm font-medium text-gray-900">
         Habitación <span class="text-red-600">*</span>
@@ -50,7 +52,7 @@ import SectionContainer from "./SectionContainer.astro";
       <div class="mt-2">
         <textarea
           id="room"
-          name="room"
+          name="message"
           rows="2"
           placeholder="Escribe el número o nombre de la habitación que deseas contactar"
           class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
@@ -80,76 +82,42 @@ import SectionContainer from "./SectionContainer.astro";
       <button
         type="submit"
         id="submit-button"
-        disabled
         class="w-full sm:w-auto inline-flex justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        disabled
       >
         Enviar
       </button>
     </div>
   </form>
 
-  <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
   <script>
-    // Inicializamos EmailJS
-    emailjs.init("YOUR_USER_ID"); // Reemplaza 'YOUR_USER_ID' con tu usuario de EmailJS
+    import { handleSubmit } from "../lib/formHandler";
 
-    // Seleccionamos los elementos del formulario
-    const form = document.getElementById('contact-form');
-    const submitButton = document.getElementById('submit-button');
-    const inputs = form.querySelectorAll('input, textarea');
+    // Selecciona el formulario y agrega un event listener
+    const form = document.getElementById("contact-form") as HTMLFormElement;
+    form.addEventListener("submit", handleSubmit);
 
-    // Función para verificar la validez de todos los campos
+    const inputs = form.querySelectorAll("input, textarea");
+    const submitButton = document.getElementById("submit-button") as HTMLButtonElement;
+
     function checkFormValidity() {
       let isValid = true;
-      
-      // Verificamos todos los campos
-      inputs.forEach(input => {
-        if (!input.checkValidity()) {
-          isValid = false;
-        }
+      inputs.forEach((input) => {
+        if (!input.checkValidity()) isValid = false;
       });
 
-      // Si el formulario es válido, habilitamos el botón y cambiamos el color
       if (isValid) {
         submitButton.disabled = false;
-        submitButton.classList.remove('bg-gray-400', 'cursor-not-allowed');
-        submitButton.classList.add('bg-indigo-600', 'hover:bg-indigo-500');
+        submitButton.classList.remove("bg-gray-400", "cursor-not-allowed");
+        submitButton.classList.add("bg-indigo-600", "hover:bg-indigo-500");
       } else {
         submitButton.disabled = true;
-        submitButton.classList.add('bg-gray-400', 'cursor-not-allowed');
-        submitButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-500');
+        submitButton.classList.add("bg-gray-400", "cursor-not-allowed");
+        submitButton.classList.remove("bg-indigo-600", "hover:bg-indigo-500");
       }
     }
 
-    // Enviar el correo cuando el formulario sea enviado
-    form.addEventListener('submit', function(event) {
-      event.preventDefault(); // Evitar el comportamiento por defecto del formulario
-
-      const email = document.getElementById('email').value;
-      const name = document.getElementById('name').value;
-      const room = document.getElementById('room').value;
-
-      // Usamos EmailJS para enviar el correo
-      emailjs.send("service_etppj3q", "YOUR_TEMPLATE_ID", {
-        email: email,
-        name: name,
-        room: room
-      })
-      .then(function(response) {
-        alert("¡Mensaje enviado con éxito!");
-        form.reset(); // Limpiar el formulario después de enviar
-        checkFormValidity(); // Volver a verificar si el formulario está en estado válido
-      }, function(error) {
-        alert("Error al enviar el mensaje: " + error.text);
-      });
-    });
-
-    // Añadimos event listeners para verificar la validez de los campos
-    inputs.forEach(input => {
-      input.addEventListener('input', checkFormValidity);
-    });
-
-    // Iniciar la verificación al cargar
+    inputs.forEach((input) => input.addEventListener("input", checkFormValidity));
     checkFormValidity();
   </script>
 </SectionContainer>
