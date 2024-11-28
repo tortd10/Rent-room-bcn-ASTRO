@@ -96,6 +96,7 @@ const OPTIONSBUTTONS = [
     const menuButton = document.getElementById('menu-button');
     const mobileMenu = document.getElementById('mobile-menu');
 
+    if (menuButton && mobileMenu) {
     // Toggle menu on button click
     menuButton.addEventListener('click', (event) => {
         mobileMenu.classList.toggle('hidden');
@@ -104,8 +105,13 @@ const OPTIONSBUTTONS = [
 
     // Close menu if clicked outside
     document.addEventListener('click', (event) => {
-        if (!mobileMenu.classList.contains('hidden') && !mobileMenu.contains(event.target) && !menuButton.contains(event.target)) {
+        if (
+            !mobileMenu.classList.contains('hidden') &&
+            !mobileMenu.contains(event.target as Node) &&
+            !menuButton.contains(event.target as Node)
+        ) {
             mobileMenu.classList.add('hidden');
         }
     });
+}
 </script>

@@ -8,7 +8,6 @@ import SectionContainer from "./SectionContainer.astro";
     id="contact-form"
     class="p-6 bg-gray-100 rounded-lg shadow-md"
     method="POST"
-    client:load
   >
     <!-- Campos del formulario -->
     <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
@@ -103,8 +102,13 @@ import SectionContainer from "./SectionContainer.astro";
     function checkFormValidity() {
       let isValid = true;
       inputs.forEach((input) => {
+      if (
+        input instanceof HTMLInputElement ||
+        input instanceof HTMLTextAreaElement
+      ) {
         if (!input.checkValidity()) isValid = false;
-      });
+      }
+    });
 
       if (isValid) {
         submitButton.disabled = false;
