@@ -4,131 +4,53 @@ import SectionContainer from "./SectionContainer.astro";
 const ARTICLES = [
     {
         title: "Cómo encontrar la habitación perfecta",
-        contentId: "finding-room",
-        class:
-            "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary md:aspect-[16/8] md:col-span-2 md:row-span-1 h-full",
-        image: "/AboutRooms/selection-process.webp",
-        imageClass:
-            "w-full h-auto object-contain object-bottom md:h-auto md:w-auto md:object-right md:max-h-none",
+        content: "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!",
+        class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
     },
     {
         title: "Las mejores zonas para alquilar en la ciudad",
-        contentId: "best-zones",
-        class:
-            "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary md:col-start-3 md:row-span-2 md:h-full",
-        image: "/AboutRooms/best-zones.webp",
-        imageClass:
-            "w-full h-full object-cover object-[center_30%] md:object-center",
+        content: "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad.",
+        class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
     },
     {
         title: "Lo que dicen los inquilinos",
-        contentId: "tenant-reviews",
-        class:
-            "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary md:h-row-span-1",
-        image: "/AboutRooms/tenant-reviews.webp",
-        imageClass: "w-full h-full object-cover",
-        action: "link",
+        content: "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad.",
+        class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
     },
     {
         title: "¿Primera vez alquilando? Consejos para tu primera habitación",
-        contentId: "first-time-renting",
-        class:
-            "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary md:h-row-span-1 md:h-full",
-        image: "/AboutRooms/first-time-renting.webp",
-        imageClass: "w-3/4 h-auto object-contain mb-4",
+        content: "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!",
+        class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
     },
 ];
-
 ---
 
-<SectionContainer class="px-0">
-  <div class="flex items-center justify-between pb-6 md:pb-12">
-    <h2 class="sm:text-2xl md:text-4xl xs:text-2xl font-black text-balance tracking-tight text-5xl  text-primary">
-        Encuentra tu próximo espacio perfecto
-    </h2>
+<SectionContainer class="px-4">
+  <div class="flex flex-col items-center text-center pb-8">
+    <h2 class="text-4xl font-extrabold text-primary mb-2">Encuentra tu próximo espacio perfecto</h2>
+    <p class="text-lg text-texth2 max-w-2xl">
+      Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida.
+    </p>
   </div>
-  <div class="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4 md:p-0">
-    {
-      ARTICLES.map(
-        ({
-          class: className,
-          title,
-          contentId,
-          image,
-          imageClass,
-          action
-        }) =>
-          action === "link" ? (
-            <a
-              target="_blank"
-              class:list={[
-                "aspect-square w-full h-full rounded-2xl overflow-hidden relative group",
-                className,
-              ]}
-            >
-              <div
-                class:list={[
-                  "absolute inset-0 flex overflow-hidden p-0",
-                  "items-end justify-end",
-                ]}
-              >
-                <img
-                  src={image}
-                  alt=""
-                  class:list={[
-                    "transition-transform duration-300 ease-in-out group-hover:scale-110",
-                    imageClass,
-                  ]}
-                />
-              </div>
-              <div class="absolute inset-0 p-4 flex flex-col justify-start items-start z-10">
-                <span class="font-medium text-3xl text-left text-pretty tracking-separated pr-3 md:max-w-64">
-                  {title}
-                </span>
-              </div>
-            </a>
-          ) : (
-            <button
-              class:list={[
-                "aspect-square w-full h-full rounded-2xl overflow-hidden relative group",
-                className,
-              ]}
-              data-content-id={contentId}
-            >
-              <div
-                class:list={[
-                  "absolute inset-0 flex overflow-hidden p-0",
-                  contentId === "selection-process"
-                    ? "items-end justify-center md:items-stretch md:justify-end"
-                    : "",
-                  contentId === "best-zones"
-                    ? "items-start md:items-center"
-                    : "",
-                  contentId === "first-time-renting"
-                    ? "items-end justify-center"
-                    : "items-end justify-end",
-                ]}
-              >
-                <img
-                  src={image}
-                  alt=""
-                  class:list={[
-                    "transition-transform duration-300 ease-in-out group-hover:scale-110",
-                    imageClass,
-                    contentId === "selection-process"
-                      ? "max-h-[70%] md:max-h-none md:h-full md:w-auto md:pr-0"
-                      : "",
-                  ]}
-                />
-              </div>
-              <div class="absolute inset-0 p-4 flex flex-col justify-start items-start z-10">
-                <span class="font-medium text-3xl text-left text-pretty tracking-separated pr-3 md:max-w-64">
-                  {title}
-                </span>
-              </div>
-            </button>
-          )
-      )
-    }
-  </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+  
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {ARTICLES.map(({ class: className, title, content }, index) => (
+      <div
+        class:list={[
+          index === 0
+            ? "md:col-span-2 md:row-span-1"
+            : index === 1
+            ? "md:row-span-2"
+            : "md:col-span-1",
+          "w-full rounded-lg overflow-hidden relative group shadow-md hover:shadow-lg transition-shadow duration-300",
+          className,
+        ]}
+      >
+        <div class="p-4 flex flex-col justify-start h-full">
+          <h3 class="text-xl font-bold text-primary mb-2">{title}</h3>
+          <p class="text-sm text-texth2">{content}</p>
+        </div>
+      </div>
+    ))}
+  </div>
 </SectionContainer>

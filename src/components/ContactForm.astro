@@ -6,14 +6,14 @@ import SectionContainer from "./SectionContainer.astro";
   <!-- Formulario -->
   <form
     id="contact-form"
-    class="p-6 bg-gray-100 rounded-lg shadow-md"
+    class="p-6 bg-[#D0D9F2] rounded-lg shadow-md"
     method="POST"
   >
     <!-- Campos del formulario -->
-    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 ">
       <div class="sm:col-span-1">
         <label for="email" class="block text-sm font-medium text-gray-900">
-          Correo <span class="text-red-600">*</span>
+          <span class="text-red-600">*</span> Correo
         </label>
         <div class="mt-2">
           <input
@@ -22,14 +22,14 @@ import SectionContainer from "./SectionContainer.astro";
             id="email"
             autocomplete="email"
             placeholder="Introduce tu correo"
-            class="block w-full rounded-md border-0 bg-transparent py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             required
           />
         </div>
       </div>
       <div class="sm:col-span-1">
         <label for="name" class="block text-sm font-medium text-gray-900">
-          Nombre <span class="text-red-600">*</span>
+          <span class="text-red-600">*</span> Nombre
         </label>
         <div class="mt-2">
           <input
@@ -38,7 +38,7 @@ import SectionContainer from "./SectionContainer.astro";
             id="name"
             autocomplete="name"
             placeholder="Introduce tu nombre"
-            class="block w-full rounded-md border-0 bg-transparent py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             required
           />
         </div>
@@ -46,15 +46,15 @@ import SectionContainer from "./SectionContainer.astro";
     </div>
     <div class="mt-6">
       <label for="room" class="block text-sm font-medium text-gray-900">
-        Habitación <span class="text-red-600">*</span>
+        <span class="text-red-600">*</span> Descripción
       </label>
       <div class="mt-2">
         <textarea
           id="room"
           name="message"
           rows="2"
-          placeholder="Escribe el número o nombre de la habitación que deseas contactar"
-          class="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+          placeholder="Escribe una breve descripción"
+          class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
           required
         ></textarea>
       </div>
@@ -71,7 +71,7 @@ import SectionContainer from "./SectionContainer.astro";
           required
         />
         <label for="accept-data" class="ml-3 text-sm text-gray-900">
-          Acepto el <a href="#" class="text-indigo-600 underline">tratamiento de mis datos</a>.
+          <span class="text-red-600">*</span> Acepto el <a href="#" class="text-indigo-600 underline">tratamiento de mis datos</a>.
         </label>
       </div>
     </div>
