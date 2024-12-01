@@ -1,7 +1,31 @@
 {
-    "email": "Email",
-    "name": "Name",
-    "description": "Description",
-    "accept": "I accept the processing of my data",
-    "submit": "Submit"
+    "property_features": {
+      "title": "Property Features:",
+      "room_size": "Room size: 72 m²",
+      "floor": "Upper floor with elevator",
+      "rooms": "5 rooms",
+      "bathroom": "1 bathroom",
+      "max_capacity": "Max capacity: 2 people",
+      "internet": "Internet connection",
+      "kitchen": "Equipped kitchen: fridge, oven, microwave",
+      "doorman": "Doorman"
+    },
+    "room_features": {
+      "title": "Room Features:",
+      "furnished": "Furnished room",
+      "bed": "Single bed",
+      "window": "Window to the patio"
+    },
+    "housemates": {
+      "title": "Your Housemates:",
+      "gender": "Male and female",
+      "age_range": "Between 1 and 99 years old",
+      "occupation": "Studying/Working",
+      "owner": "The owner does not live in the house"
+    },
+    "house_environment": {
+      "title": "House Environment:",
+      "quiet": "Quiet, no visitors and silence prevails"
+    }
   }
+  

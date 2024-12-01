@@ -1,8 +1,31 @@
 {
-    "email": "Correo",
-    "name": "Nombre",
-    "description": "Descripción",
-    "accept": "Acepto el tratamiento de mis datos",
-    "submit": "Enviar"
+    "property_features": {
+      "title": "Características de la vivienda:",
+      "room_size": "Habitación de 72 m²",
+      "floor": "Entreplanta exterior con ascensor",
+      "rooms": "5 habitaciones",
+      "bathroom": "1 baño",
+      "max_capacity": "Capacidad máxima: 2 personas",
+      "internet": "Conexión a internet",
+      "kitchen": "Cocina equipada: nevera, horno, microondas",
+      "doorman": "Portero físico"
+    },
+    "room_features": {
+      "title": "Características de la habitación:",
+      "furnished": "Habitación amueblada",
+      "bed": "Cama individual",
+      "window": "Ventana al patio"
+    },
+    "housemates": {
+      "title": "Tus compañeros/as:",
+      "gender": "Chicos y chicas",
+      "age_range": "Entre 1 y 99 años",
+      "occupation": "Estudian/Trabajan",
+      "owner": "El propietario/a no vive en la casa"
+    },
+    "house_environment": {
+      "title": "Ambiente de la casa:",
+      "quiet": "Tranquilo, no suelen tener visitas y abunda el silencio"
+    }
   }
   
