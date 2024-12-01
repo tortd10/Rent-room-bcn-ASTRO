@@ -1,43 +1,42 @@
 ---
+// Importar dependencias necesarias
 import SectionContainer from "./SectionContainer.astro";
+import i18next from '../i18n/config.js';
 
-const ARTICLES = [
-    {
-        title: "Cómo encontrar la habitación perfecta",
-        content: "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!",
-        class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
-    },
-    {
-        title: "Las mejores zonas para alquilar en la ciudad",
-        content: "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad.",
-        class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
-    },
-    {
-        title: "Lo que dicen los inquilinos",
-        content: "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad.",
-        class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
-    },
-    {
-        title: "¿Primera vez alquilando? Consejos para tu primera habitación",
-        content: "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!",
-        class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
-    },
-];
+// Definir los tipos para los datos de traducción
+interface Article {
+  class: string;
+  title: string;
+  content: string;
+}
+
+interface AboutRooms {
+  title: string;
+  description: string;
+  articles: Article[];
+}
+
+const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+
+// Asegurarse de que las traducciones sean del tipo correcto
+const aboutRooms: AboutRooms = translations.aboutRooms;
 ---
 
 <SectionContainer class="px-4">
   <div class="flex flex-col items-center text-center pb-8">
     <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-      Encuentra tu próximo espacio perfecto
+      {aboutRooms.title}
     </h1>
     <h2 class="mt-6 text-balance text-texth2 text-lg sm:text-xl md:text-2xl lg:text-3xl">
-      Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida.    </h2>
+      {aboutRooms.description}
+    </h2>
   </div>
-  
+
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {ARTICLES.map(({ class: className, title, content }, index) => (
+    {aboutRooms.articles.map(({ class: className, title, content }, index) => (
       <div
-        class:list={[
+        class:list={[ 
           index === 0
             ? "md:col-span-2 md:row-span-1"
             : index === 1

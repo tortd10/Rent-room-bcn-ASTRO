@@ -1,19 +1,26 @@
+---
+import i18next from '../i18n/config.js';
+
+const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const findRoom = translations.FindRoom;
+---
 <section class="px-4 py-6 md:w-full md:max-w-[90rem] md:mx-auto">
     <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4 md:p-0 place-items-center">
         <div>
             <div>
                 <h1 class="font-black text-balance tracking-tight text-6xl text-primary sm:text-5xl md:text-6xl lg:text-7xl">
-                    Encuentra tu habitación ideal
+                    {findRoom.find_room}
                 </h1>
                 <h2 class="mt-6 text-balance text-texth2 text-2xl">
-                    Ofrecemos una amplia gama de habitaciones para que encuentres la opción perfecta para tu estadía. Navega por nuestro portal y descubre alojamientos únicos.
+                    {findRoom.description}
                 </h2>
             </div>
             <div class="py-10">
                 <a href="/Habitaciones" 
                     class="text-lg text-white bg-texth2 hover:contrast-150 rounded-md tracking-tight py-2 px-4"
                 >
-                    Ver Habitaciones
+                    {findRoom.view_rooms}
                 </a>
             </div>
         </div>

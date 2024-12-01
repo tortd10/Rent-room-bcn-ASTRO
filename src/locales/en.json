@@ -1,5 +1,112 @@
 {
-    "property_features": {
+  "Header": {
+    "optionsbuttons": [
+      { 
+        "label": "ROOMS",
+        "href": "/Habitaciones"
+      },
+      { 
+        "label": "ABOUT US",
+        "href": "/About"
+      }
+    ]
+  },
+  "Footer": {
+    "LINKS": [
+      {
+        "label": "RENTROOMBCN",
+        "href": "/"
+      },
+      { 
+        "label": "ROOMS",
+        "href": "/Habitaciones"
+      },
+      { 
+        "label": "ABOUT US",
+        "href": "/About"
+      }
+    ]
+  },
+  "FindRoom": {
+    "find_room": "Find your ideal room",
+    "description": "We offer a wide range of rooms so you can find the perfect option for your stay. Browse through our portal and discover unique accommodations.",
+    "view_rooms": "View Rooms",
+    "image_alt": "RentRoom photo"
+  },
+  "aboutRooms": {
+    "title": "Find your next perfect space",
+    "description": "Explore amazing options to find the ideal place that fits your needs and lifestyle.",
+    "articles": [
+      {
+        "title": "How to find the perfect room",
+        "content": "Looking for a comfortable and affordable place? Discover practical tips on how to choose a room that suits your budget, style, and daily needs. Make your search a simple and effective experience!",
+        "class": "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary"
+      },
+      {
+        "title": "The best areas to rent in the city",
+        "content": "Not sure which neighborhood is right for you? Explore the features of the best areas to live, from the calmest to the liveliest. Find the perfect balance between location and comfort.",
+        "class": "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary"
+      },
+      {
+        "title": "What tenants are saying",
+        "content": "Read the experiences and recommendations from those who have already lived with us. Their stories will help you make an informed decision about where and how to live in our community.",
+        "class": "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary"
+      },
+      {
+        "title": "First time renting? Tips for your first room",
+        "content": "If you're new to renting, we offer a practical guide on everything you need to know: from what questions to ask to how to prepare for the move. Start this new chapter with confidence!",
+        "class": "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary"
+      }
+    ]
+  },
+  "ourRoom": {
+    "title": "Rooms",
+    "prevElement": "Go to previous element",
+    "nextElement": "Go to next element"
+  },
+  "ourFlats": {
+    "title": "Flats"
+  },
+  "Knowus": {
+    "title": "Know RentRoomBCN",
+    "description": "Welcome to RentRoomBCN, where finding your ideal space is our mission. We specialize in connecting people with unique accommodations, offering personalized and secure solutions to make every stay in Barcelona a memorable experience."
+  },
+  "OurBeliefs": {
+    "text1" :"At RentRoomBCN, we strongly believe that everyone deserves a space that not only meets their needs but also feels like home. We take pride in offering a personalized experience where each client feels supported from the very beginning. We know that everyone has their own style and lifestyle, which is why we work tirelessly to offer options that perfectly match your needs and expectations. From choosing the perfect room to continuous advice during your stay, we are here to ensure your experience is unique and special.",
+    "text2": "Transparency is one of our core pillars. We are committed to providing clear and accurate information at all times so that you can make informed and secure decisions. We believe that trust is the foundation of any relationship, and at RentRoomBCN, we provide you with all the details about our spaces, contracts, and terms with no surprises or fine print. Additionally, we strive to maintain the highest quality standards in every accommodation we offer. Every room and space is carefully selected and reviewed to ensure your stay is as comfortable, safe, and pleasant as possible."
+  },
+  "OurTeam": {
+    "title": "Our Team",
+    "description": "At RentRoomBCN, our team is made up of passionate individuals who love what they do. We believe that the success of our company is based on the dedication, commitment, and experience of each team member.",
+    "teamMembers": [
+      {
+        "name": "Alex",
+        "role": "General Director",
+        "description": "With extensive experience in the real estate sector, Alex leads the team and ensures that every client receives the best possible attention.",
+        "image": "/Alex.jpg"
+      },
+      {
+        "name": "David",
+        "role": "Customer Service Manager",
+        "description": "David is responsible for providing exceptional customer service, ensuring that every person has an unforgettable experience with RentRoomBCN.",
+        "image": "/Alex.jpg"
+      }
+    ]
+  },
+  "contactForm": {
+    "emailLabel": "Email",
+    "emailPlaceholder": "Enter your email",
+    "nameLabel": "Name",
+    "namePlaceholder": "Enter your name",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Write a brief description",
+    "acceptLabel": "I accept the processing of my data",
+    "submitButton": "Submit"
+  },
+  "plpRoom": {
+    "title": "Available Rooms"
+  },
+  "property_features": {
       "title": "Property Features:",
       "room_size": "Room size: 72 m²",
       "floor": "Upper floor with elevator",
@@ -9,23 +116,24 @@
       "internet": "Internet connection",
       "kitchen": "Equipped kitchen: fridge, oven, microwave",
       "doorman": "Doorman"
-    },
-    "room_features": {
+  },
+  "room_features": {
       "title": "Room Features:",
       "furnished": "Furnished room",
       "bed": "Single bed",
       "window": "Window to the patio"
-    },
-    "housemates": {
+  },
+  "housemates": {
       "title": "Your Housemates:",
       "gender": "Male and female",
       "age_range": "Between 1 and 99 years old",
       "occupation": "Studying/Working",
       "owner": "The owner does not live in the house"
-    },
-    "house_environment": {
+  },
+  "house_environment": {
       "title": "House Environment:",
       "quiet": "Quiet, no visitors and silence prevails"
-    }
-  }
+  },
+  "greeting": "Hello, welcome to our site!"
+}
   

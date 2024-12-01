@@ -3,12 +3,18 @@ import SectionContainer from "./SectionContainer.astro"
 import Icon from "./ui/Icon.astro"
 import Rooms from "./Rooms.astro"
 import { ROOMS } from '../data/rooms';
+
+import i18next from '../i18n/config.js';
+
+const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const ourRoom = translations.ourRoom;
 ---
 
 <SectionContainer class="px-0">
     <div class="flex items-center justify-between pb-6 md:pb-12">
       <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-        Habitaciones
+        {ourRoom.title}
         </h1>
 
         <div class="hidden md:flex items-center gap-x-4">
@@ -16,14 +22,14 @@ import { ROOMS } from '../data/rooms';
                 class="bg-[#E2E2E5] text-[#636365] opacity-45 p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
                 id="left-button"
                 disabled="true"
-                aria-label="Ir al elemento anterior"
+                aria-label={ourRoom.prevElement}
             >
                 <Icon name="leftarrow" />
             </button>
             <button
                 class="bg-[#E2E2E5] text-[#636365] p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
                 id="right-button"
-                aria-label="Ir al siguiente elemento"
+                aria-label={ourRoom.nextElement}
             >
                 <Icon name="rightarrow" />
             </button>

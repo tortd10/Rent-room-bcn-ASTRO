@@ -1,5 +1,10 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+import i18next from '../i18n/config.js';
+
+const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const contactForm = translations.contactForm;
 ---
 
 <SectionContainer>
@@ -13,7 +18,7 @@ import SectionContainer from "./SectionContainer.astro";
     <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 ">
       <div class="sm:col-span-1">
         <label for="email" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> Correo
+          <span class="text-red-600">*</span> {contactForm.emailLabel}
         </label>
         <div class="mt-2">
           <input
@@ -21,7 +26,7 @@ import SectionContainer from "./SectionContainer.astro";
             name="to_name"
             id="email"
             autocomplete="email"
-            placeholder="Introduce tu correo"
+            placeholder={contactForm.emailPlaceholder}
             class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             required
           />
@@ -29,7 +34,7 @@ import SectionContainer from "./SectionContainer.astro";
       </div>
       <div class="sm:col-span-1">
         <label for="name" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> Nombre
+          <span class="text-red-600">*</span> {contactForm.nameLabel}
         </label>
         <div class="mt-2">
           <input
@@ -37,7 +42,7 @@ import SectionContainer from "./SectionContainer.astro";
             name="from_name"
             id="name"
             autocomplete="name"
-            placeholder="Introduce tu nombre"
+            placeholder={contactForm.namePlaceholder}
             class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
             required
           />
@@ -46,14 +51,14 @@ import SectionContainer from "./SectionContainer.astro";
     </div>
     <div class="mt-6">
       <label for="room" class="block text-sm font-medium text-gray-900">
-        <span class="text-red-600">*</span> Descripción
+        <span class="text-red-600">*</span> {contactForm.descriptionLabel}
       </label>
       <div class="mt-2">
         <textarea
           id="room"
           name="message"
           rows="2"
-          placeholder="Escribe una breve descripción"
+          placeholder={contactForm.descriptionPlaceholder}
           class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
           required
         ></textarea>
@@ -71,7 +76,7 @@ import SectionContainer from "./SectionContainer.astro";
           required
         />
         <label for="accept-data" class="ml-3 text-sm text-gray-900">
-          <span class="text-red-600">*</span> Acepto el <a href="#" class="text-indigo-600 underline">tratamiento de mis datos</a>.
+          <span class="text-red-600">*</span> {contactForm.acceptLabel}
         </label>
       </div>
     </div>
@@ -84,7 +89,7 @@ import SectionContainer from "./SectionContainer.astro";
         class="w-full sm:w-auto inline-flex justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
         disabled
       >
-        Enviar
+        {contactForm.submitButton}
       </button>
     </div>
   </form>

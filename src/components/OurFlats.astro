@@ -1,6 +1,12 @@
 ---
 import FlatsCard from "@components/FlatsCard.astro";
 import { FLATS } from '../data/flats';
+
+import i18next from '../i18n/config.js';
+
+const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const ourFlats = translations.ourFlats;
 ---
 
 <section class="w-full mx-auto lg:max-w-7xl">
@@ -10,7 +16,7 @@ import { FLATS } from '../data/flats';
   >
     <!-- Título actualizado -->
     <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-      Pisos
+      {ourFlats.title}
      </h1>
 
     <!-- Contenedor de FlatsCards -->

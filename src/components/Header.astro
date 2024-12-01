@@ -1,15 +1,30 @@
 ---
-const OPTIONSBUTTONS = [
-    {
-        label: "HABITACIONES",
-        href: "/Habitaciones"
-    },
-    {
-        label: "SOBRE NOSOTROS",
-        href: "/About"
-    }
-] as const;
+interface Header {
+  label: string;
+  href: string;
+  optionsbuttons: Header[];
+}
+
+const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
+const currentPath = Astro.url.pathname.split('/').slice(2).join('/'); // La ruta después del idioma
+
+const oppositeLang = currentLang === 'es' ? 'en' : 'es';
+
+// Generar la URL de cambio de idioma correctamente
+const changeLangUrl = currentPath && currentPath !== '' ? `/${oppositeLang}/${currentPath}` : `/${oppositeLang}`;
+
+// Función para ajustar las URLs de las opciones del menú según el idioma actual
+const getLocalizedHref = (href: string) => {
+  return currentLang === 'es' ? `/es${href}` : `/en${href}`;
+};
+
+import i18next from '../i18n/config.js';
+
+const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const header: Header = translations.Header;
 ---
+
 <style>
     .mobile-menu {
         position: absolute;
@@ -39,8 +54,6 @@ const OPTIONSBUTTONS = [
             display: flex;
         }
 
- 
-
         .mobile-menu {
             display: none; /* Siempre oculta el menú móvil en pantallas grandes */
         }
@@ -50,23 +63,23 @@ const OPTIONSBUTTONS = [
 <header class="py-4 px-9 flex justify-between items-center w-full sticky bg-headerBg z-50 backdrop-blur-xl top-0">
     <div class="md:max-w-[1400px] md:mx-auto w-full flex justify-between items-center">
         <!-- Logo -->
-        <a href="/">
-            <img 
-            src="/logo.svg" 
-            alt="Logo RentRoomBcn"
-            />
+        <a href={currentLang === 'es' ? '/' : '/en'}>
+            <img src="/logo.svg" alt="Logo RentRoomBcn" />
         </a>
 
         <!-- Desktop Menu -->
         <div class="desktop-menu hidden md:flex">
-            {OPTIONSBUTTONS.map(({ label, href }) => (
-                <a href={href} 
-                    class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4"
-                >
+            {header.optionsbuttons.map(({ label, href }) => (
+                <a href={getLocalizedHref(href)} class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4">
                     {label}
                 </a>
             ))}
         </div>
+
+        <!-- Cambiar idioma -->
+        <a href={changeLangUrl} class="text-lg font-semibold text-primary">
+            {currentLang === 'es' ? 'English' : 'Español'}
+        </a>
 
         <!-- Mobile Menu Button -->
         <button id="menu-button" class="md:hidden flex items-center p-2">
@@ -78,10 +91,8 @@ const OPTIONSBUTTONS = [
 
     <!-- Mobile Dropdown Menu -->
     <div id="mobile-menu" class="mobile-menu hidden">
-        {OPTIONSBUTTONS.map(({ label, href }) => (
-            <a href={href} 
-                class="text-lg font-semibold text-primary hover:contrast-150 py-2"
-            >
+        {header.optionsbuttons.map(({ label, href }) => (
+            <a href={getLocalizedHref(href)} class="text-lg font-semibold text-primary hover:contrast-150 py-2">
                 {label}
             </a>
         ))}
@@ -93,21 +104,21 @@ const OPTIONSBUTTONS = [
     const mobileMenu = document.getElementById('mobile-menu');
 
     if (menuButton && mobileMenu) {
-    // Toggle menu on button click
-    menuButton.addEventListener('click', (event) => {
-        mobileMenu.classList.toggle('hidden');
-        event.stopPropagation(); // Prevent the click from bubbling up
-    });
+        // Toggle menu on button click
+        menuButton.addEventListener('click', (event) => {
+            mobileMenu.classList.toggle('hidden');
+            event.stopPropagation(); // Prevent the click from bubbling up
+        });
 
-    // Close menu if clicked outside
-    document.addEventListener('click', (event) => {
-        if (
-            !mobileMenu.classList.contains('hidden') &&
-            !mobileMenu.contains(event.target as Node) &&
-            !menuButton.contains(event.target as Node)
-        ) {
-            mobileMenu.classList.add('hidden');
-        }
-    });
-}
+        // Close menu if clicked outside
+        document.addEventListener('click', (event) => {
+            if (
+                !mobileMenu.classList.contains('hidden') &&
+                !mobileMenu.contains(event.target as Node) &&
+                !menuButton.contains(event.target as Node)
+            ) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    }
 </script>

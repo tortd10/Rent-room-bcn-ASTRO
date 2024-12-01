@@ -1,27 +1,25 @@
 ---
-const LINKS = [
-    {
-        label: "RENTROOMBCN",
-        href: "/",
-    },
-    {
-        label: "HABITACIONES",
-        href: "/Habitaciones"
-    },
-    {
-        label: "SOBRE NOSOTROS",
-        href: "/About"
-    }
-]
+interface Footer {
+  label: string;
+  href: string;
+  LINKS: Footer[];
+}
+
+import i18next from '../i18n/config.js';
+
+const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const footer: Footer = translations.Footer;
+
 ---
 <footer class="bg-headerBg py-6 lg:py-10 mt-20">
     <section class="mx-auto max-w-7xl px-4 w-full">
         <div class="flex flex-col items-center px-10">
             <ul class="flex gap-x-4 gap-y-4 flex-wrap justify-center text-sm w-full underline-offset-[3px]">
                 {
-                    LINKS.map(({ label, href }, index: number) => (
+                    footer.LINKS.map(({ label, href }, index: number) => (
                     <li
-                        class={`${index !== LINKS.length - 1 && "after:content-['|'] after:ml-4"} text-center`}
+                        class={`${index !== footer.LINKS.length - 1 && "after:content-['|'] after:ml-4"} text-center`}
                     >
                         <a
                         class="hover:contrast-150 text-primary"

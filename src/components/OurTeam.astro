@@ -1,34 +1,38 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+import i18next from '../i18n/config.js';
 
-const TEAM_MEMBERS = [
-    {
-        name: "Alex",
-        role: "Director General",
-        description: "Con una amplia experiencia en el sector inmobiliario, Alex se encarga de dirigir el equipo y garantizar que cada cliente reciba la mejor atención posible.",
-        image: "/Alex.jpg",
-    },
-    {
-        name: "David",
-        role: "Gerente de Atención al Cliente",
-        description: "Se encarga de ofrecer un servicio al cliente excepcional, asegurándose de que cada persona tenga una experiencia inolvidable con RentRoomBCN.",
-        image: "/Alex.jpg",
-    }
-];
+interface TeamMember {
+  name: string;
+  image: string;
+  role: string;
+  description: string;
+}
+
+// Definir la interfaz para el objeto 'ourTeam'
+interface OurTeam {
+  title: string;
+  description: string;
+  teamMembers: TeamMember[];
+}
+
+const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const ourTeam: OurTeam = translations.OurTeam;
 ---
 
 <SectionContainer class="px-4 bg-light-gray">
     <div class="text-center mb-8 w-full">
         <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-            Nuestro equipo
+            {ourTeam.title}
         </h1>
         <h2 class="mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-texth2">
-            En RentRoomBCN, nuestro equipo está formado por personas apasionadas por lo que hacen. Creemos que el éxito de nuestra empresa se basa en la dedicación, el compromiso y la experiencia de cada miembro.
+            {ourTeam.description}
         </h2>
     </div>
 
     <div class="flex md:flex-wrap md:justify-center gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 pb-4 md:overflow-visible">
-        {TEAM_MEMBERS.map((member) => (
+        {ourTeam.teamMembers.map((member) => (
             <div 
                 class="flex-shrink-0 min-w-[280px] max-w-[320px] snap-center bg-white rounded-lg overflow-hidden shadow-lg mb-4"
             >

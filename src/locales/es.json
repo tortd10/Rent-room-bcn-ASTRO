@@ -1,5 +1,112 @@
 {
-    "property_features": {
+  "Header": {
+    "optionsbuttons": [
+      { 
+        "label": "HABITACIONES",
+        "href": "/Habitaciones"
+      },
+      { 
+        "label": "SOBRE NOSOTROS",
+        "href": "/About"
+      }
+    ]
+  },
+  "Footer": {
+    "LINKS": [
+      {
+        "label": "RENTROOMBCN",
+        "href": "/"
+      },
+      { 
+        "label": "HABITACIONES",
+        "href": "/Habitaciones"
+      },
+      { 
+        "label": "SOBRE NOSOTROS",
+        "href": "/About"
+      }
+    ]
+  },
+  "FindRoom": {
+    "find_room": "Encuentra tu habitación ideal",
+    "description": "Ofrecemos una amplia gama de habitaciones para que encuentres la opción perfecta para tu estadía. Navega por nuestro portal y descubre alojamientos únicos.",
+    "view_rooms": "Ver Habitaciones",
+    "image_alt": "foto RentRoom"
+  },
+  "aboutRooms": {
+    "title": "Encuentra tu próximo espacio perfecto",
+    "description": "Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida.",
+    "articles": [
+      {
+        "title": "Cómo encontrar la habitación perfecta",
+        "content": "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!",
+        "class": "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary"
+      },
+      {
+        "title": "Las mejores zonas para alquilar en la ciudad",
+        "content": "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad.",
+        "class": "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary"
+      },
+      {
+        "title": "Lo que dicen los inquilinos",
+        "content": "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad.",
+        "class": "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary"
+      },
+      {
+        "title": "¿Primera vez alquilando? Consejos para tu primera habitación",
+        "content": "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!",
+        "class": "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary"
+      }
+    ]
+  },
+  "ourRoom": {
+    "title": "Habitaciones",
+    "prevElement": "Ir al elemento anterior",
+    "nextElement": "Ir al siguiente elemento"
+  },
+  "ourFlats": {
+    "title": "Pisos"
+  },
+  "contactForm": {
+    "emailLabel": "Correo",
+    "emailPlaceholder": "Introduce tu correo",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Introduce tu nombre",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Escribe una breve descripción",
+    "acceptLabel": "Acepto el tratamiento de mis datos",
+    "submitButton": "Enviar"
+  },
+  "plpRoom": {
+    "title": "Habitaciones Disponibles"
+  },
+  "Knowus": {
+    "title": "Conoce RentRoomBCN",
+    "description": "Bienvenidos a RentRoomBCN, donde encontrar tu espacio ideal es nuestra misión. Nos especializamos en conectar personas con alojamiento único, ofreciendo soluciones personalizadas y seguras para que cada estancia en Barcelona sea una experiencia memorable."
+  },
+  "OurBeliefs": {
+    "text1" :"En RentRoomBCN, creemos firmemente que cada persona merece un espacio que no solo cubra sus necesidades, sino que también se sienta como su hogar. Nos enorgullece ofrecer una experiencia personalizada en la que cada cliente se sienta acompañado desde el primer momento. Sabemos que cada uno tiene su propio estilo y ritmo de vida, por eso trabajamos incansablemente para ofrecer opciones que se adapten perfectamente a tus necesidades y expectativas. Desde la elección de la habitación perfecta hasta el asesoramiento continuo durante tu estancia, estamos aquí para garantizar que tu experiencia sea única y especial.",
+    "text2": "La transparencia es uno de nuestros pilares fundamentales. Nos comprometemos a ofrecerte información clara y precisa en todo momento, para que tomes decisiones informadas y seguras. Creemos que la confianza es la base de cualquier relación, y en RentRoomBCN te proporcionamos todos los detalles sobre nuestros espacios, contratos y condiciones sin sorpresas ni letra pequeña. Además, nos esforzamos por mantener los más altos estándares de calidad en cada alojamiento que ofrecemos. Cada habitación y cada espacio es cuidadosamente seleccionado y revisado para garantizar que tu estancia sea lo más cómoda, segura y agradable posible."
+  },
+  "OurTeam": {
+    "title": "Nuestro equipo",
+    "description": "En RentRoomBCN, nuestro equipo está formado por personas apasionadas por lo que hacen. Creemos que el éxito de nuestra empresa se basa en la dedicación, el compromiso y la experiencia de cada miembro.",
+    "teamMembers": [
+      {
+        "name": "Alex",
+        "role": "Director General",
+        "description": "Con una amplia experiencia en el sector inmobiliario, Alex se encarga de dirigir el equipo y garantizar que cada cliente reciba la mejor atención posible.",
+        "image": "/Alex.jpg"
+      },
+      {
+        "name": "David",
+        "role": "Gerente de Atención al Cliente",
+        "description": "Se encarga de ofrecer un servicio al cliente excepcional, asegurándose de que cada persona tenga una experiencia inolvidable con RentRoomBCN.",
+        "image": "/Alex.jpg"
+      }
+    ]
+  },
+  "property_features": {
       "title": "Características de la vivienda:",
       "room_size": "Habitación de 72 m²",
       "floor": "Entreplanta exterior con ascensor",
@@ -9,23 +116,23 @@
       "internet": "Conexión a internet",
       "kitchen": "Cocina equipada: nevera, horno, microondas",
       "doorman": "Portero físico"
-    },
-    "room_features": {
+  },
+  "room_features": {
       "title": "Características de la habitación:",
       "furnished": "Habitación amueblada",
       "bed": "Cama individual",
       "window": "Ventana al patio"
-    },
-    "housemates": {
+  },
+  "housemates": {
       "title": "Tus compañeros/as:",
       "gender": "Chicos y chicas",
       "age_range": "Entre 1 y 99 años",
       "occupation": "Estudian/Trabajan",
       "owner": "El propietario/a no vive en la casa"
-    },
-    "house_environment": {
+  },
+  "house_environment": {
       "title": "Ambiente de la casa:",
       "quiet": "Tranquilo, no suelen tener visitas y abunda el silencio"
-    }
   }
+}
   

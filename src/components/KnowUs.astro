@@ -1,5 +1,11 @@
 ---
 import SectionContainer from "./SectionContainer.astro";
+
+import i18next from '../i18n/config.js';
+
+const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, 'translation');
+const Knowus = translations.Knowus;
 ---
 
 <SectionContainer class="px-0">
@@ -7,10 +13,10 @@ import SectionContainer from "./SectionContainer.astro";
         <div class="grid grid-cols-1 place-items-center text-center">
             <div>
                 <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-                    Conoce RentRoomBCN
+                    {Knowus.title}
                 </h1>
                 <h2 class="mt-6 text-balance text-texth2 text-lg sm:text-xl md:text-2xl lg:text-3xl">
-                    Bienvenidos a RentRoomBCN, donde encontrar tu espacio ideal es nuestra misión. Nos especializamos en conectar personas con alojamiento único, ofreciendo soluciones personalizadas y seguras para que cada estancia en Barcelona sea una experiencia memorable
+                    {Knowus.description}
                 </h2>
             </div>
         </div>

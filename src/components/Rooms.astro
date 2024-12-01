@@ -9,7 +9,7 @@ const { slug, imageSrc, name } = Astro.props;
 ---
 
 <a
-  class="rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-[length:100%] hover:bg-[length:105%] transition-[background-size]"
+  class="card rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-cover hover:bg-[length:105%] transition-[background-size]"
   id={slug}
   tabindex="0"
   role="button"
@@ -17,6 +17,15 @@ const { slug, imageSrc, name } = Astro.props;
   style={`background-image: url(${imageSrc});`}
 >
   <div class="absolute inset-0 bg-black/40 rounded-[16px] flex items-end p-4">
-    <h3 class="text-white text-xl font-bold ">{name}</h3>
+    <h3 class="text-white text-xl font-bold">{name}</h3>
   </div>
 </a>
+
+<style>
+  /* Media query para móviles */
+  @media (max-width: 768px) {
+    .card {
+      width: 20rem;
+    }
+  }
+</style>
