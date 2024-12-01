@@ -2,6 +2,7 @@
 import Layout from '@layouts/Layout.astro';
 import { ROOMS } from '../data/rooms';
 import PDPRoom from '@components/PDPRoom.astro';
+import SectionContainer from '@components/SectionContainer.astro';
 
 // Función para generar las rutas dinámicas
 export async function getStaticPaths() {
@@ -22,23 +23,9 @@ if (!room) {
 ---
 
 <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
-    <!-- <main class="bg-gray-50 py-12">
-    <div class="max-w-4xl mx-auto px-6 lg:px-8">
-        <h1 class="text-4xl font-bold text-gray-900 mb-6">{room.name}</h1>
-        <img 
-        src={room.imageSrc} 
-        alt={room.imageAlt} 
-        class="rounded-lg shadow-lg w-full mb-6"
-        />
-        <p class="text-lg text-gray-700">{room.details}</p>
-        <a href="/contacto" class="inline-block mt-4 bg-blue-600 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700">
-        Reservar Ahora
-        </a>
-    </div>
-    </main> -->
-    <main class="bg-gray-50 py-12">
+  <SectionContainer class="px-0">
         <div class="max-w-7xl mx-auto px-6 lg:px-8">
           <PDPRoom room={room} />
         </div>
-    </main>
+    </SectionContainer>
 </Layout>

@@ -4,42 +4,51 @@ import SectionContainer from "./SectionContainer.astro";
 const TEAM_MEMBERS = [
     {
         name: "Alex",
-        role: "AAAAAAAAAAAAAAAAAAA",
-        description: "Con una amplia experiencia en el sector inmobiliario, Juan se encarga de dirigir el equipo y garantizar que cada cliente reciba la mejor atención posible.",
-        image: "/team-member-1.jpg", // Asegúrate de poner la imagen correcta
+        role: "Director General",
+        description: "Con una amplia experiencia en el sector inmobiliario, Alex se encarga de dirigir el equipo y garantizar que cada cliente reciba la mejor atención posible.",
+        image: "/Alex.jpg",
     },
     {
         name: "David",
-        role: "AAAAAAAAAAAAAAAAAAA",
+        role: "Gerente de Atención al Cliente",
         description: "Se encarga de ofrecer un servicio al cliente excepcional, asegurándose de que cada persona tenga una experiencia inolvidable con RentRoomBCN.",
-        image: "/team-member-2.jpg", // Asegúrate de poner la imagen correcta
+        image: "/Alex.jpg",
     }
-    // TODO
 ];
 ---
 
 <SectionContainer class="px-4 bg-light-gray">
-    <div class="grid grid-cols-1 place-items-center text-center mb-8">
-        <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl text-primary">
+    <div class="text-center mb-8 w-full">
+        <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
             Nuestro equipo
         </h1>
-        <h2 class="mt-6 text-balance text-texth2 text-lg sm:text-xl md:text-2xl lg:text-3xl">
-            En RentRoomBCN, nuestro equipo está formado por personas apasionadas por lo que hacen. Creemos que el éxito de nuestra empresa se basa en la dedicación, el compromiso y la experiencia de cada miembro. Estamos aquí para ayudarte a encontrar el espacio ideal, brindándote un servicio cercano, personalizado y siempre dispuesto a superar tus expectativas.
+        <h2 class="mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-texth2">
+            En RentRoomBCN, nuestro equipo está formado por personas apasionadas por lo que hacen. Creemos que el éxito de nuestra empresa se basa en la dedicación, el compromiso y la experiencia de cada miembro.
         </h2>
     </div>
 
-    <!-- Contenedor de las tarjetas de empleados centradas -->
-    <div class="flex justify-center items-center flex-wrap gap-8">
+    <div class="flex md:flex-wrap md:justify-center gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 pb-4 md:overflow-visible">
         {TEAM_MEMBERS.map((member) => (
-            <div class={`rounded-lg overflow-hidden shadow-lg w-80`}>
-                <img src={member.image} alt={member.name} class="w-full h-64 object-cover"/>
-                <div class="p-5 text-center">
-                    <h3 class="text-xl font-semibold text-primary">{member.name}</h3>
+            <div 
+                class="flex-shrink-0 min-w-[280px] max-w-[320px] snap-center bg-white rounded-lg overflow-hidden shadow-lg mb-4"
+            >
+                <img 
+                    src={member.image} 
+                    alt={member.name} 
+                    class="w-[full] object-contain"
+                />
+                <div class="p-4 text-center">
+                    <h3 class="text-lg font-semibold text-primary">{member.name}</h3>
                     <p class="text-sm text-texth2">{member.role}</p>
-                    <p class="mt-3 text-base text-texth2">{member.description}</p>
+                    <p class="mt-2 text-sm text-texth2">{member.description}</p>
                 </div>
             </div>
         ))}
     </div>
-    
 </SectionContainer>
+
+
+
+
+
+
