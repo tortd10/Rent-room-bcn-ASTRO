@@ -36,7 +36,7 @@ const aboutRooms: AboutRooms = translations.aboutRooms;
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
     {aboutRooms.articles.map(({ class: className, title, content }, index) => (
       <div
-        class:list={[ 
+        class:list={[
           index === 0
             ? "md:col-span-2 md:row-span-1"
             : index === 1
