@@ -1,4 +1,11 @@
 ---
+const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
+
+// Función para ajustar las URLs de las opciones del menú según el idioma actual
+const getLocalizedHref = (href: string) => {
+  return currentLang === 'es' ? `/es${href}` : `/en${href}`;
+};
+
 import i18next from '../i18n/config.js';
 
 const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
@@ -17,7 +24,7 @@ const findRoom = translations.FindRoom;
                 </h2>
             </div>
             <div class="py-10">
-                <a href="/Habitaciones" 
+                <a href={getLocalizedHref("/Habitaciones")}
                     class="text-lg text-white bg-texth2 hover:contrast-150 rounded-md tracking-tight py-2 px-4"
                 >
                     {findRoom.view_rooms}

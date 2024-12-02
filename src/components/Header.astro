@@ -6,12 +6,6 @@ interface Header {
 }
 
 const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
-const currentPath = Astro.url.pathname.split('/').slice(2).join('/'); // La ruta después del idioma
-
-const oppositeLang = currentLang === 'es' ? 'en' : 'es';
-
-// Generar la URL de cambio de idioma correctamente
-const changeLangUrl = currentPath && currentPath !== '' ? `/${oppositeLang}/${currentPath}` : `/${oppositeLang}`;
 
 // Función para ajustar las URLs de las opciones del menú según el idioma actual
 const getLocalizedHref = (href: string) => {
