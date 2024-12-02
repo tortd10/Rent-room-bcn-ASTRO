@@ -1,14 +1,19 @@
 ---
 import Layout from '@layouts/Layout.astro';
-import { ROOMS } from '../data/rooms';
+import { ROOMS } from '../../data/rooms';
 import PDPRoom from '@components/PDPRoom.astro';
 import SectionContainer from '@components/SectionContainer.astro';
 
-// Función para generar las rutas dinámicas
+
 export async function getStaticPaths() {
-  return ROOMS.map(room => ({
-    params: { slug: room.slug },
-  }));
+  // Generate paths for both 'es' and 'en' languages for each room
+  const paths = ROOMS.flatMap(room => [
+    { params: { lang: 'es', slug: room.slug } },
+    { params: { lang: 'en', slug: room.slug } }
+  ]);
+
+  // Return the array of paths directly, without wrapping it in an object
+  return paths;
 }
 
 // Obtén el slug desde la URL

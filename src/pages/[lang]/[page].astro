@@ -31,10 +31,10 @@ export async function getStaticPaths() {
   return [
     { params: { lang: 'es', page: 'Habitaciones' } },
     { params: { lang: 'en', page: 'Habitaciones' } },
+    { params: { lang: 'es', page: 'About' } },
+    { params: { lang: 'en', page: 'About' } },
     { params: { lang: 'es', page: 'index' } },
     { params: { lang: 'en', page: 'index' } },
-    { params: { lang: undefined, page: 'Habitaciones' } }, // Ruta sin idioma
-    { params: { lang: undefined, page: 'index' } },       // Ruta raíz sin idioma
   ];
 }
 ---
@@ -43,7 +43,7 @@ export async function getStaticPaths() {
   <Layout title={`RentRoomBcn - ${findRoom.find_room || 'Habitaciones'}`}>
     <PLPRoom />
   </Layout>
-) : page === '' ? (
+) : page === 'About' ? (
   <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
     <KnowUs />
       <OurBeliefs />
