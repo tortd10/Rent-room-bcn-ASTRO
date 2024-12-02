@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { slug, imageSrc, name } = Astro.props;
+const lang = Astro.url.pathname.split('/')[1] || 'es';
 ---
 
 <a
@@ -13,7 +14,7 @@ const { slug, imageSrc, name } = Astro.props;
   id={slug}
   tabindex="0"
   role="button"
-  href={`/${slug}`}
+  href={`/${lang}/${slug}`} 
   style={`background-image: url(${imageSrc});`}
 >
   <div class="absolute inset-0 bg-black/40 rounded-[16px] flex items-end p-4">

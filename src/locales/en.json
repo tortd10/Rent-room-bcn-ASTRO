@@ -24,6 +24,10 @@
       { 
         "label": "ABOUT US",
         "href": "/About"
+      },
+      { 
+        "href": "/change-language", 
+        "icon": "/flags/{currentLang === 'es' ? 'en' : 'es'}.svg" 
       }
     ]
   },

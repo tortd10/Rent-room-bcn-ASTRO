@@ -1,16 +1,19 @@
 ---
-// Importaciones de los componentes
-import RoomDetails from "./RoomDetails.astro";
-import RoomGallery from "./RoomGallery.astro";
-import RoomContactForm from "./RoomContactForm.astro"; 
-import { ROOMS } from "../data/rooms";
-import Icon from "./ui/Icon.astro";
+import RoomDetails from './RoomDetails.astro';
+import RoomGallery from './RoomGallery.astro';
+import RoomContactForm from './RoomContactForm.astro';
+import { ROOMS } from '../data/rooms';
 
-// Obtener el slug de la URL actual
-const { pathname } = Astro.url;
-const slug = pathname.replace(/^\/|\/$/g, '');
 
-// Variables para el piso y la habitación
+const { slug } = Astro.params;
+
+const roomData = ROOMS.find((room) => room.slug === slug);
+if (!roomData) {
+  throw new Error("Room not found");
+}
+
+const allImages = import.meta.glob('/public/Flats/**/*.{jpg,jpeg,png,webp}');
+
 let flat = '';
 let room = '';
 
@@ -19,28 +22,16 @@ if (slug && typeof slug === 'string' && slug.includes('-')) {
   [flat, room] = slug.split('-');
 }
 
-// Filtrar los datos de la habitación según el slug
-const roomData = ROOMS.find((room) => room.slug === slug);
-
-// Importar todas las imágenes
-const allImages = import.meta.glob('/public/Flats/**/*.{jpg,jpeg,png,webp}');
-
-// Ruta dinámica basada en el slug
-const folderPath = `/public/Flats/${flat}/${room}/`;
-
 // Filtrar las imágenes de la carpeta correspondiente
+const folderPath = `/public/Flats/${flat}/${room}/`;
 const imagePaths = Object.keys(allImages)
   .filter((path) => path.startsWith(folderPath))
   .map((path) => path.replace('/public', ''));
-
-if (!roomData) {
-  throw new Error("Room not found");
-}
 ---
 
 <div class="container mx-auto px-4 py-6">
   <div class="mb-4">
-    <a href="/Habitaciones" class="flex items-center text-sm font-medium text-primary hover:underline">
+    <a href="javascript:void(0);" onclick="window.history.back()" class="flex items-center text-sm font-medium text-primary hover:underline">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11.293V14a1 1 0 102 0V6.707l2.146 2.147a1 1 0 001.415-1.415l-4-4a1 1 0 00-1.415 0l-4 4a1 1 0 001.415 1.415L9 6.707z" clip-rule="evenodd" />
       </svg>
