@@ -7,7 +7,13 @@
 		"start": "astro dev",
 		"build": "astro check && astro build",
 		"preview": "astro preview",
-		"astro": "astro"
+		"astro": "astro",
+		"check": "astro check && tsc --noEmit",
+		"lint": "eslint --ext .astro,.ts,.js,.tsx .",
+		"lint:fix": "eslint --ext .astro,.ts,.js,.tsx . --fix",
+		"format": "prettier --write src",
+		"format:check": "prettier --check src",
+		"prepare": "husky install && bash -c 'chmod ug+x .husky/*'"
 	},
 	"dependencies": {
 		"@astrojs/check": "^0.9.4",

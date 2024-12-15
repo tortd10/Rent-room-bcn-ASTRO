@@ -1,36 +1,35 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { ROOMS } from '../../data/rooms';
-import PDPRoom from '@components/PDPRoom.astro';
-import SectionContainer from '@components/SectionContainer.astro';
-
+import PDPRoom from "@components/PDPRoom.astro"
+import SectionContainer from "@components/SectionContainer.astro"
+import Layout from "@layouts/Layout.astro"
+import { ROOMS } from "../../data/rooms"
 
 export async function getStaticPaths() {
-  // Generate paths for both 'es' and 'en' languages for each room
-  const paths = ROOMS.flatMap(room => [
-    { params: { lang: 'es', slug: room.slug } },
-    { params: { lang: 'en', slug: room.slug } }
-  ]);
+	// Generate paths for both 'es' and 'en' languages for each room
+	const paths = ROOMS.flatMap((room) => [
+		{ params: { lang: "es", slug: room.slug } },
+		{ params: { lang: "en", slug: room.slug } },
+	])
 
-  // Return the array of paths directly, without wrapping it in an object
-  return paths;
+	// Return the array of paths directly, without wrapping it in an object
+	return paths
 }
 
 // Obtén el slug desde la URL
-const { slug } = Astro.params;
+const { slug } = Astro.params
 
 // Busca la habitación correspondiente al slug
-const room = ROOMS.find(room => room.slug === slug);
+const room = ROOMS.find((room) => room.slug === slug)
 
 if (!room) {
-  throw new Error(`No se encontró la habitación con el slug: ${slug}`);
+	throw new Error(`No se encontró la habitación con el slug: ${slug}`)
 }
 ---
 
 <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
-  <SectionContainer class="px-0">
-        <div class="max-w-7xl mx-auto px-6 lg:px-8">
-          <PDPRoom room={room} />
-        </div>
-    </SectionContainer>
+	<SectionContainer class="px-0">
+		<div class="mx-auto max-w-7xl px-6 lg:px-8">
+			<PDPRoom room={room} />
+		</div>
+	</SectionContainer>
 </Layout>

@@ -1,32 +1,32 @@
 ---
 interface Props {
-  slug: string;
-  imageSrc: string;
-  name: string;
+	slug: string
+	imageSrc: string
+	name: string
 }
 
-const { slug, imageSrc, name } = Astro.props;
-const lang = Astro.url.pathname.split('/')[1] || 'es';
+const { slug, imageSrc, name } = Astro.props
+const lang = Astro.url.pathname.split("/")[1] || "es"
 ---
 
 <a
-  class="card rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-cover hover:bg-[length:105%] transition-[background-size]"
-  id={slug}
-  tabindex="0"
-  role="button"
-  href={`/${lang}/${slug}`} 
-  style={`background-image: url(${imageSrc});`}
+	class="card relative h-[570px] w-[30rem] shrink-0 cursor-pointer snap-center rounded-[16px] bg-black bg-cover bg-center transition-[background-size] hover:bg-[length:105%]"
+	id={slug}
+	tabindex="0"
+	role="button"
+	href={`/${lang}/${slug}`}
+	style={`background-image: url(${imageSrc});`}
 >
-  <div class="absolute inset-0 bg-black/40 rounded-[16px] flex items-end p-4">
-    <h3 class="text-white text-xl font-bold">{name}</h3>
-  </div>
+	<div class="absolute inset-0 flex items-end rounded-[16px] bg-black/40 p-4">
+		<h3 class="text-xl font-bold text-white">{name}</h3>
+	</div>
 </a>
 
 <style>
-  /* Media query para móviles */
-  @media (max-width: 768px) {
-    .card {
-      width: 20rem;
-    }
-  }
+	/* Media query para móviles */
+	@media (max-width: 768px) {
+		.card {
+			width: 20rem;
+		}
+	}
 </style>

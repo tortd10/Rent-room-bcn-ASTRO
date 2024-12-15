@@ -1,25 +1,25 @@
 ---
-import ContactForm from '@components/ContactForm.astro';
-import KnowUs from '@components/KnowUs.astro';
-import OurBeliefs from '@components/OurBeliefs.astro';
-import OurTeam from '@components/OurTeam.astro';
-import Layout from '@layouts/Layout.astro';
+import ContactForm from "@components/ContactForm.astro"
+import KnowUs from "@components/KnowUs.astro"
+import OurBeliefs from "@components/OurBeliefs.astro"
+import OurTeam from "@components/OurTeam.astro"
+import Layout from "@layouts/Layout.astro"
 
 export async function getStaticPaths() {
-  return [
-    { params: { lang: 'es', page: 'Habitaciones' } },
-    { params: { lang: 'en', page: 'Habitaciones' } },
-    { params: { lang: 'es', page: 'About' } },
-    { params: { lang: 'en', page: 'About' } },
-    { params: { lang: 'es', page: 'index' } },
-    { params: { lang: 'en', page: 'index' } },
-  ];
+	return [
+		{ params: { lang: "es", page: "Habitaciones" } },
+		{ params: { lang: "en", page: "Habitaciones" } },
+		{ params: { lang: "es", page: "About" } },
+		{ params: { lang: "en", page: "About" } },
+		{ params: { lang: "es", page: "index" } },
+		{ params: { lang: "en", page: "index" } },
+	]
 }
 ---
 
 <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
 	<KnowUs />
-    <OurBeliefs />
-    <OurTeam />
-    <ContactForm />
+	<OurBeliefs />
+	<OurTeam />
+	<ContactForm />
 </Layout>

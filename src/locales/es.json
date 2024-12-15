@@ -1,11 +1,11 @@
 {
   "Header": {
     "optionsbuttons": [
-      { 
+      {
         "label": "HABITACIONES",
         "href": "/Habitaciones"
       },
-      { 
+      {
         "label": "SOBRE NOSOTROS",
         "href": "/About"
       }
@@ -17,17 +17,17 @@
         "label": "RENTROOMBCN",
         "href": "/"
       },
-      { 
+      {
         "label": "HABITACIONES",
         "href": "/Habitaciones"
       },
-      { 
+      {
         "label": "SOBRE NOSOTROS",
         "href": "/About"
       },
-      { 
-        "href": "/change-language", 
-        "icon": "/flags/{currentLang === 'es' ? 'en' : 'es'}.svg" 
+      {
+        "href": "/change-language",
+        "icon": "/Flags/{currentLang === 'es' ? 'en' : 'es'}.svg"
       }
     ]
   },
@@ -89,7 +89,7 @@
     "description": "Bienvenidos a RentRoomBCN, donde encontrar tu espacio ideal es nuestra misión. Nos especializamos en conectar personas con alojamiento único, ofreciendo soluciones personalizadas y seguras para que cada estancia en Barcelona sea una experiencia memorable."
   },
   "OurBeliefs": {
-    "text1" :"En RentRoomBCN, creemos firmemente que cada persona merece un espacio que no solo cubra sus necesidades, sino que también se sienta como su hogar. Nos enorgullece ofrecer una experiencia personalizada en la que cada cliente se sienta acompañado desde el primer momento. Sabemos que cada uno tiene su propio estilo y ritmo de vida, por eso trabajamos incansablemente para ofrecer opciones que se adapten perfectamente a tus necesidades y expectativas. Desde la elección de la habitación perfecta hasta el asesoramiento continuo durante tu estancia, estamos aquí para garantizar que tu experiencia sea única y especial.",
+    "text1": "En RentRoomBCN, creemos firmemente que cada persona merece un espacio que no solo cubra sus necesidades, sino que también se sienta como su hogar. Nos enorgullece ofrecer una experiencia personalizada en la que cada cliente se sienta acompañado desde el primer momento. Sabemos que cada uno tiene su propio estilo y ritmo de vida, por eso trabajamos incansablemente para ofrecer opciones que se adapten perfectamente a tus necesidades y expectativas. Desde la elección de la habitación perfecta hasta el asesoramiento continuo durante tu estancia, estamos aquí para garantizar que tu experiencia sea única y especial.",
     "text2": "La transparencia es uno de nuestros pilares fundamentales. Nos comprometemos a ofrecerte información clara y precisa en todo momento, para que tomes decisiones informadas y seguras. Creemos que la confianza es la base de cualquier relación, y en RentRoomBCN te proporcionamos todos los detalles sobre nuestros espacios, contratos y condiciones sin sorpresas ni letra pequeña. Además, nos esforzamos por mantener los más altos estándares de calidad en cada alojamiento que ofrecemos. Cada habitación y cada espacio es cuidadosamente seleccionado y revisado para garantizar que tu estancia sea lo más cómoda, segura y agradable posible."
   },
   "OurTeam": {
@@ -111,32 +111,31 @@
     ]
   },
   "property_features": {
-      "title": "Características de la vivienda:",
-      "room_size": "Habitación de 72 m²",
-      "floor": "Entreplanta exterior con ascensor",
-      "rooms": "5 habitaciones",
-      "bathroom": "1 baño",
-      "max_capacity": "Capacidad máxima: 2 personas",
-      "internet": "Conexión a internet",
-      "kitchen": "Cocina equipada: nevera, horno, microondas",
-      "doorman": "Portero físico"
+    "title": "Características de la vivienda:",
+    "room_size": "Habitación de 72 m²",
+    "floor": "Entreplanta exterior con ascensor",
+    "rooms": "5 habitaciones",
+    "bathroom": "1 baño",
+    "max_capacity": "Capacidad máxima: 2 personas",
+    "internet": "Conexión a internet",
+    "kitchen": "Cocina equipada: nevera, horno, microondas",
+    "doorman": "Portero físico"
   },
   "room_features": {
-      "title": "Características de la habitación:",
-      "furnished": "Habitación amueblada",
-      "bed": "Cama individual",
-      "window": "Ventana al patio"
+    "title": "Características de la habitación:",
+    "furnished": "Habitación amueblada",
+    "bed": "Cama individual",
+    "window": "Ventana al patio"
   },
   "housemates": {
-      "title": "Tus compañeros/as:",
-      "gender": "Chicos y chicas",
-      "age_range": "Entre 1 y 99 años",
-      "occupation": "Estudian/Trabajan",
-      "owner": "El propietario/a no vive en la casa"
+    "title": "Tus compañeros/as:",
+    "gender": "Chicos y chicas",
+    "age_range": "Entre 1 y 99 años",
+    "occupation": "Estudian/Trabajan",
+    "owner": "El propietario/a no vive en la casa"
   },
   "house_environment": {
-      "title": "Ambiente de la casa:",
-      "quiet": "Tranquilo, no suelen tener visitas y abunda el silencio"
+    "title": "Ambiente de la casa:",
+    "quiet": "Tranquilo, no suelen tener visitas y abunda el silencio"
   }
 }
-  

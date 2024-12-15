@@ -1,113 +1,135 @@
 ---
 interface Header {
-  label: string;
-  href: string;
-  optionsbuttons: Header[];
+	label: string
+	href: string
+	optionsbuttons: Header[]
 }
 
-const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
+const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
 
 // Función para ajustar las URLs de las opciones del menú según el idioma actual
 const getLocalizedHref = (href: string) => {
-  return currentLang === 'es' ? `/es${href}` : `/en${href}`;
-};
+	return currentLang === "es" ? `/es${href}` : `/en${href}`
+}
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const header: Header = translations.Header;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const header: Header = translations.Header
 ---
 
 <style>
-    .mobile-menu {
-        position: absolute;
-        top: 100%;
-        right: 0;
-        background: var(--headerBg, white);
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        padding: 1rem;
-        gap: 0.5rem;
-        width: 100%;
-        text-align: center;
-    }
+	.mobile-menu {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		background: var(--headerBg, white);
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		gap: 0.5rem;
+		width: 100%;
+		text-align: center;
+	}
 
-    .hidden {
-        display: none;
-    }
+	.hidden {
+		display: none;
+	}
 
-    img {
-        width: 15rem; /* El logo siempre ocupa el 20% del ancho del contenedor */
-    }
+	img {
+		width: 15rem; /* El logo siempre ocupa el 20% del ancho del contenedor */
+	}
 
-    @media (min-width: 768px) {
-        .desktop-menu {
-            display: flex;
-        }
+	@media (min-width: 768px) {
+		.desktop-menu {
+			display: flex;
+		}
 
-        .mobile-menu {
-            display: none; /* Siempre oculta el menú móvil en pantallas grandes */
-        }
-    }
+		.mobile-menu {
+			display: none; /* Siempre oculta el menú móvil en pantallas grandes */
+		}
+	}
 </style>
 
-<header class="py-4 px-9 flex justify-between items-center w-full sticky bg-headerBg z-50 backdrop-blur-xl top-0">
-    <div class="md:max-w-[1400px] md:mx-auto w-full flex justify-between items-center">
-        <!-- Logo -->
-        <a href={currentLang === 'es' ? '/' : '/en'}>
-            <img src="/logo.svg" alt="Logo RentRoomBcn" />
-        </a>
+<header
+	class="sticky top-0 z-50 flex w-full items-center justify-between bg-headerBg px-9 py-4 backdrop-blur-xl"
+>
+	<div class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
+		<!-- Logo -->
+		<a href={currentLang === "es" ? "/" : "/en"}>
+			<img src="/logo.svg" alt="Logo RentRoomBcn" />
+		</a>
 
-        <!-- Desktop Menu -->
-        <div class="desktop-menu hidden md:flex">
-            {header.optionsbuttons.map(({ label, href }) => (
-                <a href={getLocalizedHref(href)} class="text-lg font-semibold text-primary hover:contrast-150 py-2 px-4">
-                    {label}
-                </a>
-            ))}
-        </div>
+		<!-- Desktop Menu -->
+		<div class="desktop-menu hidden md:flex">
+			{
+				header.optionsbuttons.map(({ label, href }) => (
+					<a
+						href={getLocalizedHref(href)}
+						class="px-4 py-2 text-lg font-semibold text-primary hover:contrast-150"
+					>
+						{label}
+					</a>
+				))
+			}
+		</div>
 
-        <!-- Mobile Menu Button -->
-        <button id="menu-button" class="md:hidden flex items-center p-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-6 h-6">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-            </svg>
-        </button>
-    </div>
+		<!-- Mobile Menu Button -->
+		<button id="menu-button" class="flex items-center p-2 md:hidden">
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+				class="h-6 w-6"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M4 6h16M4 12h16m-7 6h7"></path>
+			</svg>
+		</button>
+	</div>
 
-    <!-- Mobile Dropdown Menu -->
-    <div id="mobile-menu" class="mobile-menu hidden">
-        {header.optionsbuttons.map(({ label, href }) => (
-            <a href={getLocalizedHref(href)} class="text-lg font-semibold text-primary hover:contrast-150 py-2">
-                {label}
-            </a>
-        ))}
-    </div>
+	<!-- Mobile Dropdown Menu -->
+	<div id="mobile-menu" class="mobile-menu hidden">
+		{
+			header.optionsbuttons.map(({ label, href }) => (
+				<a
+					href={getLocalizedHref(href)}
+					class="py-2 text-lg font-semibold text-primary hover:contrast-150"
+				>
+					{label}
+				</a>
+			))
+		}
+	</div>
 </header>
 
 <script>
-    const menuButton = document.getElementById('menu-button');
-    const mobileMenu = document.getElementById('mobile-menu');
+	const menuButton = document.getElementById("menu-button")
+	const mobileMenu = document.getElementById("mobile-menu")
 
-    if (menuButton && mobileMenu) {
-        // Toggle menu on button click
-        menuButton.addEventListener('click', (event) => {
-            mobileMenu.classList.toggle('hidden');
-            event.stopPropagation(); // Prevent the click from bubbling up
-        });
+	if (menuButton && mobileMenu) {
+		// Toggle menu on button click
+		menuButton.addEventListener("click", (event) => {
+			mobileMenu.classList.toggle("hidden")
+			event.stopPropagation() // Prevent the click from bubbling up
+		})
 
-        // Close menu if clicked outside
-        document.addEventListener('click', (event) => {
-            if (
-                !mobileMenu.classList.contains('hidden') &&
-                !mobileMenu.contains(event.target as Node) &&
-                !menuButton.contains(event.target as Node)
-            ) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-    }
+		// Close menu if clicked outside
+		document.addEventListener("click", (event) => {
+			if (
+				!mobileMenu.classList.contains("hidden") &&
+				!mobileMenu.contains(event.target as Node) &&
+				!menuButton.contains(event.target as Node)
+			) {
+				mobileMenu.classList.add("hidden")
+			}
+		})
+	}
 </script>

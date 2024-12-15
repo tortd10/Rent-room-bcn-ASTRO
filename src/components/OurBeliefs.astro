@@ -1,41 +1,41 @@
 ---
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const ourBeliefs = translations.OurBeliefs;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const ourBeliefs = translations.OurBeliefs
 ---
 
-<section class="px-4 md:w-full md:max-w-[90rem] md:mx-auto">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Imagen 1 (más grande en pantallas medianas y grandes) -->
-        <div class="rounded-lg overflow-hidden shadow-lg sm:col-span-2 lg:col-span-2">
-            <img src="/AboutUs1.jpeg" alt="Imagen 1" class="w-full h-full object-cover"/>
-        </div>
+<section class="px-4 md:mx-auto md:w-full md:max-w-[90rem]">
+	<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+		<!-- Imagen 1 (más grande en pantallas medianas y grandes) -->
+		<div class="overflow-hidden rounded-lg shadow-lg sm:col-span-2 lg:col-span-2">
+			<img src="/AboutUs1.jpeg" alt="Imagen 1" class="h-full w-full object-cover" />
+		</div>
 
-        <!-- Imagen 2 (tamaño mediano) -->
-        <div class="rounded-lg overflow-hidden shadow-lg">
-            <img src="/AboutUs2.jpeg" alt="Imagen 2" class="w-full h-auto object-cover"/>
-            <div class="p-5 bg-white text-center text-primary">
-                <p class="text-base sm:text-lg">
-                    {ourBeliefs.text1}
-                </p>
-            </div>
-        </div>
+		<!-- Imagen 2 (tamaño mediano) -->
+		<div class="overflow-hidden rounded-lg shadow-lg">
+			<img src="/AboutUs2.jpeg" alt="Imagen 2" class="h-auto w-full object-cover" />
+			<div class="bg-white p-5 text-center text-primary">
+				<p class="text-base sm:text-lg">
+					{ourBeliefs.text1}
+				</p>
+			</div>
+		</div>
 
-        <!-- Imagen 3 (tamaño mediano) -->
-        <div class="rounded-lg overflow-hidden shadow-lg">
-            <img src="/AboutUs3.jpeg" alt="Imagen 3" class="w-full h-auto object-cover"/>
-            <div class="p-5 bg-white text-center text-primary">
-                <p class="text-base sm:text-lg">
-                    {ourBeliefs.text2}
-                </p>
-            </div>
-        </div>
+		<!-- Imagen 3 (tamaño mediano) -->
+		<div class="overflow-hidden rounded-lg shadow-lg">
+			<img src="/AboutUs3.jpeg" alt="Imagen 3" class="h-auto w-full object-cover" />
+			<div class="bg-white p-5 text-center text-primary">
+				<p class="text-base sm:text-lg">
+					{ourBeliefs.text2}
+				</p>
+			</div>
+		</div>
 
-        <!-- Imagen 4 (más grande en pantallas medianas y grandes) -->
-        <div class="rounded-lg overflow-hidden shadow-lg sm:col-span-2 lg:col-span-2">
-            <img src="/AboutUs4.jpeg" alt="Imagen 4" class="w-full h-full object-cover"/>
-        </div>
-    </div>
+		<!-- Imagen 4 (más grande en pantallas medianas y grandes) -->
+		<div class="overflow-hidden rounded-lg shadow-lg sm:col-span-2 lg:col-span-2">
+			<img src="/AboutUs4.jpeg" alt="Imagen 4" class="h-full w-full object-cover" />
+		</div>
+	</div>
 </section>

@@ -1,167 +1,156 @@
 ---
+import { ROOMS } from "../data/rooms"
+import Rooms from "./Rooms.astro"
 import SectionContainer from "./SectionContainer.astro"
 import Icon from "./ui/Icon.astro"
-import Rooms from "./Rooms.astro"
-import { ROOMS } from '../data/rooms';
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const ourRoom = translations.ourRoom;
+const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const ourRoom = translations.ourRoom
 ---
 
 <SectionContainer class="px-0">
-    <div class="flex items-center justify-between pb-6 md:pb-12">
-      <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-        {ourRoom.title}
-        </h1>
+	<div class="flex items-center justify-between pb-6 md:pb-12">
+		<h1
+			class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{ourRoom.title}
+		</h1>
 
-        <div class="hidden md:flex items-center gap-x-4">
-            <button
-                class="bg-[#E2E2E5] text-[#636365] opacity-45 p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
-                id="left-button"
-                disabled="true"
-                aria-label={ourRoom.prevElement}
-            >
-                <Icon name="leftarrow" />
-            </button>
-            <button
-                class="bg-[#E2E2E5] text-[#636365] p-1 rounded-full enabled:hover:scale-110 transition-all enabled:active:scale-100"
-                id="right-button"
-                aria-label={ourRoom.nextElement}
-            >
-                <Icon name="rightarrow" />
-            </button>
-        </div>
-    </div>
+		<div class="hidden items-center gap-x-4 md:flex">
+			<button
+				class="rounded-full bg-[#E2E2E5] p-1 text-[#636365] opacity-45 transition-all enabled:hover:scale-110 enabled:active:scale-100"
+				id="left-button"
+				disabled="true"
+				aria-label={ourRoom.prevElement}
+			>
+				<Icon name="leftarrow" />
+			</button>
+			<button
+				class="rounded-full bg-[#E2E2E5] p-1 text-[#636365] transition-all enabled:hover:scale-110 enabled:active:scale-100"
+				id="right-button"
+				aria-label={ourRoom.nextElement}
+			>
+				<Icon name="rightarrow" />
+			</button>
+		</div>
+	</div>
 
-    <div
-        class="relative carousel-container -mr-4 pr-4 md:mr-0 md:pr-0"
-        id="carousel-container"
-        style="--left-opacity: 0; --right-opacity: 1;"
-    >
-        <div
-            class="flex overflow-scroll custom-scrollbar gap-x-4 md:gap-x-8 snap-mandatory snap-x -mr-4 pr-4 md:mr-0 md:pr-0"
-            id="carousel"
-        >
-        {
-          ROOMS.map((room) => (
-              <Rooms {...room} />
-          ))
-      }
-        </div>
-    </div>
+	<div
+		class="carousel-container relative -mr-4 pr-4 md:mr-0 md:pr-0"
+		id="carousel-container"
+		style="--left-opacity: 0; --right-opacity: 1;"
+	>
+		<div
+			class="custom-scrollbar -mr-4 flex snap-x snap-mandatory gap-x-4 overflow-scroll pr-4 md:mr-0 md:gap-x-8 md:pr-0"
+			id="carousel"
+		>
+			{ROOMS.map((room) => <Rooms {...room} />)}
+		</div>
+	</div>
 </SectionContainer>
 
 <style>
-    .custom-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-  
-    .custom-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  
-    .carousel-container:before {
-      background-image: linear-gradient(to left, transparent, #fff);
-      content: "";
-      height: 570px;
-      left: 0;
-      opacity: var(--left-opacity);
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
-      width: 64px;
-      z-index: 10;
-    }
-  
-    .carousel-container:after {
-      background-image: linear-gradient(to right, transparent, #fff);
-      content: "";
-      height: 570px;
-      opacity: var(--right-opacity);
-      pointer-events: none;
-      position: absolute;
-      right: 0;
-      top: 0;
-      transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
-      width: 64px;
-      z-index: 10;
-    }
-  
-    @media (max-width: 768px) {
-      .carousel-container:before {
-        opacity: 0 !important;
-      }
-  
-      .carousel-container:after {
-        opacity: 0 !important;
-      }
-    }
-  </style>
+	.custom-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+
+	.custom-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+
+	.carousel-container:before {
+		background-image: linear-gradient(to left, transparent, #fff);
+		content: "";
+		height: 570px;
+		left: 0;
+		opacity: var(--left-opacity);
+		pointer-events: none;
+		position: absolute;
+		top: 0;
+		transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+		width: 64px;
+		z-index: 10;
+	}
+
+	.carousel-container:after {
+		background-image: linear-gradient(to right, transparent, #fff);
+		content: "";
+		height: 570px;
+		opacity: var(--right-opacity);
+		pointer-events: none;
+		position: absolute;
+		right: 0;
+		top: 0;
+		transition: opacity cubic-bezier(0.4, 0, 0.2, 1) 150ms;
+		width: 64px;
+		z-index: 10;
+	}
+
+	@media (max-width: 768px) {
+		.carousel-container:before {
+			opacity: 0 !important;
+		}
+
+		.carousel-container:after {
+			opacity: 0 !important;
+		}
+	}
+</style>
 
 <script>
-    const rightButton = document.querySelector(
-      "#right-button"
-    ) as HTMLButtonElement
-    const leftButton = document.querySelector("#left-button") as HTMLButtonElement
-    const carousel = document.querySelector("#carousel") as HTMLDivElement
-    const carouselContainer = document.querySelector(
-      "#carousel-container"
-    ) as HTMLDivElement
-  
-    leftButton.addEventListener("click", () => {
-      carousel.scrollTo({
-        left: carousel.scrollLeft - 320,
-        behavior: "smooth",
-      })
-    })
-  
-    rightButton.addEventListener("click", () => {
-      carousel.scrollTo({
-        left: carousel.scrollLeft + 320,
-        behavior: "smooth",
-      })
-    })
-  
-    carousel.addEventListener("scroll", () => {
-      const tolerance = 2 // 0 + 2px to account for floating point errors
-  
-      const updateButtonState = (button: HTMLButtonElement, disable: boolean) => {
-        button.classList.toggle("opacity-45", disable)
-        button.disabled = disable
-      }
-  
-      const updateOpacity = (property: string, value: string) => {
-        carouselContainer.style.setProperty(property, value)
-      }
-  
-      if (carousel.scrollLeft <= tolerance) {
-        updateButtonState(leftButton, true)
-      } else {
-        updateButtonState(leftButton, false)
-      }
-  
-      if (
-        carousel.scrollLeft + carousel.clientWidth >=
-        carousel.scrollWidth - tolerance
-      ) {
-        updateButtonState(rightButton, true)
-        updateOpacity("--right-opacity", "0")
-      } else {
-        updateButtonState(rightButton, false)
-        updateOpacity("--right-opacity", "1")
-      }
-  
-      if (carousel.scrollLeft > tolerance) {
-        updateOpacity("--left-opacity", "1")
-      } else {
-        updateOpacity("--left-opacity", "0")
-      }
-    })
-  </script>
-  
+	const rightButton = document.querySelector("#right-button") as HTMLButtonElement
+	const leftButton = document.querySelector("#left-button") as HTMLButtonElement
+	const carousel = document.querySelector("#carousel") as HTMLDivElement
+	const carouselContainer = document.querySelector("#carousel-container") as HTMLDivElement
 
+	leftButton.addEventListener("click", () => {
+		carousel.scrollTo({
+			left: carousel.scrollLeft - 320,
+			behavior: "smooth",
+		})
+	})
+
+	rightButton.addEventListener("click", () => {
+		carousel.scrollTo({
+			left: carousel.scrollLeft + 320,
+			behavior: "smooth",
+		})
+	})
+
+	carousel.addEventListener("scroll", () => {
+		const tolerance = 2 // 0 + 2px to account for floating point errors
+
+		const updateButtonState = (button: HTMLButtonElement, disable: boolean) => {
+			button.classList.toggle("opacity-45", disable)
+			button.disabled = disable
+		}
+
+		const updateOpacity = (property: string, value: string) => {
+			carouselContainer.style.setProperty(property, value)
+		}
+
+		if (carousel.scrollLeft <= tolerance) {
+			updateButtonState(leftButton, true)
+		} else {
+			updateButtonState(leftButton, false)
+		}
+
+		if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - tolerance) {
+			updateButtonState(rightButton, true)
+			updateOpacity("--right-opacity", "0")
+		} else {
+			updateButtonState(rightButton, false)
+			updateOpacity("--right-opacity", "1")
+		}
+
+		if (carousel.scrollLeft > tolerance) {
+			updateOpacity("--left-opacity", "1")
+		} else {
+			updateOpacity("--left-opacity", "0")
+		}
+	})
+</script>

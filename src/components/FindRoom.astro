@@ -1,40 +1,42 @@
 ---
-const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
+const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
 
 // Función para ajustar las URLs de las opciones del menú según el idioma actual
 const getLocalizedHref = (href: string) => {
-  return currentLang === 'es' ? `/es${href}` : `/en${href}`;
-};
+	return currentLang === "es" ? `/es${href}` : `/en${href}`
+}
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const findRoom = translations.FindRoom;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const findRoom = translations.FindRoom
 ---
-<section class="px-4 py-6 md:w-full md:max-w-[90rem] md:mx-auto">
-    <div class="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 gap-4 md:p-0 place-items-center">
-        <div>
-            <div>
-                <h1 class="font-black text-balance tracking-tight text-6xl text-primary sm:text-5xl md:text-6xl lg:text-7xl">
-                    {findRoom.find_room}
-                </h1>
-                <h2 class="mt-6 text-balance text-texth2 text-2xl">
-                    {findRoom.description}
-                </h2>
-            </div>
-            <div class="py-10">
-                <a href={getLocalizedHref("/Habitaciones")}
-                    class="text-lg text-white bg-texth2 hover:contrast-150 rounded-md tracking-tight py-2 px-4"
-                >
-                    {findRoom.view_rooms}
-                </a>
-            </div>
-        </div>
-        <div>
-            <img src="/photoRentRoom.jpg" alt="foto RentRoom" 
-                class="rounded-3xl"
-            />
-        </div>
-    </div>
+
+<section class="px-4 py-6 md:mx-auto md:w-full md:max-w-[90rem]">
+	<div class="grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 md:grid-rows-1 md:p-0">
+		<div>
+			<div>
+				<h1
+					class="text-balance text-6xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-7xl"
+				>
+					{findRoom.find_room}
+				</h1>
+				<h2 class="mt-6 text-balance text-2xl text-texth2">
+					{findRoom.description}
+				</h2>
+			</div>
+			<div class="py-10">
+				<a
+					href={getLocalizedHref("/Habitaciones")}
+					class="rounded-md bg-texth2 px-4 py-2 text-lg tracking-tight text-white hover:contrast-150"
+				>
+					{findRoom.view_rooms}
+				</a>
+			</div>
+		</div>
+		<div>
+			<img src="/photoRentRoom.jpg" alt="foto RentRoom" class="rounded-3xl" />
+		</div>
+	</div>
 </section>

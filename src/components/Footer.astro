@@ -1,57 +1,64 @@
 ---
 interface Footer {
-  label: string;
-  href: string;
-  icon: string;
-  LINKS: Footer[];
+	label: string
+	href: string
+	icon: string
+	LINKS: Footer[]
 }
 
-const currentLang = Astro.params.lang || 'es';  // Idioma actual (es o en)
-const currentPath = Astro.url.pathname.split('/').slice(2).join('/'); // La ruta después del idioma
+const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
+const currentPath = Astro.url.pathname.split("/").slice(2).join("/") // La ruta después del idioma
 
-const oppositeLang = currentLang === 'es' ? 'en' : 'es';
+const oppositeLang = currentLang === "es" ? "en" : "es"
 
 // Generar la URL de cambio de idioma correctamente
-const changeLangUrl = currentPath && currentPath !== '' ? `/${oppositeLang}/${currentPath}` : `/${oppositeLang}`;
+const changeLangUrl =
+	currentPath && currentPath !== "" ? `/${oppositeLang}/${currentPath}` : `/${oppositeLang}`
 
 // Función para ajustar las URLs de las opciones del menú según el idioma actual
 const getLocalizedHref = (href: string) => {
-  return currentLang === 'es' ? `/es${href}` : `/en${href}`;
-};
+	return currentLang === "es" ? `/es${href}` : `/en${href}`
+}
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const footer: Footer = translations.Footer;
-
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const footer: Footer = translations.Footer
 ---
-<footer class="bg-headerBg py-6 lg:py-10 mt-20">
-    <section class="mx-auto max-w-7xl px-4 w-full">
-        <div class="flex flex-col items-center px-10">
-            <ul class="flex gap-x-4 gap-y-4 flex-wrap justify-center text-sm w-full underline-offset-[3px]">
-                {
-                    footer.LINKS.map(({ label, href }, index: number) => (
-                    <li
-                        class={`${index !== footer.LINKS.length - 1 && "after:content-['|'] after:ml-4"} text-center`}
-                    >
-                        <a
-                        class="hover:contrast-150 text-primary"
-                        href={getLocalizedHref(href)}
-                        >
-                        {label}
-                        </a>
-                    </li>
-                    ))
-                }
 
-                {/* Agregar botón de cambio de idioma en el footer */}
-                <li class="text-center">
-                    <a href={changeLangUrl} class="flex items-center justify-center text-lg font-semibold text-primary">
-                        <img src={currentLang === 'es' ? '/flags/en.svg' : '/flags/es.svg'} alt="Change language" class="w-6 h-6" />
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </section>
+<footer class="mt-20 bg-headerBg py-6 lg:py-10">
+	<section class="mx-auto w-full max-w-7xl px-4">
+		<div class="flex flex-col items-center px-10">
+			<ul
+				class="flex w-full flex-wrap justify-center gap-x-4 gap-y-4 text-sm underline-offset-[3px]"
+			>
+				{
+					footer.LINKS.map(({ label, href }, index: number) => (
+						<li
+							class={`${index !== footer.LINKS.length - 1 && "after:ml-4 after:content-['|']"} text-center`}
+						>
+							<a class="text-primary hover:contrast-150" href={getLocalizedHref(href)}>
+								{label}
+							</a>
+						</li>
+					))
+				}
+
+				{/* Agregar botón de cambio de idioma en el footer */}
+				<li class="text-center">
+					<a
+						href={changeLangUrl}
+						class="flex items-center justify-center text-lg font-semibold text-primary"
+					>
+						<img
+							src={currentLang === "es" ? "/Flags/en.svg" : "/Flags/es.svg"}
+							alt="Change language"
+							class="h-6 w-6"
+						/>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</section>
 </footer>

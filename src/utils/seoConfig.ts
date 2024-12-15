@@ -1,7 +1,6 @@
 export const seoConfig = {
 	baseURL: "https://rentroombcn.com/", // Production URL.
-	description:
-		"",
+	description: "",
 	type: "website",
 	siteName: "Rent Room BCN",
 }
