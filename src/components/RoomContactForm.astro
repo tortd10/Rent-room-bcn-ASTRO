@@ -1,201 +1,200 @@
 ---
-import { ROOMS } from '../data/rooms';
+import { ROOMS } from "../data/rooms"
 
 // Obtener el slug de la URL actual
-const { pathname } = Astro.url;
-const slug = pathname.replace(/^\/|\/$/g, ''); // Remueve los slashes iniciales y finales
+const { pathname } = Astro.url
+const slug = pathname.replace(/^\/|\/$/g, "") // Remueve los slashes iniciales y finales
 
 // Filtrar los datos de la habitación según el slug
-const roomData = ROOMS.find((room) => room.slug === slug);
+const roomData = ROOMS.find((room) => room.slug === slug)
 
 // Si no se encuentra la habitación, usar un valor predeterminado
-const selectedRoom = roomData || ROOMS[0];
+const selectedRoom = roomData || ROOMS[0]
 ---
 
-<div class="sticky top-32 p-6 bg-[#D0D9F2] rounded-lg shadow-md border border-gray-300">
-  <form
-    id="contact-form"
-    class="space-y-6"
-    method="POST"
-  >
-    <!-- Título y descripción -->
-    <h2 class="text-xl font-semibold text-gray-700">Contáctanos sobre {selectedRoom.name}</h2>
-    <p class="text-sm text-gray-600">Proporciona tus datos para más información sobre esta habitación en el piso {selectedRoom.roomFlat || ''}.</p>
+<div class="sticky top-32 rounded-lg border border-gray-300 bg-[#D0D9F2] p-6 shadow-md">
+	<form id="contact-form" class="space-y-6" method="POST">
+		<!-- Título y descripción -->
+		<h2 class="text-xl font-semibold text-gray-700">Contáctanos sobre {selectedRoom.name}</h2>
+		<p class="text-sm text-gray-600">
+			Proporciona tus datos para más información sobre esta habitación en el piso {
+				selectedRoom.roomFlat || ""
+			}.
+		</p>
 
-    <!-- Desplegable con la habitación seleccionada por defecto -->
-    <div class="mt-4">
-      <label for="room-select" class="block text-sm font-medium text-gray-900">
-        <span class="text-red-600">*</span> Habitación
-      </label>
-      <div class="mt-2">
-        <select
-          id="room-select"
-          name="room-select"
-          class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-          disabled
-        >
-          <option value={selectedRoom.slug} selected>{selectedRoom.name}</option>
-        </select>
-      </div>
-    </div>
+		<!-- Desplegable con la habitación seleccionada por defecto -->
+		<div class="mt-4">
+			<label for="room-select" class="block text-sm font-medium text-gray-900">
+				<span class="text-red-600">*</span> Habitación
+			</label>
+			<div class="mt-2">
+				<select
+					id="room-select"
+					name="room-select"
+					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					disabled
+				>
+					<option value={selectedRoom.slug} selected>{selectedRoom.name}</option>
+				</select>
+			</div>
+		</div>
 
-    <!-- Campos del formulario -->
-    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
-      <div class="sm:col-span-1">
-        <label for="name" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> Nombre
-        </label>
-        <div class="mt-2">
-          <input
-            type="text"
-            name="from_name"
-            id="name"
-            autocomplete="name"
-            placeholder="Nombre"
-            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            required
-          />
-        </div>
-      </div>
-      <div class="sm:col-span-1">
-        <label for="phone" class="block text-sm font-medium text-gray-900">
-            Teléfono (opcional)
-          </label>
-          <div class="mt-2">
-            <input
-              type="tel"
-              name="phone"
-              id="phone"
-              autocomplete="tel"
-              placeholder="Teléfono (opcional)"
-              class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            />
-          </div>
-      </div>
-    </div>
+		<!-- Campos del formulario -->
+		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+			<div class="sm:col-span-1">
+				<label for="name" class="block text-sm font-medium text-gray-900">
+					<span class="text-red-600">*</span> Nombre
+				</label>
+				<div class="mt-2">
+					<input
+						type="text"
+						name="from_name"
+						id="name"
+						autocomplete="name"
+						placeholder="Nombre"
+						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						required
+					/>
+				</div>
+			</div>
+			<div class="sm:col-span-1">
+				<label for="phone" class="block text-sm font-medium text-gray-900">
+					Teléfono (opcional)
+				</label>
+				<div class="mt-2">
+					<input
+						type="tel"
+						name="phone"
+						id="phone"
+						autocomplete="tel"
+						placeholder="Teléfono (opcional)"
+						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					/>
+				</div>
+			</div>
+		</div>
 
-    <!-- Campo de teléfono (opcional) -->
-    <div class="mt-6">
-      <div class="sm:col-span-1">
-        <label for="email" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> Correo
-        </label>
-        <div class="mt-2">
-          <input
-            type="email"
-            name="to_name"
-            id="email"
-            autocomplete="email"
-            placeholder="Correo"
-            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            required
-          />
-        </div>
-      </div>
-    </div>
+		<!-- Campo de teléfono (opcional) -->
+		<div class="mt-6">
+			<div class="sm:col-span-1">
+				<label for="email" class="block text-sm font-medium text-gray-900">
+					<span class="text-red-600">*</span> Correo
+				</label>
+				<div class="mt-2">
+					<input
+						type="email"
+						name="to_name"
+						id="email"
+						autocomplete="email"
+						placeholder="Correo"
+						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						required
+					/>
+				</div>
+			</div>
+		</div>
 
-    <!-- Fecha prevista de entrega -->
-    <div class="mt-6">
-        <label for="delivery-date" class="block text-sm font-medium text-gray-900">
-            <span class="text-red-600">*</span> Fecha prevista de entrada
-        </label>
-        <div class="mt-2">
-        <input
-            type="date"
-            name="delivery_date"
-            id="delivery-date"
-            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            required
-        />
-        </div>
-    </div>
+		<!-- Fecha prevista de entrega -->
+		<div class="mt-6">
+			<label for="delivery-date" class="block text-sm font-medium text-gray-900">
+				<span class="text-red-600">*</span> Fecha prevista de entrada
+			</label>
+			<div class="mt-2">
+				<input
+					type="date"
+					name="delivery_date"
+					id="delivery-date"
+					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					required
+				/>
+			</div>
+		</div>
 
-    <!-- Campo de descripción -->
-    <div class="mt-6">
-      <label for="description" class="block text-sm font-medium text-gray-900">
-        <span class="text-red-600">*</span> Descripción
-      </label>
-      <div class="mt-2">
-        <textarea
-          id="description"
-          name="message"
-          rows="2"
-          placeholder="Escribe el número o nombre de la habitación que deseas contactar"
-          class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-          required
-        ></textarea>
-      </div>
-    </div>
+		<!-- Campo de descripción -->
+		<div class="mt-6">
+			<label for="description" class="block text-sm font-medium text-gray-900">
+				<span class="text-red-600">*</span> Descripción
+			</label>
+			<div class="mt-2">
+				<textarea
+					id="description"
+					name="message"
+					rows="2"
+					placeholder="Escribe el número o nombre de la habitación que deseas contactar"
+					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					required></textarea>
+			</div>
+		</div>
 
-    <!-- Checkbox de aceptación -->
-    <div class="mt-6">
-      <div class="flex items-start">
-        <input
-          id="accept-data"
-          name="accept-data"
-          type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          required
-        />
-        <label for="accept-data" class="ml-3 text-sm text-gray-900">
-          <span class="text-red-600">*</span> Acepto el <a href="#" class="text-indigo-600 underline">tratamiento de mis datos</a>.
-        </label>
-      </div>
-    </div>
+		<!-- Checkbox de aceptación -->
+		<div class="mt-6">
+			<div class="flex items-start">
+				<input
+					id="accept-data"
+					name="accept-data"
+					type="checkbox"
+					class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+					required
+				/>
+				<label for="accept-data" class="ml-3 text-sm text-gray-900">
+					<span class="text-red-600">*</span> Acepto el <a
+						href="#"
+						class="text-indigo-600 underline">tratamiento de mis datos</a
+					>.
+				</label>
+			</div>
+		</div>
 
-    <!-- Botón de envío -->
-    <div class="mt-6">
-      <button
-        type="submit"
-        id="submit-button"
-        class="w-full sm:w-auto inline-flex justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        disabled
-      >
-        Enviar
-      </button>
-    </div>
-  </form>
+		<!-- Botón de envío -->
+		<div class="mt-6">
+			<button
+				type="submit"
+				id="submit-button"
+				class="inline-flex w-full cursor-not-allowed justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+				disabled
+			>
+				Enviar
+			</button>
+		</div>
+	</form>
 
-  <script>
-    // Selecciona el formulario y agrega el event listener
-    const form = document.getElementById("contact-form") as HTMLFormElement;
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      console.log("Formulario enviado");
-      // Aquí puedes implementar tu lógica de envío.
-    });
-  
-    const inputs = form.querySelectorAll("input, textarea, select");
-    const submitButton = document.getElementById("submit-button") as HTMLButtonElement;
-  
-    function checkFormValidity() {
-      let isValid = true;
-      inputs.forEach((input) => {
-        if (
-          input instanceof HTMLInputElement ||
-          input instanceof HTMLTextAreaElement ||
-          input instanceof HTMLSelectElement
-        ) {
-          // Verifica si el campo no cumple con las restricciones de validez
-          if (!input.checkValidity()) isValid = false;
-        }
-      });
-  
-      if (isValid) {
-        submitButton.disabled = false;
-        submitButton.classList.remove("bg-gray-400", "cursor-not-allowed");
-        submitButton.classList.add("bg-indigo-600", "hover:bg-indigo-500");
-      } else {
-        submitButton.disabled = true;
-        submitButton.classList.add("bg-gray-400", "cursor-not-allowed");
-        submitButton.classList.remove("bg-indigo-600", "hover:bg-indigo-500");
-      }
-    }
-  
-    inputs.forEach((input) =>
-      input.addEventListener("input", checkFormValidity)
-    );
-    checkFormValidity();
-  </script>
-  
+	<script>
+		// Selecciona el formulario y agrega el event listener
+		const form = document.getElementById("contact-form") as HTMLFormElement
+		form.addEventListener("submit", (e) => {
+			e.preventDefault()
+			console.log("Formulario enviado")
+			// Aquí puedes implementar tu lógica de envío.
+		})
+
+		const inputs = form.querySelectorAll("input, textarea, select")
+		const submitButton = document.getElementById("submit-button") as HTMLButtonElement
+
+		function checkFormValidity() {
+			let isValid = true
+			inputs.forEach((input) => {
+				if (
+					input instanceof HTMLInputElement ||
+					input instanceof HTMLTextAreaElement ||
+					input instanceof HTMLSelectElement
+				) {
+					// Verifica si el campo no cumple con las restricciones de validez
+					if (!input.checkValidity()) isValid = false
+				}
+			})
+
+			if (isValid) {
+				submitButton.disabled = false
+				submitButton.classList.remove("bg-gray-400", "cursor-not-allowed")
+				submitButton.classList.add("bg-indigo-600", "hover:bg-indigo-500")
+			} else {
+				submitButton.disabled = true
+				submitButton.classList.add("bg-gray-400", "cursor-not-allowed")
+				submitButton.classList.remove("bg-indigo-600", "hover:bg-indigo-500")
+			}
+		}
+
+		inputs.forEach((input) => input.addEventListener("input", checkFormValidity))
+		checkFormValidity()
+	</script>
 </div>

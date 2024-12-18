@@ -1,72 +1,72 @@
 ---
-// Importar dependencias necesarias
-import SectionContainer from "./SectionContainer.astro";
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
 
-// Definir los tipos para los datos de traducción
 interface Article {
-  class: string;
-  title: string;
-  content: string;
+	class: string
+	title: string
+	content: string
 }
 
 interface AboutRooms {
-  title: string;
-  description: string;
-  articles: Article[];
+	title: string
+	description: string
+	articles: Article[]
 }
 
-const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
+const lang = Astro.params.lang || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
 
-// Asegurarse de que las traducciones sean del tipo correcto
-const aboutRooms: AboutRooms = translations.aboutRooms;
+const aboutRooms: AboutRooms = translations.aboutRooms
 
-
-const ARTICLES = [
-    {
-        class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
-    },
-    {
-        class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
-    },
-    {
-        class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
-    },
-    {
-        class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
-    },
-];
+var ARTICLES = [
+	{
+		class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
+	},
+	{
+		class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
+	},
+	{
+		class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
+	},
+	{
+		class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
+	},
+]
 ---
 
 <SectionContainer class="px-4">
-  <div class="flex flex-col items-center text-center pb-8">
-    <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-      {aboutRooms.title}
-    </h1>
-    <h2 class="mt-6 text-balance text-texth2 text-lg sm:text-xl md:text-2xl lg:text-3xl">
-      {aboutRooms.description}
-    </h2>
-  </div>
+	<div class="flex flex-col items-center pb-8 text-center">
+		<h1
+			class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{aboutRooms.title}
+		</h1>
+		<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-xl md:text-2xl lg:text-3xl">
+			{aboutRooms.description}
+		</h2>
+	</div>
 
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {aboutRooms.articles.map(({ class: className, title, content }, index) => (
-      <div
-        class:list={[
-          index === 0
-            ? "md:col-span-2 md:row-span-1"
-            : index === 1
-            ? "md:row-span-2"
-            : "md:col-span-1",
-          "w-full rounded-lg overflow-hidden relative group shadow-md hover:shadow-lg transition-shadow duration-300",
-          className,
-        ]}
-      >
-        <div class="p-4 flex flex-col justify-start h-full">
-          <h3 class="text-xl font-bold text-primary mb-2">{title}</h3>
-          <p class="text-sm text-texth2">{content}</p>
-        </div>
-      </div>
-    ))}
-  </div>
+	<div class="grid grid-cols-1 gap-6 md:grid-cols-3">
+		{
+			aboutRooms.articles.map(({ title, content }, index) => (
+				<div
+					class:list={[
+						index === 0
+							? "md:col-span-2 md:row-span-1"
+							: index === 1
+								? "md:row-span-2"
+								: "md:col-span-1",
+						"group relative w-full overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg",
+						ARTICLES[index]?.class,
+					]}
+				>
+					<div class="flex h-full flex-col justify-start p-4">
+						<h3 class="mb-2 text-xl font-bold text-primary">{title}</h3>
+						<p class="text-sm text-texth2">{content}</p>
+					</div>
+				</div>
+			))
+		}
+	</div>
 </SectionContainer>

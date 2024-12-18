@@ -1,0 +1,24 @@
+{
+  "name": "Rent Room BCN",
+  "short_name": "ent Room BCN",
+  "description": "",
+  "display": "fullscreen",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,52 +1,66 @@
 ---
-import RoomDetails from './RoomDetails.astro';
-import RoomGallery from './RoomGallery.astro';
-import RoomContactForm from './RoomContactForm.astro';
-import { ROOMS } from '../data/rooms';
+import { ROOMS } from "../data/rooms"
+import RoomContactForm from "./RoomContactForm.astro"
+import RoomDetails from "./RoomDetails.astro"
+import RoomGallery from "./RoomGallery.astro"
 
+const { slug } = Astro.params
 
-const { slug } = Astro.params;
-
-const roomData = ROOMS.find((room) => room.slug === slug);
+const roomData = ROOMS.find((room) => room.slug === slug)
 if (!roomData) {
-  throw new Error("Room not found");
+	throw new Error("Room not found")
 }
 
-const allImages = import.meta.glob('/public/Flats/**/*.{jpg,jpeg,png,webp}');
+const allImages = import.meta.glob("/public/Flats/**/*.{jpg,jpeg,png,webp}")
 
-let flat = '';
-let room = '';
+let flat = ""
+let room = ""
 
 // Validar y dividir el slug en flat y room
-if (slug && typeof slug === 'string' && slug.includes('-')) {
-  [flat, room] = slug.split('-');
+if (slug && typeof slug === "string" && slug.includes("-")) {
+	;[flat, room] = slug.split("-")
 }
 
 // Filtrar las imágenes de la carpeta correspondiente
-const folderPath = `/public/Flats/${flat}/${room}/`;
+const folderPath = `/public/Flats/${flat}/${room}/`
 const imagePaths = Object.keys(allImages)
-  .filter((path) => path.startsWith(folderPath))
-  .map((path) => path.replace('/public', ''));
+	.filter((path) => path.startsWith(folderPath))
+	.map((path) => path.replace("/public", ""))
 ---
 
 <div class="container mx-auto px-4 py-6">
-  <div class="mb-4">
-    <a href="javascript:void(0);" onclick="window.history.back()" class="flex items-center text-sm font-medium text-primary hover:underline">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11.293V14a1 1 0 102 0V6.707l2.146 2.147a1 1 0 001.415-1.415l-4-4a1 1 0 00-1.415 0l-4 4a1 1 0 001.415 1.415L9 6.707z" clip-rule="evenodd" />
-      </svg>
-      Volver atrás
-    </a>
-  </div>
+	<div class="mb-4">
+		<a
+			href="javascript:void(0);"
+			onclick="window.history.back()"
+			class="flex items-center text-sm font-medium text-primary hover:underline"
+		>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="mr-1 h-5 w-5"
+				viewBox="0 0 20 20"
+				fill="currentColor"
+			>
+				<path
+					fill-rule="evenodd"
+					d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11.293V14a1 1 0 102 0V6.707l2.146 2.147a1 1 0 001.415-1.415l-4-4a1 1 0 00-1.415 0l-4 4a1 1 0 001.415 1.415L9 6.707z"
+					clip-rule="evenodd"></path>
+			</svg>
+			Volver atrás
+		</a>
+	</div>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-6 rounded-lg">
-    <div class="lg:col-span-2">
-    <h2 class="text-2xl font-semibold text-center mb-2 text-gray-900">{roomData.name}</h2>
-      <RoomGallery imagePaths={imagePaths} initialAlt={roomData?.imageAlt || 'Imagen de la habitación'} />
-      <RoomDetails roomData={roomData} />
-    </div>
-    <div class="lg:col-span-1 space-y-6">
-      <RoomContactForm roomData={roomData} />
-    </div>
-  </div>
+	<div class="mt-6 grid grid-cols-1 gap-8 rounded-lg lg:grid-cols-3">
+		<div class="lg:col-span-2">
+			<h2 class="mb-2 text-center text-2xl font-semibold text-gray-900">{roomData.name}</h2>
+			<RoomGallery
+				imagePaths={imagePaths}
+				initialAlt={roomData?.imageAlt || "Imagen de la habitación"}
+			/>
+			<RoomDetails roomData={roomData} />
+		</div>
+		<div class="space-y-6 lg:col-span-1">
+			<RoomContactForm roomData={roomData} />
+		</div>
+	</div>
 </div>

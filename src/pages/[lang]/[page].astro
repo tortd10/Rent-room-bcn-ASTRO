@@ -1,61 +1,63 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import PLPRoom from '@components/PLPRoom.astro';
-import FindRoom from '@components/FindRoom.astro';
-import AboutRooms from '@components/AboutRooms.astro';
-import OurFlats from '@components/OurFlats.astro';
-import ContactForm from '@components/ContactForm.astro';
-import OurRoom from '@components/OurRoom.astro';
+import AboutRooms from "@components/AboutRooms.astro"
+import ContactForm from "@components/ContactForm.astro"
+import FindRoom from "@components/FindRoom.astro"
+import OurFlats from "@components/OurFlats.astro"
+import OurRoom from "@components/OurRoom.astro"
+import PLPRoom from "@components/PLPRoom.astro"
+import Layout from "@layouts/Layout.astro"
 
-import i18next from '../../i18n/config.js';
-import KnowUs from '@components/KnowUs.astro';
-import OurBeliefs from '@components/OurBeliefs.astro';
-import OurTeam from '@components/OurTeam.astro';
-import RoomContactForm from '@components/RoomContactForm.astro';
+import KnowUs from "@components/KnowUs.astro"
+import OurBeliefs from "@components/OurBeliefs.astro"
+import OurTeam from "@components/OurTeam.astro"
+import RoomContactForm from "@components/RoomContactForm.astro"
+import i18next from "../../i18n/config.js"
 
-const lang = Astro.params.lang || 'es'; // Idioma por defecto
-const page = Astro.params.page || 'index'; // Página por defecto
+const lang = Astro.params.lang || "es" // Idioma por defecto
+const page = Astro.params.page || "index" // Página por defecto
 
 // Cargar traducciones
-const translations = i18next.getResourceBundle(lang, 'translation');
-const findRoom = translations?.FindRoom || {};
+const translations = i18next.getResourceBundle(lang, "translation")
+const findRoom = translations?.FindRoom || {}
 
 // Validar páginas permitidas
-const validPages = ['Habitaciones', 'About', 'index']; // Lista de páginas válidas
+const validPages = ["Habitaciones", "About", "Faq", "index"] // Lista de páginas válidas
 
 if (!validPages.includes(page)) {
-  throw new Error('Página no encontrada'); // Opcional: Manejo de rutas inválidas
+	throw new Error("Página no encontrada") // Opcional: Manejo de rutas inválidas
 }
 
 export async function getStaticPaths() {
-  return [
-    { params: { lang: 'es', page: 'Habitaciones' } },
-    { params: { lang: 'en', page: 'Habitaciones' } },
-    { params: { lang: 'es', page: 'About' } },
-    { params: { lang: 'en', page: 'About' } },
-    { params: { lang: 'es', page: 'index' } },
-    { params: { lang: 'en', page: 'index' } },
-  ];
+	return [
+		{ params: { lang: "es", page: "Habitaciones" } },
+		{ params: { lang: "en", page: "Habitaciones" } },
+		{ params: { lang: "es", page: "About" } },
+		{ params: { lang: "en", page: "About" } },
+		{ params: { lang: "es", page: "index" } },
+		{ params: { lang: "en", page: "index" } },
+	]
 }
 ---
 
-{page === 'Habitaciones' ? (
-  <Layout title={`RentRoomBcn - ${findRoom.find_room || 'Habitaciones'}`}>
-    <PLPRoom />
-  </Layout>
-) : page === 'About' ? (
-  <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
-    <KnowUs />
-      <OurBeliefs />
-      <OurTeam />
-      <RoomContactForm />
-  </Layout>
-) : (
-  <Layout title={`RentRoomBcn - ${findRoom.find_room || 'Inicio'}`}>
-    <FindRoom />
-    <AboutRooms />
-    <OurRoom />
-    <OurFlats />
-    <ContactForm />
-  </Layout>
-)}
+{
+	page === "Habitaciones" ? (
+		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Habitaciones"}`}>
+			<PLPRoom />
+		</Layout>
+	) : page === "About" ? (
+		<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+			<KnowUs />
+			<OurBeliefs />
+			<OurTeam />
+			<RoomContactForm />
+		</Layout>
+	) : (
+		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Inicio"}`}>
+			<FindRoom />
+			<AboutRooms />
+			<OurRoom />
+			<OurFlats />
+			<ContactForm />
+		</Layout>
+	)
+}

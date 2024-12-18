@@ -1,16 +1,18 @@
 ---
-import PLPRoom from '@components/PLPRoom.astro';
-import Layout from '@layouts/Layout.astro';
+import PLPRoom from "@components/PLPRoom.astro"
+import Layout from "@layouts/Layout.astro"
 
 export async function getStaticPaths() {
-  return [
-    { params: { lang: 'es', page: 'Habitaciones' } },
-    { params: { lang: 'en', page: 'Habitaciones' } },
-    { params: { lang: 'es', page: 'About' } },
-    { params: { lang: 'en', page: 'About' } },
-    { params: { lang: 'es', page: 'index' } },
-    { params: { lang: 'en', page: 'index' } },
-  ];
+	return [
+		{ params: { lang: "es", page: "Habitaciones" } },
+		{ params: { lang: "en", page: "Habitaciones" } },
+		{ params: { lang: "es", page: "About" } },
+		{ params: { lang: "en", page: "About" } },
+		{ params: { lang: "es", page: "Faq" } },
+		{ params: { lang: "en", page: "Faq" } },
+		{ params: { lang: "es", page: "index" } },
+		{ params: { lang: "en", page: "index" } },
+	]
 }
 ---
 

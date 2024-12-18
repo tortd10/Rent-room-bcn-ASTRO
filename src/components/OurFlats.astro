@@ -1,39 +1,32 @@
 ---
-import FlatsCard from "@components/FlatsCard.astro";
-import { FLATS } from '../data/flats';
+import FlatsCard from "@components/FlatsCard.astro"
+import { FLATS } from "../data/flats"
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const ourFlats = translations.ourFlats;
+const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const ourFlats = translations.ourFlats
 ---
 
-<section class="w-full mx-auto lg:max-w-7xl">
-  <article
-    class="p-4 pb-6 flex flex-col gap-6 md:items-center md:relative md:rounded-2xl md:mx-4
-    bg-[#C4CFFA] text-primary"
-  >
-    <!-- Título actualizado -->
-    <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-      {ourFlats.title}
-     </h1>
-
-    <!-- Contenedor de FlatsCards -->
-    <a
-      href=""
-      class="flex items-center px-4 pb-6 -mx-4 overflow-x-auto no-scrollbar gap-7 snap-x snap-mandatory max-w-[1536px] 
-             md:overflow-visible md:grid md:grid-cols-1 lg:grid-cols-1 lg:p-0 lg:m-0 lg:z-10 md:justify-items-center xl:grid-cols-3"
-    >
-      {
-        FLATS.map(({ mapImage, title, flat_id }) => (
-          <FlatsCard
-            mapImage={mapImage}
-            title={title}
-            id={flat_id}
-          />
-        ))
-      }
-    </a>
-  </article>
+<section class="mx-auto w-full lg:max-w-7xl">
+	<article
+		class="flex flex-col gap-6 bg-[#C4CFFA] p-4 pb-6 text-primary md:relative md:mx-4 md:items-center md:rounded-2xl"
+	>
+		<h1
+			class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{ourFlats.title}
+		</h1>
+		<a
+			href=""
+			class="no-scrollbar -mx-4 flex max-w-[1536px] snap-x snap-mandatory items-center gap-7 overflow-x-auto px-4 pb-6 md:grid md:grid-cols-1 md:justify-items-center md:overflow-visible lg:z-10 lg:m-0 lg:grid-cols-1 lg:p-0 xl:grid-cols-3"
+		>
+			{
+				FLATS.map(({ mapImage, title, flat_id }) => (
+					<FlatsCard mapImage={mapImage} title={title} id={flat_id} />
+				))
+			}
+		</a>
+	</article>
 </section>

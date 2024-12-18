@@ -1,0 +1,64 @@
+---
+import ContactForm from "@components/ContactForm.astro"
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
+
+interface Faqs {
+	question: string
+	answer: string
+}
+
+interface FAQ {
+	subtitle: string
+	FAQ: Faqs[]
+}
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const Faq: FAQ = translations.Faq
+---
+
+<SectionContainer class="bg-light-gray px-4">
+	<section class="px-4 pt-6 md:mx-auto md:w-full md:max-w-[90rem]">
+		<main class="faq-container">
+			{
+				Faq.FAQ.map((faq, index) => (
+					<section class="mb-4">
+						<input type="checkbox" id={`faq-${index}`} class="hidden" />
+						<label
+							for={`faq-${index}`}
+							class="block cursor-pointer rounded-md bg-primary p-4 font-semibold text-white hover:contrast-150"
+						>
+							{faq.question}
+						</label>
+						<div class="faq-answer mt-2 rounded-md bg-headerBg p-4">
+							<p>{faq.answer}</p>
+						</div>
+					</section>
+				))
+			}
+		</main>
+	</section>
+	<section class="px-4 pt-6 md:mx-auto md:w-full md:max-w-[90rem]">
+		<article class="flex flex-col text-primary md:relative md:mx-4 md:items-center md:rounded-2xl">
+			<h1
+				class="text-balance text-center text-3xl font-black tracking-tight text-primary sm:text-left sm:text-4xl md:text-5xl lg:text-4xl"
+			>
+				{Faq.subtitle}
+			</h1>
+		</article>
+	</section>
+	<section class="px-4 pt-6 md:mx-auto md:w-full md:max-w-[90rem]">
+		<ContactForm />
+	</section>
+</SectionContainer>
+
+<style>
+	.faq-answer {
+		display: none;
+	}
+
+	input:checked + label + .faq-answer {
+		display: block;
+	}
+</style>

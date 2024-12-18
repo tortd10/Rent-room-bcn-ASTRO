@@ -1,33 +1,38 @@
 ---
-import { ROOMS } from '../data/rooms.ts';
-import RoomsCard from './RoomsCard.astro';
-import SectionContainer from './SectionContainer.astro';
-import i18next from '../i18n/config.js';
+import { ROOMS } from "../data/rooms.ts"
+import i18next from "../i18n/config.js"
+import RoomsCard from "./RoomsCard.astro"
+import SectionContainer from "./SectionContainer.astro"
 
 // Filtrar habitaciones disponibles
-const availableRooms = ROOMS.filter(room => room.available); 
+const availableRooms = ROOMS.filter((room) => room.available)
 
 // Obtener el idioma actual
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const plpRoom = translations.plpRoom;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const plpRoom = translations.plpRoom
 ---
 
 <SectionContainer class="px-0">
-  <div class="px-4 pt-6 max-w-7xl mx-auto lg:px-8">
-    <h2 class="sm:text-5xl md:text-6xl xs:text-2xl text-center font-black text-balance tracking-tight text-4xl lg:text-5xl text-primary pb-6">
-      {plpRoom.title}
-    </h2>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {availableRooms.map(room => (
-        <RoomsCard 
-          name={room.name} 
-          description={room.description} 
-          imageSrc={room.imageSrc} 
-          imageAlt={room.imageAlt} 
-          href={`/${lang}/${room.slug}`} 
-        />
-      ))}
-    </div>
-  </div>
-  <SectionContainer class="px-0">
+	<div class="mx-auto max-w-7xl px-4 pt-6 lg:px-8">
+		<h2
+			class="xs:text-2xl text-balance pb-6 text-center text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{plpRoom.title}
+		</h2>
+		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			{
+				availableRooms.map((room) => (
+					<RoomsCard
+						name={room.name}
+						description={room.description}
+						imageSrc={room.imageSrc}
+						imageAlt={room.imageAlt}
+						href={`/${lang}/${room.slug}`}
+					/>
+				))
+			}
+		</div>
+	</div>
+	<SectionContainer class="px-0" /></SectionContainer
+>

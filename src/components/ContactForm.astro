@@ -1,132 +1,128 @@
 ---
-import SectionContainer from "./SectionContainer.astro";
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
 
-const lang = Astro.params.lang || 'es';  // Obtener el idioma de la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const contactForm = translations.contactForm;
+const lang = Astro.params.lang || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const contactForm = translations.contactForm
 ---
 
 <SectionContainer>
-  <!-- Formulario -->
-  <form
-    id="contact-form"
-    class="p-6 bg-[#D0D9F2] rounded-lg shadow-md"
-    method="POST"
-  >
-    <!-- Campos del formulario -->
-    <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6 ">
-      <div class="sm:col-span-1">
-        <label for="email" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> {contactForm.emailLabel}
-        </label>
-        <div class="mt-2">
-          <input
-            type="email"
-            name="to_name"
-            id="email"
-            autocomplete="email"
-            placeholder={contactForm.emailPlaceholder}
-            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            required
-          />
-        </div>
-      </div>
-      <div class="sm:col-span-1">
-        <label for="name" class="block text-sm font-medium text-gray-900">
-          <span class="text-red-600">*</span> {contactForm.nameLabel}
-        </label>
-        <div class="mt-2">
-          <input
-            type="text"
-            name="from_name"
-            id="name"
-            autocomplete="name"
-            placeholder={contactForm.namePlaceholder}
-            class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-            required
-          />
-        </div>
-      </div>
-    </div>
-    <div class="mt-6">
-      <label for="room" class="block text-sm font-medium text-gray-900">
-        <span class="text-red-600">*</span> {contactForm.descriptionLabel}
-      </label>
-      <div class="mt-2">
-        <textarea
-          id="room"
-          name="message"
-          rows="2"
-          placeholder={contactForm.descriptionPlaceholder}
-          class="block w-full rounded-md border-0 bg-white py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset  placeholder-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
-          required
-        ></textarea>
-      </div>
-    </div>
+	<!-- Formulario -->
+	<form id="contact-form" class="rounded-lg bg-[#D0D9F2] p-6 shadow-md" method="POST">
+		<!-- Campos del formulario -->
+		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+			<div class="sm:col-span-1">
+				<label for="email" class="block text-sm font-medium text-gray-900">
+					<span class="text-red-600">*</span>
+					{contactForm.emailLabel}
+				</label>
+				<div class="mt-2">
+					<input
+						type="email"
+						name="to_name"
+						id="email"
+						autocomplete="email"
+						placeholder={contactForm.emailPlaceholder}
+						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						required
+					/>
+				</div>
+			</div>
+			<div class="sm:col-span-1">
+				<label for="name" class="block text-sm font-medium text-gray-900">
+					<span class="text-red-600">*</span>
+					{contactForm.nameLabel}
+				</label>
+				<div class="mt-2">
+					<input
+						type="text"
+						name="from_name"
+						id="name"
+						autocomplete="name"
+						placeholder={contactForm.namePlaceholder}
+						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						required
+					/>
+				</div>
+			</div>
+		</div>
+		<div class="mt-6">
+			<label for="room" class="block text-sm font-medium text-gray-900">
+				<span class="text-red-600">*</span>
+				{contactForm.descriptionLabel}
+			</label>
+			<div class="mt-2">
+				<textarea
+					id="room"
+					name="message"
+					rows="2"
+					placeholder={contactForm.descriptionPlaceholder}
+					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					required></textarea>
+			</div>
+		</div>
 
-    <!-- Checkbox de aceptación -->
-    <div class="mt-6">
-      <div class="flex items-start">
-        <input
-          id="accept-data"
-          name="accept-data"
-          type="checkbox"
-          class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-          required
-        />
-        <label for="accept-data" class="ml-3 text-sm text-gray-900">
-          <span class="text-red-600">*</span> {contactForm.acceptLabel}
-        </label>
-      </div>
-    </div>
+		<!-- Checkbox de aceptación -->
+		<div class="mt-6">
+			<div class="flex items-start">
+				<input
+					id="accept-data"
+					name="accept-data"
+					type="checkbox"
+					class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+					required
+				/>
+				<label for="accept-data" class="ml-3 text-sm text-gray-900">
+					<span class="text-red-600">*</span>
+					{contactForm.acceptLabel}
+				</label>
+			</div>
+		</div>
 
-    <!-- Botón de envío -->
-    <div class="mt-6">
-      <button
-        type="submit"
-        id="submit-button"
-        class="w-full sm:w-auto inline-flex justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-        disabled
-      >
-        {contactForm.submitButton}
-      </button>
-    </div>
-  </form>
+		<!-- Botón de envío -->
+		<div class="mt-6">
+			<button
+				type="submit"
+				id="submit-button"
+				class="inline-flex w-full cursor-not-allowed justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+				disabled
+			>
+				{contactForm.submitButton}
+			</button>
+		</div>
+	</form>
 
-  <script>
-    import { handleSubmit } from "../lib/formHandler";
+	<script>
+		import { handleSubmit } from "../lib/formHandler"
 
-    // Selecciona el formulario y agrega un event listener
-    const form = document.getElementById("contact-form") as HTMLFormElement;
-    form.addEventListener("submit", handleSubmit);
+		// Selecciona el formulario y agrega un event listener
+		const form = document.getElementById("contact-form") as HTMLFormElement
+		form.addEventListener("submit", handleSubmit)
 
-    const inputs = form.querySelectorAll("input, textarea");
-    const submitButton = document.getElementById("submit-button") as HTMLButtonElement;
+		const inputs = form.querySelectorAll("input, textarea")
+		const submitButton = document.getElementById("submit-button") as HTMLButtonElement
 
-    function checkFormValidity() {
-      let isValid = true;
-      inputs.forEach((input) => {
-      if (
-        input instanceof HTMLInputElement ||
-        input instanceof HTMLTextAreaElement
-      ) {
-        if (!input.checkValidity()) isValid = false;
-      }
-    });
+		function checkFormValidity() {
+			let isValid = true
+			inputs.forEach((input) => {
+				if (input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement) {
+					if (!input.checkValidity()) isValid = false
+				}
+			})
 
-      if (isValid) {
-        submitButton.disabled = false;
-        submitButton.classList.remove("bg-gray-400", "cursor-not-allowed");
-        submitButton.classList.add("bg-indigo-600", "hover:bg-indigo-500");
-      } else {
-        submitButton.disabled = true;
-        submitButton.classList.add("bg-gray-400", "cursor-not-allowed");
-        submitButton.classList.remove("bg-indigo-600", "hover:bg-indigo-500");
-      }
-    }
+			if (isValid) {
+				submitButton.disabled = false
+				submitButton.classList.remove("bg-gray-400", "cursor-not-allowed")
+				submitButton.classList.add("bg-indigo-600", "hover:bg-indigo-500")
+			} else {
+				submitButton.disabled = true
+				submitButton.classList.add("bg-gray-400", "cursor-not-allowed")
+				submitButton.classList.remove("bg-indigo-600", "hover:bg-indigo-500")
+			}
+		}
 
-    inputs.forEach((input) => input.addEventListener("input", checkFormValidity));
-    checkFormValidity();
-  </script>
+		inputs.forEach((input) => input.addEventListener("input", checkFormValidity))
+		checkFormValidity()
+	</script>
 </SectionContainer>

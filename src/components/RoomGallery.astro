@@ -1,57 +1,57 @@
 ---
 interface Props {
-  imagePaths: string[]; // Rutas de las imágenes
-  initialAlt: string; // Texto alternativo inicial
+	imagePaths: string[] // Rutas de las imágenes
+	initialAlt: string // Texto alternativo inicial
 }
 
-const { imagePaths, initialAlt } = Astro.props;
+const { imagePaths, initialAlt } = Astro.props
 ---
 
 <div class="flex flex-col items-center space-y-4">
-  <!-- Foto principal -->
-  <div>
-    <img 
-      id="main-image" 
-      src={imagePaths[0]} 
-      alt={initialAlt || 'Imagen principal'} 
-      class="rounded-[16px] h-[570px] w-[30rem] snap-center bg-black relative shrink-0 cursor-pointer bg-center bg-[length:100%] hover:bg-[length:105%] transition-[background-size]"
-    />
-  </div>
+	<!-- Foto principal -->
+	<div>
+		<img
+			id="main-image"
+			src={imagePaths[0]}
+			alt={initialAlt || "Imagen principal"}
+			class="relative h-[570px] w-[30rem] shrink-0 cursor-pointer snap-center rounded-[16px] bg-black bg-[length:100%] bg-center transition-[background-size] hover:bg-[length:105%]"
+		/>
+	</div>
 
-  <!-- Miniaturas -->
-  <div class="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-    {imagePaths.map((image, index) => (
-      <img 
-        src={image} 
-        alt={`Miniatura ${index + 1}`} 
-        class="w-20 h-20 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-primary"
-        data-image={image}
-        data-alt={`Miniatura ${index + 1}`}
-      />
-    ))}
-  </div>
+	<!-- Miniaturas -->
+	<div class="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+		{
+			imagePaths.map((image, index) => (
+				<img
+					src={image}
+					alt={`Miniatura ${index + 1}`}
+					class="h-20 w-20 cursor-pointer rounded-md border-2 border-transparent object-cover hover:border-primary"
+					data-image={image}
+					data-alt={`Miniatura ${index + 1}`}
+				/>
+			))
+		}
+	</div>
 </div>
 
 <script>
-  // Esperar a que se cargue el DOM
-  document.addEventListener('DOMContentLoaded', () => {
-  const mainImage = document.getElementById('main-image') as HTMLImageElement;
-  const thumbnails = document.querySelectorAll('img[data-image]');
+	// Esperar a que se cargue el DOM
+	document.addEventListener("DOMContentLoaded", () => {
+		const mainImage = document.getElementById("main-image") as HTMLImageElement
+		const thumbnails = document.querySelectorAll("img[data-image]")
 
-  // Agregar evento de clic a cada miniatura
-  thumbnails.forEach((thumbnail) => {
-    thumbnail.addEventListener('click', () => {
-      const newImage = thumbnail.getAttribute('data-image');
-      const newAlt = thumbnail.getAttribute('data-alt');
+		// Agregar evento de clic a cada miniatura
+		thumbnails.forEach((thumbnail) => {
+			thumbnail.addEventListener("click", () => {
+				const newImage = thumbnail.getAttribute("data-image")
+				const newAlt = thumbnail.getAttribute("data-alt")
 
-      // Actualizar la imagen principal
-      if (mainImage && newImage && newAlt) {
-        mainImage.src = newImage;
-        mainImage.alt = newAlt;
-      }
-    });
-  });
-});
-
+				// Actualizar la imagen principal
+				if (mainImage && newImage && newAlt) {
+					mainImage.src = newImage
+					mainImage.alt = newAlt
+				}
+			})
+		})
+	})
 </script>
-

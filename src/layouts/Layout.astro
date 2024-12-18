@@ -1,32 +1,41 @@
 ---
-import Footer from '../components/Footer.astro';
-import Header from '../components/Header.astro';
+import Footer from "../components/Footer.astro"
+import Header from "../components/Header.astro"
 
 interface Props {
-	title: string;
+	title: string
 }
 
-const { title } = Astro.props;
+const { title } = Astro.props
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta 
-			name="description" 
-			content="Encuentra tu habitación ideal" 
-		/>
+		<meta name="description" content="Encuentra tu habitación ideal" />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
-	</head>
+		<meta property="og:site_name" content="rentroombcn.com" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content="Encuentra tu habitación ideal" />
+		<meta property="og:url" content="https://rentroombcn.com/" />
+		<script async src="https://www.googletagmanager.com/gtag/js?id=G-L6RW5H70E1"></script><script>
+			window.dataLayer = window.dataLayer || []
+			function gtag(...args: any[]) {
+				window.dataLayer.push(args)
+			}
+			gtag("js", new Date())
+			gtag("config", "G-L6RW5H70E1")
+		</script></head
+	>
+
 	<body class="bg-primaryBg">
-		<Header/>
+		<Header />
 		<main class="flex flex-col gap-10 md:gap-24">
 			<slot />
 		</main>
-		<Footer/>
+		<Footer />
 	</body>
 </html>
-<style is:global>
-</style>
+<style is:global></style>

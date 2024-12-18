@@ -1,58 +1,52 @@
 ---
-import SectionContainer from "./SectionContainer.astro";
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
 
 interface TeamMember {
-  name: string;
-  image: string;
-  role: string;
-  description: string;
+	name: string
+	image: string
+	role: string
+	description: string
 }
 
 // Definir la interfaz para el objeto 'ourTeam'
 interface OurTeam {
-  title: string;
-  description: string;
-  teamMembers: TeamMember[];
+	title: string
+	description: string
+	teamMembers: TeamMember[]
 }
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const ourTeam: OurTeam = translations.OurTeam;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const ourTeam: OurTeam = translations.OurTeam
 ---
 
-<SectionContainer class="px-4 bg-light-gray">
-    <div class="text-center mb-8 w-full">
-        <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-            {ourTeam.title}
-        </h1>
-        <h2 class="mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-texth2">
-            {ourTeam.description}
-        </h2>
-    </div>
+<SectionContainer class="bg-light-gray px-4">
+	<div class="mb-8 w-full text-center">
+		<h1
+			class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{ourTeam.title}
+		</h1>
+		<h2 class="mt-6 text-base text-texth2 sm:text-lg md:text-xl lg:text-2xl">
+			{ourTeam.description}
+		</h2>
+	</div>
 
-    <div class="flex md:flex-wrap md:justify-center gap-6 overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 pb-4 md:overflow-visible">
-        {ourTeam.teamMembers.map((member) => (
-            <div 
-                class="flex-shrink-0 min-w-[280px] max-w-[320px] snap-center bg-white rounded-lg overflow-hidden shadow-lg mb-4"
-            >
-                <img 
-                    src={member.image} 
-                    alt={member.name} 
-                    class="w-[full] object-contain"
-                />
-                <div class="p-4 text-center">
-                    <h3 class="text-lg font-semibold text-primary">{member.name}</h3>
-                    <p class="text-sm text-texth2">{member.role}</p>
-                    <p class="mt-2 text-sm text-texth2">{member.description}</p>
-                </div>
-            </div>
-        ))}
-    </div>
+	<div
+		class="no-scrollbar flex snap-x snap-mandatory gap-6 overflow-x-auto px-4 pb-4 md:flex-wrap md:justify-center md:overflow-visible"
+	>
+		{
+			ourTeam.teamMembers.map((member) => (
+				<div class="mb-4 min-w-[280px] max-w-[320px] flex-shrink-0 snap-center overflow-hidden rounded-lg bg-white shadow-lg">
+					<img src={member.image} alt={member.name} class="w-[full] object-contain" />
+					<div class="p-4 text-center">
+						<h3 class="text-lg font-semibold text-primary">{member.name}</h3>
+						<p class="text-sm text-texth2">{member.role}</p>
+						<p class="mt-2 text-sm text-texth2">{member.description}</p>
+					</div>
+				</div>
+			))
+		}
+	</div>
 </SectionContainer>
-
-
-
-
-
-

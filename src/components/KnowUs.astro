@@ -1,24 +1,26 @@
 ---
-import SectionContainer from "./SectionContainer.astro";
+import SectionContainer from "./SectionContainer.astro"
 
-import i18next from '../i18n/config.js';
+import i18next from "../i18n/config.js"
 
-const lang = Astro.url.pathname.split('/')[1] || 'es'; // 'es' por defecto si no hay idioma en la URL
-const translations = i18next.getResourceBundle(lang, 'translation');
-const Knowus = translations.Knowus;
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const Knowus = translations.Knowus
 ---
 
 <SectionContainer class="px-0">
-    <section class="px-4 pt-6 md:w-full md:max-w-[90rem] md:mx-auto">
-        <div class="grid grid-cols-1 place-items-center text-center">
-            <div>
-                <h1 class="font-black text-balance tracking-tight text-4xl sm:text-5xl md:text-6xl lg:text-5xl text-primary">
-                    {Knowus.title}
-                </h1>
-                <h2 class="mt-6 text-balance text-texth2 text-lg sm:text-xl md:text-2xl lg:text-3xl">
-                    {Knowus.description}
-                </h2>
-            </div>
-        </div>
-    </section>
+	<section class="px-4 pt-6 md:mx-auto md:w-full md:max-w-[90rem]">
+		<div class="grid grid-cols-1 place-items-center text-center">
+			<div>
+				<h1
+					class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+				>
+					{Knowus.title}
+				</h1>
+				<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-xl md:text-2xl lg:text-3xl">
+					{Knowus.description}
+				</h2>
+			</div>
+		</div>
+	</section>
 </SectionContainer>
