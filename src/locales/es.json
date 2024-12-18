@@ -43,23 +43,19 @@
     "articles": [
       {
         "title": "Cómo encontrar la habitación perfecta",
-        "content": "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!",
-        "class": "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary"
+        "content": "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!"
       },
       {
         "title": "Las mejores zonas para alquilar en la ciudad",
-        "content": "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad.",
-        "class": "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary"
+        "content": "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad."
       },
       {
         "title": "Lo que dicen los inquilinos",
-        "content": "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad.",
-        "class": "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary"
+        "content": "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad."
       },
       {
         "title": "¿Primera vez alquilando? Consejos para tu primera habitación",
-        "content": "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!",
-        "class": "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary"
+        "content": "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!"
       }
     ]
   },
