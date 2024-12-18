@@ -11,4 +11,9 @@ export const FLATS = [
 		title: "Carrer de la Riera Blanca",
 		flat_id: "RB219",
 	},
+	{
+		mapImage: "",
+		title: "Carrer XXXX",
+		flat_id: "XXXX",
+	},
 ]

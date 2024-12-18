@@ -8,6 +8,10 @@
       {
         "label": "SOBRE NOSOTROS",
         "href": "/About"
+      },
+      {
+        "label": "FAQ",
+        "href": "/Faq"
       }
     ]
   },
@@ -24,6 +28,10 @@
       {
         "label": "SOBRE NOSOTROS",
         "href": "/About"
+      },
+      {
+        "label": "FAQ",
+        "href": "/Faq"
       },
       {
         "href": "/change-language",
@@ -133,5 +141,38 @@
   "house_environment": {
     "title": "Ambiente de la casa:",
     "quiet": "Tranquilo, no suelen tener visitas y abunda el silencio"
+  },
+  "Faq": {
+    "FAQ": [
+      {
+        "question": "¿Se permiten mascotas?",
+        "answer": "Sí, algunas habitaciones permiten mascotas. Verifica la descripción de cada habitación para más detalles."
+      },
+      {
+        "question": "¿Hay servicios de limpieza semanales?",
+        "answer": "Algunas propiedades incluyen limpieza semanal. Consulta la descripción de cada habitación para más detalles."
+      },
+      {
+        "question": "¿Hay una lavadora y secadora disponibles?",
+        "answer": "En algunas habitaciones se proporciona acceso a lavadoras y secadoras. Consulta cada anuncio para detalles específicos."
+      },
+      {
+        "question": "¿Se proporciona WiFi?",
+        "answer": "Sí, todas las habitaciones cuentan con WiFi gratuito."
+      },
+      {
+        "question": "¿Puedo recibir visitas?",
+        "answer": "La mayoría de las habitaciones permiten visitas. Consulta con el propietario antes de recibirlas."
+      },
+      {
+        "question": "¿Puedo solicitar mantenimiento en cualquier momento?",
+        "answer": "Sí, puedes solicitar mantenimiento en cualquier momento, pero te recomendamos informar con antelación para programar la intervención."
+      },
+      {
+        "question": "¿Hay algo que debo traer conmigo?",
+        "answer": "Es recomendable traer tus pertenencias personales, como ropa de cama, toallas y utensilios de cocina. Algunas habitaciones pueden incluir estos servicios."
+      }
+    ],
+    "subtitle": "¿Tienes más preguntas? ¡Contáctanos!"
   }
 }

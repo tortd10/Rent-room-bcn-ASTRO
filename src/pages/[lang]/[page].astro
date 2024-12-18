@@ -21,7 +21,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations?.FindRoom || {}
 
 // Validar páginas permitidas
-const validPages = ["Habitaciones", "About", "index"] // Lista de páginas válidas
+const validPages = ["Habitaciones", "About", "Faq", "index"] // Lista de páginas válidas
 
 if (!validPages.includes(page)) {
 	throw new Error("Página no encontrada") // Opcional: Manejo de rutas inválidas

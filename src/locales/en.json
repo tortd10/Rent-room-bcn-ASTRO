@@ -8,6 +8,10 @@
       {
         "label": "ABOUT US",
         "href": "/About"
+      },
+      {
+        "label": "FAQ",
+        "href": "/Faq"
       }
     ]
   },
@@ -24,6 +28,10 @@
       {
         "label": "ABOUT US",
         "href": "/About"
+      },
+      {
+        "label": "FAQ",
+        "href": "/Faq"
       },
       {
         "href": "/change-language",
@@ -134,5 +142,37 @@
     "title": "House Environment:",
     "quiet": "Quiet, no visitors and silence prevails"
   },
-  "greeting": "Hello, welcome to our site!"
+  "Faq": {
+    "FAQ": [
+      {
+        "question": "Are pets allowed?",
+        "answer": "Yes, some rooms allow pets. Please check the description of each room for more details."
+      },
+      {
+        "question": "Are there weekly cleaning services?",
+        "answer": "Some properties include weekly cleaning services. Check the description of each room for more details."
+      },
+      {
+        "question": "Is there a washing and drying machine available?",
+        "answer": "Some rooms provide access to washing and drying machines. Check the listing for specific details."
+      },
+      {
+        "question": "Is WiFi provided?",
+        "answer": "Yes, all rooms have free WiFi."
+      },
+      {
+        "question": "Can I have visitors?",
+        "answer": "Most rooms allow visitors. Please check with the property owner before receiving visitors."
+      },
+      {
+        "question": "Can I request maintenance at any time?",
+        "answer": "Yes, you can request maintenance at any time, but it is recommended to inform in advance to schedule the intervention."
+      },
+      {
+        "question": "Is there anything I need to bring?",
+        "answer": "It is recommended to bring your personal belongings, such as bedding, towels, and kitchen utensils. Some rooms may include these services."
+      }
+    ],
+    "subtitle": "Still Have Questions? Reach Out to Us!"
+  }
 }

@@ -2,7 +2,7 @@
 import i18next from "../i18n/config.js"
 import SectionContainer from "./SectionContainer.astro"
 
-const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+const lang = Astro.params.lang || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const contactForm = translations.contactForm
 ---

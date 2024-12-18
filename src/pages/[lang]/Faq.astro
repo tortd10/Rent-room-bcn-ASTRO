@@ -1,11 +1,7 @@
 ---
-import AboutRooms from "@components/AboutRooms.astro"
-import ContactForm from "@components/ContactForm.astro"
-import FindRoom from "@components/FindRoom.astro"
-import OurFlats from "@components/OurFlats.astro"
-import OurRoom from "@components/OurRoom.astro"
-
+import FAQ from "@components/FAQ.astro"
 import Layout from "@layouts/Layout.astro"
+
 export async function getStaticPaths() {
 	return [
 		{ params: { lang: "es", page: "Habitaciones" } },
@@ -21,9 +17,5 @@ export async function getStaticPaths() {
 ---
 
 <Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
-	<FindRoom />
-	<AboutRooms />
-	<OurRoom />
-	<OurFlats />
-	<ContactForm />
+	<FAQ />
 </Layout>

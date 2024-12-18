@@ -1,9 +1,7 @@
 ---
-// Importar dependencias necesarias
 import i18next from "../i18n/config.js"
 import SectionContainer from "./SectionContainer.astro"
 
-// Definir los tipos para los datos de traducción
 interface Article {
 	class: string
 	title: string
@@ -16,10 +14,9 @@ interface AboutRooms {
 	articles: Article[]
 }
 
-const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+const lang = Astro.params.lang || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 
-// Asegurarse de que las traducciones sean del tipo correcto
 const aboutRooms: AboutRooms = translations.aboutRooms
 
 var ARTICLES = [
