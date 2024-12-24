@@ -1,33 +1,55 @@
 ---
+// Importa los tipos necesarios para los props
 interface Props {
 	imagePaths: string[] // Rutas de las imágenes
 	initialAlt: string // Texto alternativo inicial
 }
 
-const { imagePaths, initialAlt } = Astro.props
+// Destructura las props que se reciben en el componente
+const { imagePaths, initialAlt } = Astro.props as Props
 ---
 
 <div class="flex flex-col items-center space-y-4">
-	<!-- Foto principal -->
-	<div>
+	<!-- Foto principal con áreas clicables -->
+	<div class="relative h-[570px] w-full max-w-[30rem]">
 		<img
 			id="main-image"
 			src={imagePaths[0]}
 			alt={initialAlt || "Imagen principal"}
-			class="relative h-[570px] w-[30rem] shrink-0 cursor-pointer snap-center rounded-[16px] bg-black bg-[length:100%] bg-center transition-[background-size] hover:bg-[length:105%]"
+			class="relative h-full w-full cursor-pointer snap-center rounded-[16px] bg-black bg-[length:100%] bg-center transition-[background-size] hover:bg-[length:105%]"
 		/>
+		<!-- Área izquierda para imagen anterior -->
+		<div
+			id="prev-area"
+			class="absolute left-0 top-0 h-full w-1/3 cursor-pointer bg-transparent"
+			aria-label="Imagen anterior"
+		>
+		</div>
+		<!-- Área derecha para imagen siguiente -->
+		<div
+			id="next-area"
+			class="absolute right-0 top-0 h-full w-1/3 cursor-pointer bg-transparent"
+			aria-label="Imagen siguiente"
+		>
+		</div>
 	</div>
 
 	<!-- Miniaturas -->
-	<div class="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
+	<div id="thumbnails-container" class="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
 		{
 			imagePaths.map((image, index) => (
 				<img
 					src={image}
 					alt={`Miniatura ${index + 1}`}
-					class="h-20 w-20 cursor-pointer rounded-md border-2 border-transparent object-cover hover:border-primary"
+					class={`h-20 w-20 cursor-pointer rounded-md border-2 ${
+						index === 0 ? "border-primary" : "border-transparent"
+					} object-cover hover:border-primary`}
 					data-image={image}
 					data-alt={`Miniatura ${index + 1}`}
+					role="button"
+					tabindex="0"
+					aria-selected={index === 0 ? "true" : "false"}
+					loading="lazy"
 				/>
 			))
 		}
@@ -35,23 +57,74 @@ const { imagePaths, initialAlt } = Astro.props
 </div>
 
 <script>
-	// Esperar a que se cargue el DOM
 	document.addEventListener("DOMContentLoaded", () => {
-		const mainImage = document.getElementById("main-image") as HTMLImageElement
-		const thumbnails = document.querySelectorAll("img[data-image]")
+		const mainImage = document.getElementById("main-image") as HTMLImageElement | null
+		const thumbnails = document.querySelectorAll("img[data-image]") as NodeListOf<HTMLImageElement>
+		const prevArea = document.getElementById("prev-area")
+		const nextArea = document.getElementById("next-area")
+		let currentIndex = 0
 
-		// Agregar evento de clic a cada miniatura
-		thumbnails.forEach((thumbnail) => {
-			thumbnail.addEventListener("click", () => {
-				const newImage = thumbnail.getAttribute("data-image")
-				const newAlt = thumbnail.getAttribute("data-alt")
+		// Función para actualizar la imagen principal
+		const updateMainImage = (index: number) => {
+			const thumbnail = thumbnails[index]
+			if (!thumbnail) return
 
-				// Actualizar la imagen principal
-				if (mainImage && newImage && newAlt) {
-					mainImage.src = newImage
-					mainImage.alt = newAlt
+			const newImage = thumbnail.getAttribute("data-image")
+			const newAlt = thumbnail.getAttribute("data-alt")
+
+			// Actualizar imagen principal
+			if (mainImage && newImage && newAlt) {
+				mainImage.src = newImage
+				mainImage.alt = newAlt
+			}
+
+			// Actualizar clases y aria-selected
+			thumbnails.forEach((thumb, i) => {
+				thumb.setAttribute("aria-selected", i === index ? "true" : "false")
+				thumb.classList.toggle("border-primary", i === index)
+				thumb.classList.toggle("border-transparent", i !== index)
+			})
+
+			currentIndex = index
+		}
+
+		// Navegación con teclado
+		const handleKeyNavigation = (event: KeyboardEvent) => {
+			if (event.key === "ArrowRight") {
+				const nextIndex = (currentIndex + 1) % thumbnails.length
+				updateMainImage(nextIndex)
+			} else if (event.key === "ArrowLeft") {
+				const prevIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length
+				updateMainImage(prevIndex)
+			}
+		}
+
+		// Navegación por clic en bordes
+		const handleAreaClick = (direction: "prev" | "next") => {
+			if (direction === "next") {
+				const nextIndex = (currentIndex + 1) % thumbnails.length
+				updateMainImage(nextIndex)
+			} else if (direction === "prev") {
+				const prevIndex = (currentIndex - 1 + thumbnails.length) % thumbnails.length
+				updateMainImage(prevIndex)
+			}
+		}
+
+		// Agregar eventos
+		thumbnails.forEach((thumbnail, index) => {
+			thumbnail.addEventListener("click", () => updateMainImage(index))
+
+			thumbnail.addEventListener("keydown", (event: KeyboardEvent) => {
+				if (event.key === "Enter" || event.key === " ") {
+					event.preventDefault()
+					updateMainImage(index)
 				}
 			})
 		})
+
+		document.addEventListener("keydown", handleKeyNavigation)
+
+		prevArea?.addEventListener("click", () => handleAreaClick("prev"))
+		nextArea?.addEventListener("click", () => handleAreaClick("next"))
 	})
 </script>

@@ -174,5 +174,76 @@
       }
     ],
     "subtitle": "Still Have Questions? Reach Out to Us!"
+  },
+  "pdpRoom": {
+    "backButton": "Go back"
+  },
+  "roomCharacteristics": {
+    "houseFeaturesTitle": "House Features:",
+    "houseFeatures": [
+      "Room in a 72 m² apartment.",
+      "Exterior mezzanine with elevator.",
+      "5 bedrooms.",
+      "1 bathroom.",
+      "Maximum capacity: 2 people.",
+      "Internet connection.",
+      "Equipped kitchen: fridge, oven, microwave.",
+      "Doorman."
+    ],
+    "roomFeaturesTitle": "Room Features:",
+    "roomFeatures": ["Furnished room.", "Single bed.", "Window to the courtyard."],
+    "roommatesTitle": "Your Roommates:",
+    "roommates": [
+      "Boys and girls.",
+      "Between 1 and 99 years old.",
+      "They study/work.",
+      "The owner does not live in the house."
+    ],
+    "houseAtmosphereTitle": "House Atmosphere:",
+    "houseAtmosphere": ["Quiet, there are usually no visitors, and silence prevails."]
+  },
+  "RoomDetails": {
+    "roomTitle": "ROOM WITH SINGLE BED",
+    "roomDescription": "If you're looking for a comfortable and well-located place to live, this room in Zona Franca might be perfect for you.",
+    "roomDetailsTitle": "Room Description",
+    "roomDetails": [
+      "Spacious and bright room with a window",
+      "Fully furnished: 90x200 bed, wardrobe, desk, study chair, heating, and fan",
+      "Fiber optic internet access (Wi-Fi and wired connection)",
+      "Door with lock",
+      "Bedding and towels not included"
+    ],
+    "roomConditionsTitle": "Conditions",
+    "roomConditions": [
+      "Rent: 550 €/month",
+      "50€/month for shared expenses such as electricity, water, gas, and fiber optic internet",
+      "One-month deposit. Refundable deposit upon contract completion and room vacating",
+      "Minimum contract of 2 months",
+      "No pets allowed",
+      "No smoking inside the apartment",
+      "Weekly cleaning of common areas (hallway, bathroom, and kitchen) included"
+    ],
+    "roomAtmosphereTitle": "House Atmosphere",
+    "roomAtmosphere": ["Quiet, no visitors usually, and peaceful"],
+    "contactInfo": "For more information, contact us",
+    "contactInfoDescription": "I am available to answer any questions you have!",
+    "availableText": "Available",
+    "unavailableText": "Not Available"
+  },
+  "RoomContactForm": {
+    "title": "Contact us about",
+    "description": "Provide your details for more information about this room on the floor",
+    "roomLabel": "Room",
+    "nameLabel": "Name",
+    "namePlaceholder": "Your full name",
+    "phoneLabel": "Phone (optional)",
+    "phonePlaceholder": "Your phone number (optional)",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "Your email address",
+    "deliveryDateLabel": "Expected entry date",
+    "descriptionLabel": "Description",
+    "descriptionPlaceholder": "Write any questions or additional details",
+    "acceptDataLabel": "I accept the processing of my personal data.",
+    "submitButton": "Submit"
   }
 }

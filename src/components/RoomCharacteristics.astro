@@ -1,33 +1,62 @@
+---
+import i18next from "../i18n/config.js"
+
+// Obtener el idioma actual y los textos traducidos
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const roomCharacteristics = translations.roomCharacteristics
+---
+
 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+	<!-- Características de la vivienda -->
 	<div>
 		<p class="text-sm text-gray-600">
-			<strong>Características de la vivienda:</strong><br />
-			- Habitación en piso de 72 m².<br />
-			- Entreplanta exterior con ascensor.<br />
-			- 5 habitaciones.<br />
-			- 1 baño.<br />
-			- Capacidad máxima: 2 personas.<br />
-			- Conexión a internet.<br />
-			- Cocina equipada: nevera, horno, microondas.<br />
-			- Portero físico.<br />
+			<strong>{roomCharacteristics.houseFeaturesTitle}</strong><br />
+			{
+				roomCharacteristics.houseFeatures.map((feature: string) => (
+					<>
+						<span>- {feature}</span>
+						<br />
+					</>
+				))
+			}
 		</p>
 	</div>
 
+	<!-- Características de la habitación y otros detalles -->
 	<div>
 		<p class="text-sm text-gray-600">
-			<strong>Características de la habitación:</strong><br />
-			- Habitación amueblada.<br />
-			- Cama individual.<br />
-			- Ventana al patio.<br /><br />
+			<strong>{roomCharacteristics.roomFeaturesTitle}</strong><br />
+			{
+				roomCharacteristics.roomFeatures.map((feature: string) => (
+					<>
+						<span>- {feature}</span>
+						<br />
+					</>
+				))
+			}
 
-			<strong>Tus compañeros/as:</strong><br />
-			- Chicos y chicas.<br />
-			- Entre 1 y 99 años.<br />
-			- Estudian/Trabajan.<br />
-			- El propietario/a no vive en la casa.<br /><br />
+			<br />
+			<strong>{roomCharacteristics.roommatesTitle}</strong><br />
+			{
+				roomCharacteristics.roommates.map((info: string) => (
+					<>
+						<span>- {info}</span>
+						<br />
+					</>
+				))
+			}
 
-			<strong>Ambiente de la casa:</strong><br />
-			- Tranquilo, no suelen tener visitas y abunda el silencio.<br />
+			<br />
+			<strong>{roomCharacteristics.houseAtmosphereTitle}</strong><br />
+			{
+				roomCharacteristics.houseAtmosphere.map((atmosphere: string) => (
+					<>
+						<span>- {atmosphere}</span>
+						<br />
+					</>
+				))
+			}
 		</p>
 	</div>
 </div>
