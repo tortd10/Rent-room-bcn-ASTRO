@@ -1,41 +1,6 @@
-Aquí tienes el README.md formateado con estilos listos para copiar y pegar directamente:
-
 # **Rent Room BCN - ASTRO**  
 
 Este proyecto es una aplicación web para la gestión y búsqueda de habitaciones en alquiler en Barcelona, desarrollada con [Astro](https://astro.build/).  
-
----
-
-## **📂 Estructura del Proyecto**  
-
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-├── .editorconfig
-├── .eslintrc.cjs
-├── .gitignore
-├── .lintstagedrc
-├── .prettierignore
-├── .prettierrc.mjs
-├── astro.config.mjs
-├── package-lock.json
-├── package.json
-├── postcss.config.mjs
-├── tailwind.config.mjs
-└── tsconfig.json
-
-- **`public/`**: Archivos estáticos.  
-- **`src/`**: Código fuente del proyecto.  
-  - **`components/`**: Componentes reutilizables.  
-  - **`layouts/`**: Plantillas de diseño.  
-  - **`pages/`**: Páginas de la aplicación.  
 
 ---
 
@@ -54,12 +19,12 @@ Este proyecto es una aplicación web para la gestión y búsqueda de habitacione
    git clone https://github.com/tortd10/Rent-room-bcn-ASTRO.git
    cd Rent-room-bcn-ASTRO
 
-	2.	Instalar dependencias:
+2.	Instalar dependencias:
 
 npm install
 
 
-	3.	Iniciar el servidor de desarrollo:
+3.	Iniciar el servidor de desarrollo:
 
 npm run dev
 
