@@ -1,10 +1,16 @@
 ---
 import { ROOMS } from "../data/rooms"
+import i18next from "../i18n/config.js"
 import RoomContactForm from "./RoomContactForm.astro"
 import RoomDetails from "./RoomDetails.astro"
 import RoomGallery from "./RoomGallery.astro"
 
 const { slug } = Astro.params
+
+// Obtener el idioma actual
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const pdpRoom = translations.pdpRoom
 
 const roomData = ROOMS.find((room) => room.slug === slug)
 if (!roomData) {
@@ -46,7 +52,7 @@ const imagePaths = Object.keys(allImages)
 					d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1-11.293V14a1 1 0 102 0V6.707l2.146 2.147a1 1 0 001.415-1.415l-4-4a1 1 0 00-1.415 0l-4 4a1 1 0 001.415 1.415L9 6.707z"
 					clip-rule="evenodd"></path>
 			</svg>
-			Volver atrás
+			{pdpRoom.backButton}
 		</a>
 	</div>
 

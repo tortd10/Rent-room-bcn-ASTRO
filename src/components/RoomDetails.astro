@@ -1,54 +1,68 @@
 ---
-const { roomData } = Astro.props
+import i18next from "../i18n/config.js"
 import RoomCharacteristics from "./RoomCharacteristics.astro"
+
+// Obtener el idioma actual y los textos traducidos
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const roomDetails = translations.RoomDetails
+
+// Obtener los datos de la habitación
+const { roomData } = Astro.props
 ---
 
 <div class="mx-auto mt-8 max-w-lg space-y-6 rounded-lg bg-white p-6 shadow-lg">
+	<!-- Descripción de la habitación -->
 	<div class="space-y-4">
 		<p class="text-sm text-gray-600">
-			<strong>HABITACIÓN CON CAMA INDIVIDUAL</strong><br />
-			Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría
-			ser perfecta para ti. Se encuentra en un piso compartido, ideal para profesionales y trabajadores,
-			con excelente conexión a transporte público y servicios cercanos, como supermercados, zona comercial,
-			parques y gimnasios.<br /><br />
+			<strong>{roomDetails.roomTitle}</strong><br />
+			{roomDetails.roomDescription}<br /><br />
 
-			Cerca de la Fira de Barcelona, Ciudad de la Justicia, estamentos oficiales y Club Natació
-			Montjuic.<br /><br />
+			<strong>{roomDetails.roomDetailsTitle}</strong><br />
+			{
+				roomDetails.roomDetails.map((detail: string) => (
+					<>
+						<span>- {detail}</span>
+						<br />
+					</>
+				))
+			}
 
-			Es un piso compartido con personas responsables y amables. Dispone de un baño, cocina equipada
-			(fogones, microondas, horno, nevera, cafetera), lavadora y espacio de almacenamiento
-			adicional, si lo necesitas.<br /><br />
+			<br />
+			<strong>{roomDetails.roomConditionsTitle}</strong><br />
+			{
+				roomDetails.roomConditions.map((condition: string) => (
+					<>
+						<span>- {condition}</span>
+						<br />
+					</>
+				))
+			}
 
-			<strong>Descripción de la habitación:</strong><br />
-			- Habitación amplia y luminosa con ventana.<br />
-			- Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción y ventilador.<br
-			/>
-			- Acceso a internet de fibra óptica (conexión wifi y por cable).<br />
-			- Puerta con cerradura.<br />
-			* Ropa de cama y toallas no incluidas.<br /><br />
+			<br />
+			<strong>{roomDetails.roomAtmosphereTitle}</strong><br />
+			{
+				roomDetails.roomAtmosphere.map((atmosphere: string) => (
+					<>
+						<span>- {atmosphere}</span>
+						<br />
+					</>
+				))
+			}
 
-			<strong>Condiciones:</strong><br />
-			- Alquiler: 550 €/mes.<br />
-			- Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica.<br />
-			- Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación.<br />
-			- Contrato mínimo de 2 meses.<br />
-			- No se permiten mascotas.<br />
-			- No se permite fumar dentro del piso.<br />
-			- Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida.<br /><br />
-
-			Buscamos a una persona responsable, limpia y tranquila. Ambiente respetuoso y amistoso, donde
-			es importante mantener una buena convivencia.<br />
-			Si estás interesado/a, no dudes en contactarme para más información o para concertar una visita.
-			¡Estoy disponible para responder cualquier pregunta que tengas!<br /><br />
+			<br />
+			<strong>{roomDetails.contactInfo}</strong><br />
+			{roomDetails.contactInfoDescription}
 		</p>
 	</div>
 </div>
 
 <div class="mx-auto mt-8 max-w-lg space-y-6 rounded-lg bg-white p-6 shadow-lg">
 	<RoomCharacteristics />
+
 	<div class="flex items-center space-x-2">
 		<span class={`text-sm font-semibold ${roomData.available ? "text-green-500" : "text-red-500"}`}>
-			{roomData.available ? "Disponible" : "No disponible"}
+			{roomData.available ? roomDetails.availableText : roomDetails.unavailableText}
 		</span>
 		<span class={`w-2.5 h-2.5 rounded-full ${roomData.available ? "bg-green-500" : "bg-red-500"}`}
 		></span>

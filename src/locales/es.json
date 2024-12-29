@@ -174,5 +174,102 @@
       }
     ],
     "subtitle": "¿Tienes más preguntas? ¡Contáctanos!"
+  },
+  "pdpRoom": {
+    "backButton": "Volver atrás"
+  },
+  "roomCharacteristics": {
+    "houseFeaturesTitle": "Características de la vivienda:",
+    "houseFeatures": [
+      "Habitación en piso de 72 m².",
+      "Entreplanta exterior con ascensor.",
+      "5 habitaciones.",
+      "1 baño.",
+      "Capacidad máxima: 2 personas.",
+      "Conexión a internet.",
+      "Cocina equipada: nevera, horno, microondas.",
+      "Portero físico."
+    ],
+    "roomFeaturesTitle": "Características de la habitación:",
+    "roomFeatures": ["Habitación amueblada.", "Cama individual.", "Ventana al patio."],
+    "roommatesTitle": "Tus compañeros/as:",
+    "roommates": [
+      "Chicos y chicas.",
+      "Entre 1 y 99 años.",
+      "Estudian/Trabajan.",
+      "El propietario/a no vive en la casa."
+    ],
+    "houseAtmosphereTitle": "Ambiente de la casa:",
+    "houseAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio."]
+  },
+  "RoomDetails": {
+    "roomTitle": "HABITACIÓN CON CAMA INDIVIDUAL",
+    "roomDescription": "Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría ser perfecta para ti.",
+    "roomDetailsTitle": "Descripción de la habitación",
+    "roomDetails": [
+      "Habitación amplia y luminosa con ventana",
+      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción y ventilador",
+      "Acceso a internet de fibra óptica (conexión wifi y por cable)",
+      "Puerta con cerradura",
+      "Ropa de cama y toallas no incluidas"
+    ],
+    "roomConditionsTitle": "Condiciones",
+    "roomConditions": [
+      "Alquiler: 550 €/mes",
+      "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
+      "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
+      "Contrato mínimo de 2 meses",
+      "No se permiten mascotas",
+      "No se permite fumar dentro del piso",
+      "Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida"
+    ],
+    "roomAtmosphereTitle": "Ambiente de la casa",
+    "roomAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio"],
+    "contactInfo": "Para más información, contacta con nosotros",
+    "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!"
+  },
+  "RoomDetails": {
+    "roomTitle": "HABITACIÓN CON CAMA INDIVIDUAL",
+    "roomDescription": "Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría ser perfecta para ti.",
+    "roomDetailsTitle": "Descripción de la habitación",
+    "roomDetails": [
+      "Habitación amplia y luminosa con ventana",
+      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción y ventilador",
+      "Acceso a internet de fibra óptica (conexión wifi y por cable)",
+      "Puerta con cerradura",
+      "Ropa de cama y toallas no incluidas"
+    ],
+    "roomConditionsTitle": "Condiciones",
+    "roomConditions": [
+      "Alquiler: 550 €/mes",
+      "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
+      "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
+      "Contrato mínimo de 2 meses",
+      "No se permiten mascotas",
+      "No se permite fumar dentro del piso",
+      "Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida"
+    ],
+    "roomAtmosphereTitle": "Ambiente de la casa",
+    "roomAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio"],
+    "contactInfo": "Para más información, contacta con nosotros",
+    "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!",
+    "availableText": "Disponible",
+    "unavailableText": "No disponible"
+  },
+  "RoomContactForm": {
+    "title": "Contáctanos sobre",
+    "description": "Proporciona tus datos para más información sobre esta habitación en el piso",
+    "roomLabel": "Habitación",
+    "nameLabel": "Nombre",
+    "namePlaceholder": "Tu nombre completo",
+    "phoneLabel": "Teléfono (opcional)",
+    "phonePlaceholder": "Tu número de teléfono (opcional)",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "Tu correo electrónico",
+    "deliveryDateLabel": "Fecha prevista de entrada",
+    "descriptionLabel": "Descripción",
+    "descriptionPlaceholder": "Escribe cualquier pregunta o detalle adicional",
+    "acceptDataLabel": "Acepto el tratamiento de mis datos personales.",
+    "submitButton": "Enviar"
   }
 }

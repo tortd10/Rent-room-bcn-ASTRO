@@ -1,31 +1,39 @@
 ---
+import i18next from "i18next"
 import { ROOMS } from "../data/rooms"
+
+// Obtener el idioma de la URL
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const roomContactForm = translations.RoomContactForm
 
 // Obtener el slug de la URL actual
 const { pathname } = Astro.url
 const slug = pathname.replace(/^\/|\/$/g, "") // Remueve los slashes iniciales y finales
 
-// Filtrar los datos de la habitación según el slug
-const roomData = ROOMS.find((room) => room.slug === slug)
+// Eliminar el prefijo del idioma (cualquier idioma de 2 letras)
+const cleanSlug = slug.replace(/^[a-z]{2}\//, "")
 
-// Si no se encuentra la habitación, usar un valor predeterminado
+// Buscar los datos de la habitación en ROOMS usando el slug limpio
+const roomData = ROOMS.find((room) => room.slug.toLowerCase() === cleanSlug.toLowerCase())
+
 const selectedRoom = roomData || ROOMS[0]
 ---
 
 <div class="sticky top-32 rounded-lg border border-gray-300 bg-[#D0D9F2] p-6 shadow-md">
 	<form id="contact-form" class="space-y-6" method="POST">
 		<!-- Título y descripción -->
-		<h2 class="text-xl font-semibold text-gray-700">Contáctanos sobre {selectedRoom.name}</h2>
+		<h2 class="text-xl font-semibold text-gray-700">{roomContactForm.title} {selectedRoom.name}</h2>
 		<p class="text-sm text-gray-600">
-			Proporciona tus datos para más información sobre esta habitación en el piso {
-				selectedRoom.roomFlat || ""
-			}.
+			{roomContactForm.description}
+			{selectedRoom.roomFlat || ""}
 		</p>
 
 		<!-- Desplegable con la habitación seleccionada por defecto -->
 		<div class="mt-4">
 			<label for="room-select" class="block text-sm font-medium text-gray-900">
-				<span class="text-red-600">*</span> Habitación
+				<span class="text-red-600">*</span>
+				{roomContactForm.roomLabel}
 			</label>
 			<div class="mt-2">
 				<select
@@ -43,7 +51,8 @@ const selectedRoom = roomData || ROOMS[0]
 		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
 			<div class="sm:col-span-1">
 				<label for="name" class="block text-sm font-medium text-gray-900">
-					<span class="text-red-600">*</span> Nombre
+					<span class="text-red-600">*</span>
+					{roomContactForm.nameLabel}
 				</label>
 				<div class="mt-2">
 					<input
@@ -51,7 +60,7 @@ const selectedRoom = roomData || ROOMS[0]
 						name="from_name"
 						id="name"
 						autocomplete="name"
-						placeholder="Nombre"
+						placeholder={roomContactForm.namePlaceholder}
 						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
 						required
 					/>
@@ -59,7 +68,7 @@ const selectedRoom = roomData || ROOMS[0]
 			</div>
 			<div class="sm:col-span-1">
 				<label for="phone" class="block text-sm font-medium text-gray-900">
-					Teléfono (opcional)
+					{roomContactForm.phoneLabel}
 				</label>
 				<div class="mt-2">
 					<input
@@ -67,7 +76,7 @@ const selectedRoom = roomData || ROOMS[0]
 						name="phone"
 						id="phone"
 						autocomplete="tel"
-						placeholder="Teléfono (opcional)"
+						placeholder={roomContactForm.phonePlaceholder}
 						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
 					/>
 				</div>
@@ -78,7 +87,8 @@ const selectedRoom = roomData || ROOMS[0]
 		<div class="mt-6">
 			<div class="sm:col-span-1">
 				<label for="email" class="block text-sm font-medium text-gray-900">
-					<span class="text-red-600">*</span> Correo
+					<span class="text-red-600">*</span>
+					{roomContactForm.emailLabel}
 				</label>
 				<div class="mt-2">
 					<input
@@ -86,7 +96,7 @@ const selectedRoom = roomData || ROOMS[0]
 						name="to_name"
 						id="email"
 						autocomplete="email"
-						placeholder="Correo"
+						placeholder={roomContactForm.emailPlaceholder}
 						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
 						required
 					/>
@@ -97,7 +107,8 @@ const selectedRoom = roomData || ROOMS[0]
 		<!-- Fecha prevista de entrega -->
 		<div class="mt-6">
 			<label for="delivery-date" class="block text-sm font-medium text-gray-900">
-				<span class="text-red-600">*</span> Fecha prevista de entrada
+				<span class="text-red-600">*</span>
+				{roomContactForm.deliveryDateLabel}
 			</label>
 			<div class="mt-2">
 				<input
@@ -113,14 +124,15 @@ const selectedRoom = roomData || ROOMS[0]
 		<!-- Campo de descripción -->
 		<div class="mt-6">
 			<label for="description" class="block text-sm font-medium text-gray-900">
-				<span class="text-red-600">*</span> Descripción
+				<span class="text-red-600">*</span>
+				{roomContactForm.descriptionLabel}
 			</label>
 			<div class="mt-2">
 				<textarea
 					id="description"
 					name="message"
 					rows="2"
-					placeholder="Escribe el número o nombre de la habitación que deseas contactar"
+					placeholder={roomContactForm.descriptionPlaceholder}
 					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
 					required></textarea>
 			</div>
@@ -137,10 +149,8 @@ const selectedRoom = roomData || ROOMS[0]
 					required
 				/>
 				<label for="accept-data" class="ml-3 text-sm text-gray-900">
-					<span class="text-red-600">*</span> Acepto el <a
-						href="#"
-						class="text-indigo-600 underline">tratamiento de mis datos</a
-					>.
+					<span class="text-red-600">*</span>
+					{roomContactForm.acceptDataLabel}
 				</label>
 			</div>
 		</div>
@@ -153,7 +163,7 @@ const selectedRoom = roomData || ROOMS[0]
 				class="inline-flex w-full cursor-not-allowed justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
 				disabled
 			>
-				Enviar
+				{roomContactForm.submitButton}
 			</button>
 		</div>
 	</form>
