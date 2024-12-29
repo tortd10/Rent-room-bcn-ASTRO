@@ -44,6 +44,33 @@ export const ROOMS = [
 		roomFlat: "FFCC71",
 		available: true,
 	},
+	{
+		slug: "RB219-HAB1",
+		name: "RIERA BLANCA HABITACIÓN 1",
+		description: "FALTA AÑADIR DESCRIPCIÓN",
+		imageSrc: "/Flats/RB219/HAB1/Hab1-1.jpg",
+		imageAlt: "RB2191",
+		roomFlat: "RB219",
+		available: true,
+	},
+	{
+		slug: "RB219-HAB2",
+		name: "RIERA BLANCA HABITACIÓN 2",
+		description: "FALTA AÑADIR DESCRIPCIÓN",
+		imageSrc: "/Flats/RB219/HAB2/Hab2-1.jpg",
+		imageAlt: "RB2192",
+		roomFlat: "RB219",
+		available: true,
+	},
+	{
+		slug: "RB219-HAB3",
+		name: "RIERA BLANCA HABITACIÓN 3",
+		description: "FALTA AÑADIR DESCRIPCIÓN",
+		imageSrc: "/Flats/RB219/HAB3/Hab3-1.jpg",
+		imageAlt: "RB2193",
+		roomFlat: "RB219",
+		available: true,
+	},
 ]
 
 //TODO: FALTA AÑADIR DESCRIPCIÓN

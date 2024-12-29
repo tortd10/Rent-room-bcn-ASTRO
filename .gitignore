@@ -29,9 +29,6 @@ yarn.lock
 .vs/
 .idea
 
-# generated vercel output
-.vercel/
-
 .env
 .env.local
 
@@ -39,4 +36,3 @@ yarn.lock
 
 local-images/*
 src/middleware.tsall
-.vercel
