@@ -20,15 +20,21 @@ const { title } = Astro.props
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content="Encuentra tu habitación ideal" />
 		<meta property="og:url" content="https://rentroombcn.com/" />
-		<script async src="https://www.googletagmanager.com/gtag/js?id=G-L6RW5H70E1"></script><script>
+		<!-- Google tag (gtag.js) -->
+		<script
+			type="text/partytown"
+			async
+			src="https://www.googletagmanager.com/gtag/js?id=G-L6RW5H70E1"></script>
+		<script type="text/partytown">
 			window.dataLayer = window.dataLayer || []
-			function gtag(...args: any[]) {
-				window.dataLayer.push(args)
+			function gtag() {
+				dataLayer.push(arguments)
 			}
 			gtag("js", new Date())
+
 			gtag("config", "G-L6RW5H70E1")
-		</script></head
-	>
+		</script>
+	</head>
 
 	<body class="bg-primaryBg">
 		<Header />
