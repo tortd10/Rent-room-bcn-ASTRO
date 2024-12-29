@@ -1,22 +1,11 @@
-# Astro Starter Kit: Basics
+# Rent Room BCN - ASTRO
 
-```sh
-npm create astro@latest -- --template basics
-```
+Este proyecto es una aplicación web para la gestión y búsqueda de habitaciones en alquiler en Barcelona, desarrollada con [Astro](https://astro.build/).  
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Estructura del Proyecto  
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+La estructura del proyecto es la siguiente:  
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
 /
 ├── public/
 │   └── favicon.svg
@@ -27,28 +16,64 @@ Inside of your Astro project, you'll see the following folders and files:
 │   │   └── Layout.astro
 │   └── pages/
 │       └── index.astro
-└── package.json
-```
+├── .editorconfig
+├── .eslintrc.cjs
+├── .gitignore
+├── .lintstagedrc
+├── .prettierignore
+├── .prettierrc.mjs
+├── astro.config.mjs
+├── package-lock.json
+├── package.json
+├── postcss.config.mjs
+├── tailwind.config.mjs
+└── tsconfig.json
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+- **public/**: Archivos estáticos.  
+- **src/**: Código fuente del proyecto.  
+  - **components/**: Componentes reutilizables.  
+  - **layouts/**: Plantillas de diseño.  
+  - **pages/**: Páginas de la aplicación.  
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Tecnologías Utilizadas  
 
-Any static assets, like images, can be placed in the `public/` directory.
+- [Astro](https://astro.build/): Framework para construir sitios web rápidos.  
+- [Tailwind CSS](https://tailwindcss.com/): Framework de CSS para diseño rápido.  
 
-## 🧞 Commands
+## Instalación y Uso  
 
-All commands are run from the root of the project, from a terminal:
+1. **Clonar el repositorio**:  
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+   ```bash
+   git clone https://github.com/tortd10/Rent-room-bcn-ASTRO.git
+   cd Rent-room-bcn-ASTRO
 
-## 👀 Want to learn more?
+	2.	Instalar dependencias:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+npm install
+
+
+	3.	Iniciar el servidor de desarrollo:
+
+npm run dev
+
+Accede a la aplicación en http://localhost:3000.
+
+Contribuciones
+
+Las contribuciones son bienvenidas. Por favor, sigue estos pasos:
+	1.	Haz un fork del repositorio.
+	2.	Crea una nueva rama (git checkout -b feature/nueva-funcionalidad).
+	3.	Realiza tus cambios y haz commit (git commit -m 'Agrega nueva funcionalidad').
+	4.	Envía tus cambios (git push origin feature/nueva-funcionalidad).
+	5.	Abre un Pull Request.
+
+Licencia
+
+Este proyecto está bajo la Licencia MIT. Consulta el archivo LICENSE para más detalles.
+
+Autor
+
+Desarrollado por tortd10.
+
+Si necesitas ajustar algo más, no dudes en decirlo.
