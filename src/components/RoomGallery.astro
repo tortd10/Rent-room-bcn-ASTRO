@@ -35,13 +35,17 @@ const { imagePaths, initialAlt } = Astro.props as Props
 	</div>
 
 	<!-- Miniaturas -->
-	<div id="thumbnails-container" class="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-6">
-		{
-			imagePaths.map((image, index) => (
+	<div id="thumbnails-container" class="carousel-container relative">
+		<div
+			class="custom-scrollbar flex snap-x snap-mandatory gap-x-4 overflow-x-auto px-4"
+			id="carousel"
+			style="max-width: calc(5 * 7rem);"
+		>
+			{imagePaths.map((image, index) => (
 				<img
 					src={image}
 					alt={`Miniatura ${index + 1}`}
-					class={`h-20 w-20 cursor-pointer rounded-md border-2 ${
+					class={`h-28 w-28 cursor-pointer rounded-md border-2 ${
 						index === 0 ? "border-primary" : "border-transparent"
 					} object-cover hover:border-primary`}
 					data-image={image}
@@ -52,7 +56,49 @@ const { imagePaths, initialAlt } = Astro.props as Props
 					loading="lazy"
 				/>
 			))
-		}
+			}
+		</div>
+		<button
+			class="absolute left-[-2.5rem] top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full opacity-50 hover:opacity-100 transition disabled:opacity-30"
+			id="left-button"
+			disabled
+			aria-label="Desplazar a la izquierda"
+		>
+			<svg
+				class="w-6 h-6 text-gray-600"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M15 19l-7-7 7-7"
+				></path>
+			</svg>
+		</button>
+		<button
+			class="absolute right-[-2.5rem] top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full opacity-50 hover:opacity-100 transition"
+			id="right-button"
+			aria-label="Desplazar a la derecha"
+		>
+			<svg
+				class="w-6 h-6 text-gray-600"
+				fill="none"
+				stroke="currentColor"
+				stroke-width="2"
+				viewBox="0 0 24 24"
+				xmlns="http://www.w3.org/2000/svg"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					d="M9 5l7 7-7 7"
+				></path>
+			</svg>
+		</button>
 	</div>
 </div>
 
@@ -127,4 +173,69 @@ const { imagePaths, initialAlt } = Astro.props as Props
 		prevArea?.addEventListener("click", () => handleAreaClick("prev"))
 		nextArea?.addEventListener("click", () => handleAreaClick("next"))
 	})
+
+	const leftButton = document.querySelector("#left-button") as HTMLButtonElement | null;
+	const rightButton = document.querySelector("#right-button") as HTMLButtonElement | null;
+	const carousel = document.querySelector("#carousel") as HTMLElement | null;
+
+	if (leftButton && rightButton && carousel) {
+	leftButton.addEventListener("click", () => {
+		carousel.scrollBy({ left: -150, behavior: "smooth" });
+	});
+
+	rightButton.addEventListener("click", () => {
+		carousel.scrollBy({ left: 150, behavior: "smooth" });
+	});
+
+	carousel.addEventListener("scroll", () => {
+		const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+
+		leftButton.disabled = carousel.scrollLeft <= 0;
+		rightButton.disabled = carousel.scrollLeft >= maxScrollLeft;
+	});
+}
 </script>
+<style>
+	.custom-scrollbar::-webkit-scrollbar {
+		display: none;
+	}
+	
+	.custom-scrollbar {
+		-ms-overflow-style: none;
+		scrollbar-width: none;
+	}
+	
+	.carousel-container::before,
+	.carousel-container::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		width: 4rem;
+		pointer-events: none;
+		z-index: 10;
+	}
+	
+	.carousel-container::before {
+		left: 0;
+		background: linear-gradient(to right, #EEF2FF, transparent);
+	}
+	
+	.carousel-container::after {
+		right: 0;
+		background: linear-gradient(to left, #EEF2FF, transparent);
+	}
+	
+	#left-button,
+	#right-button {
+		transform: translateY(-50%);
+	}
+	
+	#left-button {
+		left: -3rem;
+	}
+	
+	#right-button {
+		right: -3rem;
+	}
+</style>
