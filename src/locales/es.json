@@ -104,13 +104,13 @@
         "name": "Alex",
         "role": "Director General",
         "description": "Con una amplia experiencia en el sector inmobiliario, Alex se encarga de dirigir el equipo y garantizar que cada cliente reciba la mejor atención posible.",
-        "image": "/Alex.jpg"
+        "image": "/About/Alex.jpg"
       },
       {
         "name": "David",
         "role": "Gerente de Atención al Cliente",
         "description": "Se encarga de ofrecer un servicio al cliente excepcional, asegurándose de que cada persona tenga una experiencia inolvidable con RentRoomBCN.",
-        "image": "/Alex.jpg"
+        "image": "/About/Alex.jpg"
       }
     ]
   },

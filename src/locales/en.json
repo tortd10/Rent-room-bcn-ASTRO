@@ -91,13 +91,13 @@
         "name": "Alex",
         "role": "General Director",
         "description": "With extensive experience in the real estate sector, Alex leads the team and ensures that every client receives the best possible attention.",
-        "image": "/Alex.jpg"
+        "image": "/About/Alex.jpg"
       },
       {
         "name": "David",
         "role": "Customer Service Manager",
         "description": "David is responsible for providing exceptional customer service, ensuring that every person has an unforgettable experience with RentRoomBCN.",
-        "image": "/Alex.jpg"
+        "image": "/About/Alex.jpg"
       }
     ]
   },
