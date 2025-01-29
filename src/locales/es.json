@@ -34,6 +34,10 @@
         "href": "/Faq"
       },
       {
+        "label": "LEGAL",
+        "href": "/legal"
+      },
+      {
         "href": "/change-language",
         "icon": "/Flags/{currentLang === 'es' ? 'en' : 'es'}.svg"
       }
@@ -271,5 +275,30 @@
     "descriptionPlaceholder": "Escribe cualquier pregunta o detalle adicional",
     "acceptDataLabel": "Acepto el tratamiento de mis datos personales.",
     "submitButton": "Enviar"
+  },
+  "Legal": {
+    "title": "Información Legal",
+    "optionsbuttons": [
+      {
+        "label": "Aviso Legal",
+        "id": "aviso-legal"
+      },
+      {
+        "label": "Política de Privacidad",
+        "id": "privacidad"
+      },
+      {
+        "label": "Política de Cookies",
+        "id": "cookies"
+      },
+      {
+        "label": "Términos y Condiciones de Uso",
+        "id": "terminos-uso"
+      },
+      {
+        "label": "Términos y Condiciones de Venta",
+        "id": "devoluciones"
+      }
+    ]
   }
 }

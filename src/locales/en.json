@@ -33,6 +33,10 @@
         "label": "FAQ",
         "href": "/Faq"
       },
+	  {
+        "label": "LEGAL",
+        "href": "/legal"
+      },
       {
         "href": "/change-language",
         "icon": "/Flags/{currentLang === 'es' ? 'en' : 'es'}.svg"

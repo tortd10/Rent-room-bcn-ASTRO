@@ -51,7 +51,7 @@ export const ROOMS = [
 		imageSrc: "/Flats/RB219/HAB1/Hab1-1.jpg",
 		imageAlt: "RB2191",
 		roomFlat: "RB219",
-		available: true,
+		available: false,
 	},
 	{
 		slug: "RB219-HAB2",
@@ -60,7 +60,7 @@ export const ROOMS = [
 		imageSrc: "/Flats/RB219/HAB2/Hab2-1.jpg",
 		imageAlt: "RB2192",
 		roomFlat: "RB219",
-		available: true,
+		available: false,
 	},
 	{
 		slug: "RB219-HAB3",
@@ -69,7 +69,25 @@ export const ROOMS = [
 		imageSrc: "/Flats/RB219/HAB3/Hab3-1.jpg",
 		imageAlt: "RB2193",
 		roomFlat: "RB219",
-		available: true,
+		available: false,
+	},
+	{
+		slug: "RB219-HAB4",
+		name: "RIERA BLANCA HABITACIÓN 4",
+		description: "FALTA AÑADIR DESCRIPCIÓN",
+		imageSrc: "/Flats/RB219/HAB4/Hab4-1.jpg",
+		imageAlt: "RB2194",
+		roomFlat: "RB219",
+		available: false,
+	},
+	{
+		slug: "RB219-HAB5",
+		name: "RIERA BLANCA HABITACIÓN 5",
+		description: "FALTA AÑADIR DESCRIPCIÓN",
+		imageSrc: "/Flats/RB219/HAB3/Hab5-1.jpg",
+		imageAlt: "RB2195",
+		roomFlat: "RB219",
+		available: false,
 	},
 ]
 

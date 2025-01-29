@@ -1,0 +1,159 @@
+---
+import SectionContainer from "@components/SectionContainer.astro"
+import i18next from "../i18n/config.js"
+
+interface LegalOption {
+	label: string
+	id: string
+}
+
+interface Legal {
+	title: string
+	optionsbuttons: LegalOption[]
+}
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const legal: Legal = translations.Legal
+---
+
+<style>
+	.mobile-MenuOpen {
+		position: absolute;
+		top: 100%;
+		right: 0;
+		background: var(--headerBg, white);
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		padding: 1rem;
+		gap: 1rem;
+		text-align: center;
+	}
+
+	.hidden {
+		display: none;
+	}
+
+	img {
+		width: 15rem; /* Tamaño del logo */
+	}
+
+	@media (min-width: 768px) {
+		.desktop-menu {
+			display: flex;
+		}
+
+		.mobile-MenuOpen {
+			display: none;
+		}
+	}
+</style>
+
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+</head>
+
+<SectionContainer class="bg-light-gray px-4">
+	<div
+		class="bolck sticky top-0 items-center justify-between py-4 backdrop-blur-xl"
+		x-data="{ activeSection: 'aviso-legal' }"
+	>
+		<header class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
+			<div class="desktop-menu hidden gap-4 md:flex">
+				{
+					legal.optionsbuttons.map(({ label, id }) => (
+						<button
+							x-on:click={`activeSection = '${id}'`}
+							class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-lg font-semibold text-white shadow-md transition hover:bg-opacity-80"
+						>
+							{label}
+						</button>
+					))
+				}
+			</div>
+
+			<button
+				id="menu-MenuOpen"
+				class="flex w-full items-center justify-between rounded-lg bg-primary px-5 py-3 text-white md:hidden"
+			>
+				<h1 class="text-lg font-semibold">{legal.title}</h1>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					class="h-6 w-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M4 6h16M4 12h16m-7 6h7"></path>
+				</svg>
+			</button>
+		</header>
+
+		<div id="mobile-MenuOpen" class="mobile-MenuOpen hidden">
+			{
+				legal.optionsbuttons.map(({ label, id }) => (
+					<a
+						x-on:click={`activeSection = '${id}'`}
+						class="py-2 text-lg font-semibold text-primary hover:contrast-150"
+					>
+						{label}
+					</a>
+				))
+			}
+		</div>
+
+		<!-- Contenido Dinámico con Alpine.js -->
+		<div>
+			<div x-show="activeSection === 'aviso-legal'">
+				<h2>Aviso Legal</h2>
+				<p>Contenido del aviso legal...</p>
+			</div>
+			<div x-show="activeSection === 'privacidad'">
+				<h2>Política de Privacidad</h2>
+				<p>Contenido de la política de privacidad...</p>
+			</div>
+			<div x-show="activeSection === 'cookies'">
+				<h2>Política de Cookies</h2>
+				<p>Contenido de la política de cookies...</p>
+			</div>
+			<div x-show="activeSection === 'terminos-uso'">
+				<h2>Términos y Condiciones de Uso</h2>
+				<p>Contenido de los términos y condiciones de uso...</p>
+			</div>
+			<div x-show="activeSection === 'devoluciones'">
+				<h2>Términos y Condiciones de Venta</h2>
+				<p>Contenido de los términos y condiciones de venta...</p>
+			</div>
+		</div>
+	</div>
+</SectionContainer>
+
+<script>
+	const menuButton = document.getElementById("menu-MenuOpen")
+	const mobileMenu = document.getElementById("mobile-MenuOpen")
+
+	if (menuButton && mobileMenu) {
+		// Toggle menu on button click
+		menuButton.addEventListener("click", (event) => {
+			mobileMenu.classList.toggle("hidden")
+			event.stopPropagation()
+		})
+
+		// Close menu if clicked outside
+		document.addEventListener("click", (event) => {
+			if (
+				!mobileMenu.classList.contains("hidden") &&
+				!mobileMenu.contains(event.target) &&
+				!menuButton.contains(event.target)
+			) {
+				mobileMenu.classList.add("hidden")
+			}
+		})
+	}
+</script>
