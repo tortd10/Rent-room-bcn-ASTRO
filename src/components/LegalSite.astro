@@ -161,8 +161,8 @@ const legal: Legal = translations.Legal
 		document.addEventListener("click", (event) => {
 			if (
 				!mobileMenu.classList.contains("hidden") &&
-				!mobileMenu.contains(event.target) &&
-				!menuButton.contains(event.target)
+				!mobileMenu.contains(event.target as Node) &&
+				!menuButton.contains(event.target as Node)
 			) {
 				mobileMenu.classList.add("hidden")
 			}
