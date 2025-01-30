@@ -33,7 +33,7 @@
         "label": "FAQ",
         "href": "/Faq"
       },
-	  {
+      {
         "label": "LEGAL",
         "href": "/legal"
       },
@@ -249,5 +249,247 @@
     "descriptionPlaceholder": "Write any questions or additional details",
     "acceptDataLabel": "I accept the processing of my personal data.",
     "submitButton": "Submit"
+  },
+  "Legal": {
+    "title": "Legal Information",
+    "optionsbuttons": [
+      {
+        "label": "Legal Notice",
+        "id": "aviso-legal"
+      },
+      {
+        "label": "Privacidad Policy",
+        "id": "privacidad"
+      },
+      {
+        "label": "Cookie Policy",
+        "id": "cookies"
+      }
+    ]
+  },
+  "LegalNotice": {
+    "title": "LEGAL NOTICE",
+    "avisoLegal1": {
+      "heading": "1. IDENTIFICATION OF THE WEBSITE OWNER",
+      "content1": "In compliance with the information duty established in",
+      "content2": " Law 34/2002, on Information Society Services and Electronic Commerce (LSSI-CE)",
+      "content3": ", the following details of the website owner are provided:",
+      "titular1": "Owner:",
+      "titular": " [Name or Company Name]",
+      "nif1": "NIF / CIF:",
+      "nif": " [Tax Identification Number]",
+      "domicilio1": "Registered Address:",
+      "domicilio": " [Full Address]",
+      "email1": "Contact Email:",
+      "email": " [Contact Email]",
+      "telefono1": "Contact Phone:",
+      "telefono": " [Phone Number]",
+      "registroMercantil1": "Commercial Registry Information:",
+      "registroMercantil": " [Registration number, volume, page, entry]"
+    },
+    "avisoLegal2": {
+      "heading": "2. GENERAL TERMS OF USE",
+      "content1": "This Legal Notice regulates access and use of the website [Website Name] (hereinafter, [the Website]). Using the Website grants the status of user and implies full and unreserved acceptance of all provisions included in this document in the version published at the time of access.",
+      "content2": "The user agrees to use the Website, its services, and content in accordance with applicable laws, good faith, generally accepted practices, and public order. Any use of the website for illegal purposes or that may harm the website owner or third parties is prohibited."
+    },
+    "avisoLegal3": {
+      "heading": "3. USER RESPONSIBILITY",
+      "content1": "The user assumes responsibility for using the Website. This responsibility extends to any registration required to access certain services or content. In such registration, the user is responsible for providing truthful and lawful information. As a result of this registration, the user may be provided with a password, which they are responsible for keeping confidential and using diligently.",
+      "content2": "The user agrees to use the content and services provided by [Company Name] through the Website appropriately and, including but not limited to, agrees not to use them to:",
+      "content3": "Engage in unlawful or illegal activities or those contrary to good faith and public order.",
+      "content4": "Distribute racist, xenophobic, illegal-pornographic, terrorist-supporting, or human rights-violating content or propaganda.",
+      "content5": "Cause damage to the physical and logical systems of [Company Name], its providers, or third parties.",
+      "content6": "Introduce or spread computer viruses or other physical or logical systems that could cause the aforementioned damages."
+    },
+    "avisoLegal4": {
+      "heading": "4. INTELLECTUAL AND INDUSTRIAL PROPERTY",
+      "content1": "All content on the Website, including but not limited to texts, photographs, graphics, images, icons, technology, software, graphic design, and source codes, constitutes a work owned by [Company Name], without any exploitation rights being transferred to the user beyond what is strictly necessary for proper use of the Website.",
+      "content2": "Likewise, all trademarks, trade names, or distinctive signs appearing on the Website are owned by [Company Name], and access to the Website does not grant any rights over them to the user."
+    },
+    "avisoLegal5": {
+      "heading": "5. EXCLUSION OF WARRANTIES AND LIABILITY",
+      "content1": "[Company Name] is not responsible, under any circumstances, for damages of any nature that may be caused, including but not limited to:",
+      "content2": "Errors or omissions in the content.",
+      "content3": "Unavailability of the portal.",
+      "content4": "Transmission of viruses or malicious programs despite having adopted all necessary technological measures to prevent them."
+    },
+    "avisoLegal6": {
+      "heading": "6. MODIFICATIONS",
+      "content1": "[Company Name] reserves the right to make changes to its portal without prior notice, including modifying, deleting, or adding content and services provided through the Website, as well as the way they are presented or located."
+    },
+    "avisoLegal7": {
+      "heading": "7. EXTERNAL LINKS",
+      "content1": "If the Website contains links or hyperlinks to other Internet sites, [Company Name] does not exercise any control over these sites and content. Under no circumstances will [Company Name] assume responsibility for any external website content, nor guarantee technical availability, quality, reliability, accuracy, scope, truthfulness, validity, or constitutionality of any material or information contained in any such hyperlinks or external websites."
+    },
+    "avisoLegal8": {
+      "heading": "8. RIGHT TO EXCLUSION",
+      "content1": "[Company Name] reserves the right to deny or withdraw access to the portal and/or services offered without prior notice, on its own initiative or at the request of a third party, to users who fail to comply with these General Terms of Use."
+    },
+    "avisoLegal9": {
+      "heading": "9. APPLICABLE LAW AND JURISDICTION",
+      "content1": "The relationship between [Company Name] and the user will be governed by current Spanish regulations, and any dispute will be submitted to the Courts and Tribunals of [City], unless applicable law provides otherwise."
+    },
+    "avisoLegal10": {
+      "heading": "10. CONTACT",
+      "content1": "If any user has any questions regarding these legal terms or any comments about the Website, please contact [Contact Email]."
+    }
+  },
+  "Privacy": {
+    "title": "PRIVACY POLICY",
+    "privacidad1": {
+      "heading": "1. INTRODUCTION",
+      "content1": "At [Company Name] (hereinafter, “the Company” or “we”), we are committed to ensuring the privacidad and protection of our users’ personal data. This privacidad Policy describes how we collect, use, and protect personal information obtained through our website [Website URL].",
+      "content2": "Use of this website implies acceptance of this privacidad Policy under the terms set out herein."
+    },
+    "privacidad2": {
+      "heading": "2. IDENTIFICATION OF THE DATA CONTROLLER",
+      "Responsable1": "Controller:",
+      "Responsable": " [Name or Company Name]",
+      "nif1": "NIF / CIF:",
+      "nif": " [Tax Identification Number]",
+      "domicilio1": "Registered Address:",
+      "domicilio": " [Full Address]",
+      "email1": "Contact Email:",
+      "email": " [Contact Email]",
+      "telefono1": "Contact Phone:",
+      "telefono": " [Phone Number]"
+    },
+    "privacidad3": {
+      "heading": "3. DATA WE COLLECT",
+      "content1": "We may collect the following personal information through forms on our website or interactions with our services:",
+      "DatosIdentificacion1": "Identification data:",
+      "DatosIdentificacion": " Name, surname, address, email, phone number.",
+      "datosPago1": "Payment data:",
+      "datosPago": " Banking information in case of purchases or service contracts.",
+      "datosTecnicos1": "Technical data:",
+      "datosTecnicos": " IP address, browser type, operating system, browsing data on the website.",
+      "datosProporcionados1": "Data provided voluntarily:",
+      "datosProporcionados": " Through contact forms, comments, or newsletter subscriptions."
+    },
+    "privacidad4": {
+      "heading": "4. PURPOSE OF DATA PROCESSING",
+      "content1": "The collected personal data will be used for the following purposes:",
+      "content2": "Managing the relationship with users and customers.",
+      "content3": "Processing requests, inquiries, or service contracts.",
+      "content4": "Sending commercial and promotional communications, if the user has given consent.",
+      "content5": "Improving user experience and optimizing the website.",
+      "content6": "Complying with legal and regulatory obligations."
+    },
+    "privacidad5": {
+      "heading": "5. LEGAL BASIS FOR DATA PROCESSING",
+      "content1": "The processing of personal data is based on:",
+      "content2": "User consent",
+      "content21": ", given when filling out forms or accepting cookie use.",
+      "content3": "Performance of a contract",
+      "content31": ", when processing is necessary for providing a requested service.",
+      "content4": "Compliance with legal obligations",
+      "content41": " , such as tax or billing requirements.",
+      "content5": "Legitimate interest",
+      "content51": ", when processing is necessary for improving our services."
+    },
+    "privacidad6": {
+      "heading": "6. DATA RETENTION",
+      "content1": "Personal data will be retained for as long as necessary to fulfill the purposes for which they were collected and, subsequently, for the periods required by applicable law."
+    },
+    "privacidad7": {
+      "heading": "7. DATA SHARING WITH THIRD PARTIES",
+      "content1": "We do not share users' personal data with third parties, except in the following cases:",
+      "content2": "Compliance with legal obligations.",
+      "content3": "Service providers (hosting, payment platforms, marketing) under agreements ensuring data security.",
+      "content4": "In case of company acquisition or merger, in which case data may be transferred to the new owner."
+    },
+    "privacidad8": {
+      "heading": "8. USER RIGHTS",
+      "content1": "The user has the right to:",
+      "content2": "Access",
+      "content21": " their personal data and obtain information about its processing.",
+      "content3": "Rectify",
+      "content31": " incorrect or incomplete data.",
+      "content4": "Request deletion",
+      "content41": " of their data when no longer needed for the purposes they were collected.",
+      "content5": "Restrict processing",
+      "content51": " of their data in certain circumstances.",
+      "content6": "Object",
+      "content61": " to the processing of their data for commercial purposes.",
+      "content7": "Portability",
+      "content71": " of their data to another service provider.",
+      "content8": "To exercise these rights, the user may submit a request to",
+      "content81": "[Contact Email]",
+      "content82": ", attaching a copy of their identity document.",
+      "content9": "If they believe their rights have been violated, they may file a complaint with the",
+      "content91": "Spanish Data Protection Agency (AEPD)",
+      "content92": " at www.aepd.es."
+    },
+    "privacidad9": {
+      "heading": "9. SECURITY MEASURES",
+      "content1": "We have implemented technical and organizational security measures to protect personal data against unauthorized access, alteration, loss, or destruction."
+    }
+  },
+  "Cookies": {
+    "title": "COOKIE POLICY",
+    "cookies1": {
+      "heading": "1. INTRODUCTION",
+      "content1": "The website [Company Name] (hereinafter, the 'Website') uses cookies and similar technologies to improve user browsing experience, provide functionalities, and obtain usage statistics.",
+      "content2": "This Cookie Policy explains what cookies are, what types we use, and how you can manage them."
+    },
+    "cookies2": {
+      "heading": "2. WHAT ARE COOKIES?",
+      "content1": "Cookies are small text files stored on the user's device (computer, tablet, or mobile) when visiting a website. They allow the site to remember information about the visit, making it easier to use and improving the browsing experience."
+    },
+    "cookies3": {
+      "heading": "3. TYPES OF COOKIES WE USE",
+      "content1": "On our Website, we use the following types of cookies:",
+      "cookies31": {
+        "heading": "3.1. Based on their purpose",
+        "content2": "Technical cookies (necessary):",
+        "content21": " Essential for the Website’s operation. Without them, some services or functionalities may not be available.",
+        "content3": "Analytics or performance cookies:",
+        "content31": " Help us understand how users interact with the Website by collecting anonymous information.",
+        "content4": "Personalization cookies:",
+        "content41": " Allow remembering user preferences, such as language or regional settings.",
+        "content5": "Advertising cookies:",
+        "content51": " Used to display relevant and personalized ads based on the user's browsing habits."
+      },
+      "cookies32": {
+        "heading": "3.2. Based on their duration",
+        "content2": "Session cookies:",
+        "content21": " Automatically deleted when the user closes the browser.",
+        "content3": "Persistent cookies:",
+        "content31": " Remain on the user's device for a specified period or until manually deleted."
+      },
+      "cookies33": {
+        "heading": "3.3. Based on their origin",
+        "content2": "First-party cookies:",
+        "content21": " Sent from our own domain ([Company Name]).",
+        "content3": "Third-party cookies:",
+        "content31": " Managed by external services, such as Google Analytics, social media, or advertising platforms."
+      }
+    },
+    "cookies4": {
+      "heading": "4. HOW TO MANAGE COOKIES?",
+      "content1": "Users can manage, block, or delete cookies at any time through their browser settings. Below are links with instructions for the main browsers:",
+      "content2": "Google Chrome:",
+      "content3": "Mozilla Firefox:",
+      "content4": "Safari:",
+      "content5": "Microsoft Edge:",
+      "contentURL": "Cookie settings",
+      "content6": "If the user disables or deletes cookies, some Website functions may be affected."
+    },
+    "cookies5": {
+      "heading": "5. THIRD-PARTY COOKIES",
+      "content1": "This Website may use third-party services that collect information for statistical and advertising purposes. Below are some of the main external cookie providers:",
+      "content2": "Google Analytics",
+      "content21URL": " https://policies.google.com/privacidad?hl=en",
+      "content3": "Facebook Pixel",
+      "content31URL": " https://www.facebook.com/policies/cookies/",
+      "content4": "YouTube",
+      "content41URL": " https://policies.google.com/privacidad?hl=en",
+      "content5": " (privacidad Policy: ",
+      "content51": ")"
+    },
+    "cookies6": {
+      "heading": "6. CHANGES TO THE COOKIE POLICY",
+      "content1": "[Company Name] reserves the right to modify this Cookie Policy at any time. Any significant changes will be communicated to users."
+    }
   }
 }

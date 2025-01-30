@@ -290,15 +290,232 @@
       {
         "label": "Política de Cookies",
         "id": "cookies"
-      },
-      {
-        "label": "Términos y Condiciones de Uso",
-        "id": "terminos-uso"
-      },
-      {
-        "label": "Términos y Condiciones de Venta",
-        "id": "devoluciones"
       }
     ]
+  },
+  "LegalNotice": {
+    "title": "AVISO LEGAL",
+    "avisoLegal1": {
+      "heading": "1. IDENTIFICACIÓN DEL TITULAR DEL SITIO WEB",
+      "content1": "En cumplimiento con el deber de información establecido en la",
+      "content2": " Ley 34/2002, de Servicios de la Sociedad de la Información y del Comercio Electrónico (LSSI-CE)",
+      "content3": ", a continuación se reflejan los datos identificativos del responsable del sitio web:",
+      "titular1": "Titular:",
+      "titular": " [Nombre o Razón Social]",
+      "nif1": "NIF / CIF:",
+      "nif": " [Número de identificación fiscal]",
+      "domicilio1": "Domicilio Social:",
+      "domicilio": " [Dirección completa]",
+      "email1": "Correo Electrónico de Contacto:",
+      "email": " [Email de contacto]",
+      "telefono1": "Teléfono de Contacto:",
+      "telefono": " [Número de teléfono]",
+      "registroMercantil1": "Datos de inscripción en el Registro Mercantil:",
+      "registroMercantil": " [Número de inscripción, tomo, folio, inscripción]"
+    },
+    "avisoLegal2": {
+      "heading": "2. CONDICIONES GENERALES DE USO",
+      "content1": "El presente Aviso Legal regula el acceso y uso del sitio web [Nombre de la web] (en adelante, [el Sitio Web]). La utilización del Sitio Web atribuye la condición de usuario e implica la aceptación plena y sin reservas de todas las disposiciones incluidas en este documento en la versión publicada en el momento del acceso.",
+      "content2": "El usuario se compromete a utilizar el Sitio Web, sus servicios y contenidos de conformidad con la legislación vigente, la buena fe, los usos generalmente aceptados y el orden público. Queda prohibido cualquier uso del sitio web con fines ilícitos o que puedan causar perjuicio al titular del sitio web o a terceros."
+    },
+    "avisoLegal3": {
+      "heading": "3. RESPONSABILIDAD DEL USUARIO",
+      "content1": "El usuario asume la responsabilidad del uso del Sitio Web. Esta responsabilidad se extiende al registro necesario para acceder a determinados servicios o contenidos. En dicho registro, el usuario será responsable de aportar información veraz y lícita. Como consecuencia de este registro, se podrá proporcionar al usuario una contraseña de la que será responsable, comprometiéndose a hacer un uso diligente y confidencial de la misma.",
+      "content2": "El usuario se compromete a hacer un uso adecuado de los contenidos y servicios que [Nombre de la empresa] ofrece a través del Sitio Web y, con carácter enunciativo pero no limitativo, a no emplearlos para:",
+      "content3": "Realizar actividades ilícitas, ilegales o contrarias a la buena fe y al orden público.",
+      "content4": "Difundir contenidos o propaganda de carácter racista, xenófobo, pornográfico-ilegal, de apología del terrorismo o atentatorio contra los derechos humanos.",
+      "content5": "Provocar daños en los sistemas físicos y lógicos de [Nombre de la empresa], de sus proveedores o de terceras personas.",
+      "content6": "Introducir o difundir en la red virus informáticos u otros sistemas físicos o lógicos que sean susceptibles de provocar los daños anteriormente mencionados."
+    },
+    "avisoLegal4": {
+      "heading": "4. PROPIEDAD INTELECTUAL E INDUSTRIAL",
+      "content1": "Todos los contenidos del Sitio Web, incluyendo a título enunciativo pero no limitativo, los textos, fotografías, gráficos, imágenes, iconos, tecnología, software, diseño gráfico y códigos fuente, constituyen una obra cuya propiedad pertenece a [Nombre de la empresa], sin que puedan entenderse cedidos al usuario ninguno de los derechos de explotación sobre los mismos más allá de lo estrictamente necesario para el correcto uso del Sitio Web.",
+      "content2": "Asimismo, todas las marcas, nombres comerciales o signos distintivos de cualquier clase que aparecen en el Sitio Web son propiedad de [Nombre de la empresa], sin que pueda entenderse que el uso o acceso al mismo atribuya al usuario derecho alguno sobre los mismos."
+    },
+    "avisoLegal5": {
+      "heading": "5. EXCLUSIÓN DE GARANTÍAS Y RESPONSABILIDAD",
+      "content1": "[Nombre de la empresa] no se hace responsable, en ningún caso, de los daños y perjuicios de cualquier naturaleza que pudieran ocasionar, a título enunciativo y no limitativo:",
+      "content2": "Errores u omisiones en los contenidos.",
+      "content3": "Falta de disponibilidad del portal.",
+      "content4": "La transmisión de virus o programas maliciosos o lesivos en los contenidos, a pesar de haber adoptado todas las medidas tecnológicas necesarias para evitarlo."
+    },
+    "avisoLegal6": {
+      "heading": "6. MODIFICACIONES",
+      "content1": "[Nombre de la empresa] se reserva el derecho de efectuar sin previo aviso las modificaciones que considere oportunas en su portal, pudiendo cambiar, suprimir o añadir tanto los contenidos y servicios que se presten a través del mismo como la forma en la que estos aparezcan presentados o localizados en su Sitio Web."
+    },
+    "avisoLegal7": {
+      "heading": "7. ENLACES EXTERNOS",
+      "content1": "En el caso de que en el Sitio Web se dispusiesen enlaces o hipervínculos hacia otros sitios de Internet, [Nombre de la empresa] no ejercerá ningún tipo de control sobre dichos sitios y contenidos. En ningún caso [Nombre de la empresa] asumirá responsabilidad alguna por los contenidos de algún enlace perteneciente a un sitio web ajeno, ni garantizará la disponibilidad técnica, calidad, fiabilidad, exactitud, amplitud, veracidad, validez y constitucionalidad de cualquier material o información contenida en ninguno de dichos hipervínculos u otros sitios de Internet."
+    },
+    "avisoLegal8": {
+      "heading": "8. DERECHO DE EXCLUSIÓN",
+      "content1": "[Nombre de la empresa] se reserva el derecho a denegar o retirar el acceso al portal y/o a los servicios ofrecidos sin necesidad de preaviso, a instancia propia o de un tercero, a aquellos usuarios que incumplan las presentes Condiciones Generales de Uso."
+    },
+    "avisoLegal9": {
+      "heading": "9. LEGISLACIÓN APLICABLE Y JURISDICCIÓN",
+      "content1": "La relación entre [Nombre de la empresa] y el usuario se regirá por la normativa española vigente y cualquier controversia se someterá a los Juzgados y Tribunales de [Ciudad], salvo que la legislación aplicable disponga otra cosa."
+    },
+    "avisoLegal10": {
+      "heading": "10. CONTACTO",
+      "content1": "En caso de que cualquier usuario tuviera alguna duda acerca de estas condiciones legales o cualquier comentario sobre el Sitio Web, por favor diríjase a [Email de contacto]."
+    }
+  },
+  "Privacy": {
+    "title": "POLÍTICA DE PRIVACIDAD",
+    "privacidad1": {
+      "heading": "1. INTRODUCCIÓN",
+      "content1": "En [Nombre de la empresa] (en adelante, “la Empresa” o “nosotros”), nos comprometemos a garantizar la privacidad y protección de los datos personales de nuestros usuarios. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información personal obtenida a través de nuestro sitio web [URL de la web].",
+      "content2": "El uso de este sitio web implica la aceptación de esta Política de Privacidad en los términos aquí expuestos."
+    },
+    "privacidad2": {
+      "heading": "2. IDENTIFICACIÓN DEL RESPONSABLE DEL TRATAMIENTON",
+      "Responsable1": "Responsable:",
+      "Responsable": " [Nombre o Razón Social]",
+      "nif1": "NIF / CIF:",
+      "nif": " [Número de identificación fiscal]",
+      "domicilio1": "Domicilio Social:",
+      "domicilio": " [Dirección completa]",
+      "email1": "Correo Electrónico de Contacto:",
+      "email": " [Email de contacto]",
+      "telefono1": "Teléfono de Contacto:",
+      "telefono": " [Número de teléfono]"
+    },
+    "privacidad3": {
+      "heading": "3. DATOS QUE RECOPILAMOS",
+      "content1": "Podemos recopilar la siguiente información personal a través de formularios en nuestro sitio web o mediante interacciones con nuestros servicios:",
+      "DatosIdentificacion1": "Datos de identificación:",
+      "DatosIdentificacion": " Nombre, apellidos, dirección, correo electrónico, teléfono.",
+      "datosPago1": "Datos de pago:",
+      "datosPago": " Información bancaria en caso de compras o contrataciones.",
+      "datosTecnicos1": "Datos técnicos:",
+      "datosTecnicos": " Dirección IP, tipo de navegador, sistema operativo, datos de navegación en el sitio web.",
+      "datosProporcionados1": "Datos proporcionados voluntariamente:",
+      "datosProporcionados": " A través de formularios de contacto, comentarios o suscripciones a boletines."
+    },
+    "privacidad4": {
+      "heading": "4. FINALIDAD DEL TRATAMIENTO DE DATOS",
+      "content1": "Los datos personales recopilados serán utilizados para los siguientes fines:",
+      "content2": "Gestionar la relación con los usuarios y clientes.",
+      "content3": "Procesar solicitudes, consultas o contrataciones de servicios.",
+      "content4": "Enviar comunicaciones comerciales y promocionales, si el usuario ha dado su consentimiento.",
+      "content5": "Mejorar la experiencia del usuario y optimizar el sitio web.",
+      "content6": "Cumplir con obligaciones legales y normativas."
+    },
+    "privacidad5": {
+      "heading": "5. BASE LEGAL PARA EL TRATAMIENTO DE DATOS",
+      "content1": "El tratamiento de los datos personales se basa en:",
+      "content2": "El consentimiento del usuario",
+      "content21": ", otorgado al completar formularios o aceptar el uso de cookies.",
+      "content3": "La ejecución de un contrato",
+      "content31": ", cuando el tratamiento es necesario para la prestación de un servicio solicitado.",
+      "content4": "El cumplimiento de obligaciones legales",
+      "content41": " , como requisitos fiscales o de facturación.",
+      "content5": "El interés legítimo",
+      "content51": ", cuando el tratamiento es necesario para la mejora de nuestros servicios."
+    },
+    "privacidad6": {
+      "heading": "6. CONSERVACIÓN DE LOS DATOS",
+      "content1": "Los datos personales serán conservados durante el tiempo necesario para cumplir con los fines para los que fueron recopilados y, posteriormente, durante los plazos exigidos por la legislación vigente."
+    },
+    "privacidad7": {
+      "heading": "7. COMPARTICIÓN DE DATOS CON TERCEROS",
+      "content1": "No compartimos los datos personales de los usuarios con terceros, salvo en los siguientes casos:",
+      "content2": "Cumplimiento de obligaciones legales.",
+      "content3": "Proveedores de servicios (hosting, plataformas de pago, marketing), bajo acuerdos que garantizan la seguridad de los datos.",
+      "content4": "En caso de adquisición o fusión de la Empresa, en cuyo caso los datos podrán ser transferidos al nuevo propietario."
+    },
+    "privacidad8": {
+      "heading": "8. DERECHOS DE LOS USUARIOS",
+      "content1": "El usuario tiene derecho a:",
+      "content2": "Acceder",
+      "content21": " a sus datos personales y obtener información sobre su tratamiento.",
+      "content3": "Rectificar",
+      "content31": " datos incorrectos o incompletos.",
+      "content4": "Solicitar la supresión",
+      "content41": " de sus datos cuando ya no sean necesarios para los fines para los que fueron recopilados.",
+      "content5": "Limitar el tratamiento",
+      "content51": " de sus datos en determinadas circunstancias.",
+      "content6": "Oponerse",
+      "content61": " al tratamiento de sus datos con fines comerciales.",
+      "content7": "Portabilidad",
+      "content71": " de sus datos a otro proveedor de servicios.",
+      "content8": "Para ejercer estos derechos, el usuario puede enviar una solicitud a",
+      "content81": "[Email de contacto]",
+      "content82": ", adjuntando copia de su documento de identidad.",
+      "content9": "Si considera que sus derechos han sido vulnerados, puede presentar una reclamación ante la",
+      "content91": "Agencia Española de Protección de Datos (AEPD)",
+      "content92": " en www.aepd.es."
+    },
+    "privacidad9": {
+      "heading": "9. MEDIDAS DE SEGURIDAD",
+      "content1": "Hemos implementado medidas de seguridad técnicas y organizativas para proteger los datos personales contra accesos no autorizados, alteraciones, pérdida o destrucción."
+    }
+  },
+  "Cookies": {
+    "title": "POLÍTICA DE COOKIES",
+    "cookies1": {
+      "heading": "1. INTRODUCCIÓN",
+      "content1": "El sitio web [Nombre de la empresa] (en adelante, el “Sitio Web”) utiliza cookies y tecnologías similares para mejorar la experiencia de navegación de los usuarios, proporcionar funcionalidades y obtener estadísticas de uso.",
+      "content2": "Esta Política de Cookies explica qué son las cookies, qué tipos utilizamos y cómo puedes gestionarlas."
+    },
+    "cookies2": {
+      "heading": "2. ¿QUÉ SON LAS COOKIES?",
+      "content1": "Las cookies son pequeños archivos de texto que se almacenan en el dispositivo del usuario (ordenador, tableta o móvil) cuando visita un sitio web. Permiten que el sitio recuerde información sobre su visita, lo que facilita su uso y mejora su experiencia de navegación."
+    },
+    "cookies3": {
+      "heading": "3. TIPOS DE COOKIES QUE UTILIZAMOS",
+      "content1": "En nuestro Sitio Web utilizamos los siguientes tipos de cookies:",
+      "cookies31": {
+        "heading": "3.1. Según su finalidad",
+        "content2": "Cookies técnicas (necesarias):",
+        "content21": " Imprescindibles para el funcionamiento del Sitio Web. Sin ellas, algunos servicios o funcionalidades pueden no estar disponibles.",
+        "content3": "Cookies de análisis o rendimiento:",
+        "content31": " Nos ayudan a entender cómo los usuarios interactúan con el Sitio Web, recopilando información anónima.",
+        "content4": "Cookies de personalización:",
+        "content41": " Permiten recordar preferencias del usuario, como el idioma o la configuración regional.",
+        "content5": "Cookies de publicidad:",
+        "content51": " Se utilizan para mostrar anuncios relevantes y personalizados según los hábitos de navegación del usuario."
+      },
+      "cookies32": {
+        "heading": "3.2. Según su duración",
+        "content2": "Cookies de sesión:",
+        "content21": " Se eliminan automáticamente cuando el usuario cierra el navegador.",
+        "content3": "Cookies persistentes:",
+        "content31": " Permanecen en el dispositivo del usuario durante un período determinado o hasta que se eliminan manualmente."
+      },
+      "cookies33": {
+        "heading": "3.3. Según su origen",
+        "content2": "Cookies propias:",
+        "content21": " Son enviadas por nuestro propio dominio ([Nombre de la empresa]).",
+        "content3": "Cookies de terceros:",
+        "content31": " Son gestionadas por servicios externos, como Google Analytics, redes sociales o plataformas de publicidad."
+      }
+    },
+    "cookies4": {
+      "heading": "4. ¿CÓMO GESTIONAR LAS COOKIES?",
+      "content1": "El usuario puede gestionar, bloquear o eliminar las cookies en cualquier momento desde la configuración de su navegador. A continuación, proporcionamos enlaces con instrucciones para los principales navegadores:",
+      "content2": "Google Chrome:",
+      "content3": "Mozilla Firefox:",
+      "content4": "Safari:",
+      "content5": "Microsoft Edge:",
+      "contentURL": "Configuración de cookies",
+      "content6": "Si el usuario desactiva o borra las cookies, algunas funciones del Sitio Web podrían verse afectadas."
+    },
+    "cookies5": {
+      "heading": "5. COOKIES DE TERCEROS",
+      "content1": "Este Sitio Web puede utilizar servicios de terceros que recopilan información con fines estadísticos y de publicidad. A continuación, algunos de los principales proveedores externos de cookies:",
+      "content2": "Google Analytic",
+      "content21URL": " https://policies.google.com/privacy?hl=es",
+      "content3": "Facebook Pixel",
+      "content31URL": " https://www.facebook.com/policies/cookies/",
+      "content4": "YouTube",
+      "content41URL": " https://policies.google.com/privacy?hl=es",
+      "content5": " (Política de privacidad: ",
+      "content51": ")"
+    },
+    "cookies6": {
+      "heading": "6. CAMBIOS EN LA POLÍTICA DE COOKIES",
+      "content1": "[Nombre de la empresa] se reserva el derecho de modificar esta Política de Cookies en cualquier momento. Cualquier cambio significativo será comunicado a los usuarios."
+    }
   }
 }

@@ -1,0 +1,108 @@
+---
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const privacy = translations.Privacy
+---
+
+<SectionContainer class="px-0 py-10">
+	<h1 class="mb-6 text-3xl font-bold text-primary">{privacy.title}</h1>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad1.heading}</h2>
+		<p>{privacy.privacidad1.content1}</p>
+		<p>{privacy.privacidad1.content2}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad2.heading}</h2>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li><strong>{privacy.privacidad2.Responsable1}</strong> {privacy.privacidad2.Responsable}</li>
+			<li><strong>{privacy.privacidad2.nif1}</strong> {privacy.privacidad2.nif}</li>
+			<li><strong>{privacy.privacidad2.domicilio1}</strong>{privacy.privacidad2.domicilio}</li>
+			<li><strong>{privacy.privacidad2.email1}</strong> {privacy.privacidad2.email}</li>
+			<li><strong>{privacy.privacidad2.telefono1}</strong>{privacy.privacidad2.telefono}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad3.heading}</h2>
+		<p>{privacy.privacidad3.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li>
+				<strong>{privacy.privacidad3.DatosIdentificacion1}</strong>
+				{privacy.privacidad3.DatosIdentificacion}
+			</li>
+			<li>
+				<strong>{privacy.privacidad3.datosPago1}</strong>
+				{privacy.privacidad3.datosPago}
+			</li>
+			<li>
+				<strong>{privacy.privacidad3.datosTecnicos1}</strong>{privacy.privacidad3.datosTecnicos}
+			</li>
+			<li>
+				<strong>{privacy.privacidad3.datosProporcionados1}</strong>
+				{privacy.privacidad3.datosProporcionados}
+			</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad4.heading}</h2>
+		<p>{privacy.privacidad4.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li>{privacy.privacidad4.content2}</li>
+			<li>{privacy.privacidad4.content3}</li>
+			<li>{privacy.privacidad4.content4}</li>
+			<li>{privacy.privacidad4.content5}</li>
+			<li>{privacy.privacidad4.content6}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad5.heading}</h2>
+		<p>{privacy.privacidad5.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li><strong>{privacy.privacidad5.content2}</strong>{privacy.privacidad5.content21}</li>
+			<li><strong>{privacy.privacidad5.content3}</strong>{privacy.privacidad5.content31}</li>
+			<li><strong>{privacy.privacidad5.content4}</strong>{privacy.privacidad5.content41}</li>
+			<li><strong>{privacy.privacidad5.content5}</strong>{privacy.privacidad5.content51}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad6.heading}</h2>
+		<p>{privacy.privacidad6.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad7.heading}</h2>
+		<p>{privacy.privacidad7.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li>{privacy.privacidad7.content2}</li>
+			<li>{privacy.privacidad7.content3}</li>
+			<li>{privacy.privacidad7.content4}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad8.heading}</h2>
+		<p>{privacy.privacidad8.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li><strong>{privacy.privacidad8.content2}</strong>{privacy.privacidad8.content21}</li>
+			<li><strong>{privacy.privacidad8.content3}</strong>{privacy.privacidad8.content31}</li>
+			<li><strong>{privacy.privacidad8.content4}</strong>{privacy.privacidad8.content41}</li>
+			<li><strong>{privacy.privacidad8.content5}</strong>{privacy.privacidad8.content51}</li>
+			<li><strong>{privacy.privacidad8.content6}</strong>{privacy.privacidad8.content61}</li>
+			<li><strong>{privacy.privacidad8.content7}</strong>{privacy.privacidad8.content71}</li>
+		</ul>
+		<p>
+			{privacy.privacidad8.content8}
+			<strong>{privacy.privacidad8.content81}</strong>{privacy.privacidad8.content82}
+		</p>
+		<p>
+			{privacy.privacidad8.content9}
+			<strong>{privacy.privacidad8.content91}</strong><a href="www.aepd.es"
+				>{privacy.privacidad8.content92}</a
+			>
+		</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{privacy.privacidad9.heading}</h2>
+		<p>{privacy.privacidad9.content1}</p>
+	</section>
+</SectionContainer>

@@ -1,6 +1,9 @@
 ---
 import SectionContainer from "@components/SectionContainer.astro"
 import i18next from "../i18n/config.js"
+import Cookies from "./Cookies.astro"
+import LegalNotice from "./LegalNotice.astro"
+import Privacy from "./Privacy.astro"
 
 interface LegalOption {
 	label: string
@@ -21,6 +24,7 @@ const legal: Legal = translations.Legal
 	.mobile-MenuOpen {
 		position: absolute;
 		top: 100%;
+		left: 0;
 		right: 0;
 		background: var(--headerBg, white);
 		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -30,6 +34,11 @@ const legal: Legal = translations.Legal
 		padding: 1rem;
 		gap: 1rem;
 		text-align: center;
+		z-index: 50; /* Asegura que esté sobre el contenido */
+	}
+
+	.relative-container {
+		position: relative;
 	}
 
 	.hidden {
@@ -49,6 +58,18 @@ const legal: Legal = translations.Legal
 			display: none;
 		}
 	}
+
+	@media (min-width: 768px) {
+		.desktop-menu {
+			display: flex;
+			width: 100%;
+			flex-wrap: nowrap;
+		}
+
+		.desktop-menu button {
+			text-align: center;
+		}
+	}
 </style>
 
 <head>
@@ -57,7 +78,7 @@ const legal: Legal = translations.Legal
 
 <SectionContainer class="bg-light-gray px-4">
 	<div
-		class="bolck sticky top-0 items-center justify-between py-4 backdrop-blur-xl"
+		class="bolck z-49 sticky top-0 items-center justify-between py-4 backdrop-blur-xl"
 		x-data="{ activeSection: 'aviso-legal' }"
 	>
 		<header class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
@@ -74,61 +95,52 @@ const legal: Legal = translations.Legal
 				}
 			</div>
 
-			<button
-				id="menu-MenuOpen"
-				class="flex w-full items-center justify-between rounded-lg bg-primary px-5 py-3 text-white md:hidden"
-			>
-				<h1 class="text-lg font-semibold">{legal.title}</h1>
-				<svg
-					xmlns="http://www.w3.org/2000/svg"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					class="h-6 w-6"
+			<div class="relative-container w-full">
+				<button
+					id="menu-MenuOpen"
+					class="flex w-full items-center justify-between rounded-lg bg-primary px-5 py-3 text-white md:hidden"
 				>
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M4 6h16M4 12h16m-7 6h7"></path>
-				</svg>
-			</button>
-		</header>
-
-		<div id="mobile-MenuOpen" class="mobile-MenuOpen hidden">
-			{
-				legal.optionsbuttons.map(({ label, id }) => (
-					<a
-						x-on:click={`activeSection = '${id}'`}
-						class="py-2 text-lg font-semibold text-primary hover:contrast-150"
+					<h1 class="text-lg font-semibold">{legal.title}</h1>
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						fill="none"
+						viewBox="0 0 24 24"
+						stroke="currentColor"
+						class="h-6 w-6"
 					>
-						{label}
-					</a>
-				))
-			}
-		</div>
+						<path
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							d="M4 6h16M4 12h16m-7 6h7"></path>
+					</svg>
+				</button>
+
+				<div id="mobile-MenuOpen" class="mobile-MenuOpen hidden">
+					{
+						legal.optionsbuttons.map(({ label, id }) => (
+							<a
+								x-on:click={`activeSection = '${id}'; document.getElementById('mobile-MenuOpen').classList.add('hidden')`}
+								class="py-2 text-lg font-semibold text-primary hover:contrast-150"
+							>
+								{label}
+							</a>
+						))
+					}
+				</div>
+			</div>
+		</header>
 
 		<!-- Contenido Dinámico con Alpine.js -->
 		<div>
 			<div x-show="activeSection === 'aviso-legal'">
-				<h2>Aviso Legal</h2>
-				<p>Contenido del aviso legal...</p>
+				<LegalNotice />
 			</div>
 			<div x-show="activeSection === 'privacidad'">
-				<h2>Política de Privacidad</h2>
-				<p>Contenido de la política de privacidad...</p>
+				<Privacy />
 			</div>
 			<div x-show="activeSection === 'cookies'">
-				<h2>Política de Cookies</h2>
-				<p>Contenido de la política de cookies...</p>
-			</div>
-			<div x-show="activeSection === 'terminos-uso'">
-				<h2>Términos y Condiciones de Uso</h2>
-				<p>Contenido de los términos y condiciones de uso...</p>
-			</div>
-			<div x-show="activeSection === 'devoluciones'">
-				<h2>Términos y Condiciones de Venta</h2>
-				<p>Contenido de los términos y condiciones de venta...</p>
+				<Cookies />
 			</div>
 		</div>
 	</div>

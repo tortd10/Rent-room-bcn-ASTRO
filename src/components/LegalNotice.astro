@@ -1,0 +1,88 @@
+---
+import SectionContainer from "@components/SectionContainer.astro"
+import i18next from "../i18n/config.js"
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const legalNotice = translations.LegalNotice
+---
+
+<SectionContainer class="px-0 py-10">
+	<h1 class="mb-6 text-3xl font-bold text-primary">{legalNotice.title}</h1>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal1.heading}</h2>
+		<p>
+			{legalNotice.avisoLegal1.content1}<strong>{legalNotice.avisoLegal1.content2}</strong>{
+				legalNotice.avisoLegal1.content3
+			}
+		</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li><strong>{legalNotice.avisoLegal1.titular1}</strong> {legalNotice.avisoLegal1.titular}</li>
+			<li><strong>{legalNotice.avisoLegal1.nif1}</strong> {legalNotice.avisoLegal1.nif}</li>
+			<li>
+				<strong>{legalNotice.avisoLegal1.domicilio1}</strong>
+				{legalNotice.avisoLegal1.domicilio}
+			</li>
+			<li><strong>{legalNotice.avisoLegal1.email1}</strong> {legalNotice.avisoLegal1.email}</li>
+			<li>
+				<strong>{legalNotice.avisoLegal1.telefono1}</strong>
+				{legalNotice.avisoLegal1.telefono}
+			</li>
+			<li>
+				<strong>{legalNotice.avisoLegal1.registroMercantil1}</strong>{
+					legalNotice.avisoLegal1.registroMercantil
+				}
+			</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal2.heading}</h2>
+		<p>{legalNotice.avisoLegal2.content1}</p>
+		<p>{legalNotice.avisoLegal2.content2}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal3.heading}</h2>
+		<p>{legalNotice.avisoLegal3.content1}</p>
+		<p>{legalNotice.avisoLegal3.content2}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li>{legalNotice.avisoLegal3.content3}</li>
+			<li>{legalNotice.avisoLegal3.content4}</li>
+			<li>{legalNotice.avisoLegal3.content5}</li>
+			<li>{legalNotice.avisoLegal3.content6}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal4.heading}</h2>
+		<p>{legalNotice.avisoLegal4.content1}</p>
+		<p>{legalNotice.avisoLegal4.content2}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal5.heading}</h2>
+		<p>{legalNotice.avisoLegal5.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li>{legalNotice.avisoLegal5.content2}</li>
+			<li>{legalNotice.avisoLegal5.content3}</li>
+			<li>{legalNotice.avisoLegal5.content4}</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal6.heading}</h2>
+		<p>{legalNotice.avisoLegal6.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal7.heading}</h2>
+		<p>{legalNotice.avisoLegal7.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal8.heading}</h2>
+		<p>{legalNotice.avisoLegal8.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal9.heading}</h2>
+		<p>{legalNotice.avisoLegal9.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{legalNotice.avisoLegal10.heading}</h2>
+		<p>{legalNotice.avisoLegal10.content1}</p>
+	</section>
+</SectionContainer>

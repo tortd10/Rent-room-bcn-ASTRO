@@ -23,7 +23,7 @@ const selectedRoom = roomData || ROOMS[0]
 <div class="sticky top-32 rounded-lg border border-gray-300 bg-[#D0D9F2] p-6 shadow-md">
 	<form id="contact-form" class="space-y-6" method="POST">
 		<!-- Título y descripción -->
-		<h2 class="text-xl font-semibold text-gray-700">{roomContactForm.title} {selectedRoom.name}</h2>
+		<h2 class="text-xl font-semibold">{roomContactForm.title} {selectedRoom.name}</h2>
 		<p class="text-sm text-gray-600">
 			{roomContactForm.description}
 			{selectedRoom.roomFlat || ""}

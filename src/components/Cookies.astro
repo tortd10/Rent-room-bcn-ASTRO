@@ -1,0 +1,118 @@
+---
+import i18next from "../i18n/config.js"
+import SectionContainer from "./SectionContainer.astro"
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const cookies = translations.Cookies
+---
+
+<SectionContainer class="px-0 py-10">
+	<h1 class="mb-6 text-3xl font-bold text-primary">{cookies.title}</h1>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{cookies.cookies1.heading}</h2>
+		<p>{cookies.cookies1.content1}</p>
+		<p>{cookies.cookies1.content2}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{cookies.cookies2.heading}</h2>
+		<p>{cookies.cookies2.content1}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{cookies.cookies3.heading}</h2>
+		<p>{cookies.cookies3.content1}</p>
+		<section class="mb-4 space-y-4 pl-5">
+			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies31.heading}</h4>
+			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+				<li>
+					<strong>{cookies.cookies3.cookies31.content2}</strong>
+					{cookies.cookies3.cookies31.content21}
+				</li>
+				<li>
+					<strong>{cookies.cookies3.cookies31.content3}</strong>
+					{cookies.cookies3.cookies31.content31}
+				</li>
+				<li>
+					<strong>{cookies.cookies3.cookies31.content4}</strong>{
+						cookies.cookies3.cookies31.content41
+					}
+				</li>
+				<li>
+					<strong>{cookies.cookies3.cookies31.content5}</strong>
+					{cookies.cookies3.cookies31.content51}
+				</li>
+			</ul>
+		</section>
+		<section class="mb-4 space-y-4 pl-5">
+			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies32.heading}</h4>
+			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+				<li>
+					<strong>{cookies.cookies3.cookies32.content2}</strong>
+					{cookies.cookies3.cookies32.content21}
+				</li>
+				<li>
+					<strong>{cookies.cookies3.cookies32.content3}</strong>
+					{cookies.cookies3.cookies32.content31}
+				</li>
+			</ul>
+		</section>
+		<section class="mb-4 space-y-4 pl-5">
+			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies33.heading}</h4>
+			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+				<li>
+					<strong>{cookies.cookies3.cookies33.content2}</strong>
+					{cookies.cookies3.cookies33.content21}
+				</li>
+				<li>
+					<strong>{cookies.cookies3.cookies33.content3}</strong>
+					{cookies.cookies3.cookies33.content31}
+				</li>
+			</ul>
+		</section>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h4 class="text-xl font-semibold">{cookies.cookies4.heading}</h4>
+		<p>{cookies.cookies4.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6 ">
+			<li>
+				<strong>{cookies.cookies4.content2}</strong>
+				<a href="www.aepd.es">{cookies.cookies4.contentURL}</a>
+			</li>
+			<li>
+				<strong>{cookies.cookies4.content3}</strong>
+				<a href="www.aepd.es">{cookies.cookies4.contentURL}</a>
+			</li>
+			<li>
+				<strong>{cookies.cookies4.content4}</strong>
+				<a href="www.aepd.es">{cookies.cookies4.contentURL}</a>
+			</li>
+			<li>
+				<strong>{cookies.cookies4.content5}</strong>
+				<a href="www.aepd.es">{cookies.cookies4.contentURL}</a>
+			</li>
+		</ul>
+		<p>{cookies.cookies4.content6}</p>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h4 class="text-xl font-semibold">{cookies.cookies5.heading}</h4>
+		<p>{cookies.cookies5.content1}</p>
+		<ul class="mt-2 list-disc space-y-2 pl-6 ">
+			<li>
+				<strong>{cookies.cookies5.content2}</strong>{cookies.cookies5.content5}
+				<a href="www.aepd.es">{cookies.cookies5.content21URL}</a>{cookies.cookies5.content51}
+			</li>
+			<li>
+				<strong>{cookies.cookies5.content3}</strong>{cookies.cookies5.content5}
+				<a href="www.aepd.es">{cookies.cookies5.content31URL}</a>{cookies.cookies5.content51}
+			</li>
+			<li>
+				<strong>{cookies.cookies5.content4}</strong>{cookies.cookies5.content5}
+				<a href="www.aepd.es">{cookies.cookies5.content41URL}</a>{cookies.cookies5.content51}
+			</li>
+		</ul>
+	</section>
+	<section class="mb-4 space-y-4">
+		<h2 class="text-xl font-semibold">{cookies.cookies6.heading}</h2>
+		<p>{cookies.cookies6.content1}</p>
+	</section>
+</SectionContainer>
