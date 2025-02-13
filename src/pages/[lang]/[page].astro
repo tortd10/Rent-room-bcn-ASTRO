@@ -11,6 +11,8 @@ import KnowUs from "@components/KnowUs.astro"
 import OurBeliefs from "@components/OurBeliefs.astro"
 import OurTeam from "@components/OurTeam.astro"
 import RoomContactForm from "@components/RoomContactForm.astro"
+import Faqs from "../../components/Faqs.astro"
+import LegalSite from "../../components/LegalSite.astro"
 import i18next from "../../i18n/config.js"
 
 const lang = Astro.params.lang || "es" // Idioma por defecto
@@ -21,7 +23,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations?.FindRoom || {}
 
 // Validar páginas permitidas
-const validPages = ["Habitaciones", "About", "Faq", "index"] // Lista de páginas válidas
+const validPages = ["Rooms", "About", "Faq", "index"] // Lista de páginas válidas
 
 if (!validPages.includes(page)) {
 	throw new Error("Página no encontrada") // Opcional: Manejo de rutas inválidas
@@ -29,23 +31,25 @@ if (!validPages.includes(page)) {
 
 export async function getStaticPaths() {
 	return [
-		{ params: { lang: "es", page: "Habitaciones" } },
-		{ params: { lang: "en", page: "Habitaciones" } },
+		{ params: { lang: "es", page: "Rooms" } },
+		{ params: { lang: "en", page: "Rooms" } },
 		{ params: { lang: "es", page: "About" } },
 		{ params: { lang: "en", page: "About" } },
 		{ params: { lang: "es", page: "Faq" } },
 		{ params: { lang: "en", page: "Faq" } },
 		{ params: { lang: "es", page: "index" } },
 		{ params: { lang: "en", page: "index" } },
-		{ params: { lang: "es", page: "legal" } },
-		{ params: { lang: "en", page: "legal" } },
+		{ params: { lang: "es", page: "Legal" } },
+		{ params: { lang: "en", page: "Legal" } },
+		{ params: { lang: "es", page: "Flats" } },
+		{ params: { lang: "en", page: "Flats" } },
 	]
 }
 ---
 
 {
-	page === "Habitaciones" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Habitaciones"}`}>
+	page === "Rooms" ? (
+		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
 			<PLPRoom />
 		</Layout>
 	) : page === "About" ? (
@@ -54,6 +58,14 @@ export async function getStaticPaths() {
 			<OurBeliefs />
 			<OurTeam />
 			<RoomContactForm />
+		</Layout>
+	) : page === "Faq" ? (
+		<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+			<Faqs />
+		</Layout>
+	) : page === "Legal" ? (
+		<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+			<LegalSite />
 		</Layout>
 	) : (
 		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Inicio"}`}>

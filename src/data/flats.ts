@@ -12,8 +12,9 @@ export const FLATS = [
 		flat_id: "RB219",
 	},
 	{
-		mapImage: "",
-		title: "Carrer XXXX",
-		flat_id: "XXXX",
+		mapImage:
+			"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d748.6976703683592!2d2.1350064762711103!3d41.356903200226924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x12a498a342294dc9%3A0xcf3402c425cbbcaf!2sCarrer%20dels%20Alts%20Forns%2C%2029X%2C%20Sants-Montju%C3%AFc%2C%2008038%20Barcelona!5e0!3m2!1sca!2ses!4v1739468852814!5m2!1sca!2ses",
+		title: "Carrer dels Alts Forns",
+		flat_id: "AAFFXXX",
 	},
 ]

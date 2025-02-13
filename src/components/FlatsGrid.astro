@@ -1,0 +1,57 @@
+---
+interface FlatsProps {
+	name: string
+	imageSrc: string
+}
+
+const { name, imageSrc, flat_id } = Astro.props as FlatsProps
+
+import { FLATS } from "../data/flats.ts"
+import { ROOMS } from "../data/rooms.ts"
+
+function getAvailableRoomsByFlat() {
+	return FLATS.map((flat) => {
+		const roomsInFlat = ROOMS.filter((room) => room.roomFlat === flat.flat_id)
+		const availableRooms = roomsInFlat.filter((room) => room.available).length
+
+		return {
+			flat: flat.title,
+			flat_id: flat.flat_id,
+			availableRooms,
+			totalRooms: roomsInFlat.length,
+		}
+	})
+}
+
+// Buscar datos del piso actual
+const flatData = getAvailableRoomsByFlat().find((flat) => flat.flat_id === flat_id) || {
+	availableRooms: 0,
+	totalRooms: 0,
+}
+const { availableRooms, totalRooms } = flatData
+---
+
+<div
+	id={flat_id}
+	class="grid grid-cols-4 grid-rows-5 gap-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
+>
+	{/* Mapa a la izquierda */}
+	<div class="col-span-2 row-span-4">
+		<iframe src={imageSrc} class="h-64 w-full rounded-lg" loading="lazy"></iframe>
+	</div>
+
+	{/* Contenido a la derecha */}
+	<div class="col-span-2 col-start-3 row-span-4 flex flex-col items-center text-center">
+		<h2 class="w-full text-xl font-semibold text-gray-900">{name}</h2>
+		<p class="mt-2 w-full text-left text-gray-600">
+			Breve descripción del lugar y sus características.
+		</p>
+	</div>
+
+	{/* Texto centrado abajo */}
+	<div class="col-span-4 row-start-5 flex items-center justify-center text-center">
+		<p class="font-medium text-blue-600">
+			Habitaciones disponibles: {availableRooms} / {totalRooms}
+		</p>
+	</div>
+</div>

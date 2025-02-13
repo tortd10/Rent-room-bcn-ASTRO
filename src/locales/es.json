@@ -3,7 +3,7 @@
     "optionsbuttons": [
       {
         "label": "HABITACIONES",
-        "href": "/Habitaciones"
+        "href": "/Rooms"
       },
       {
         "label": "SOBRE NOSOTROS",
@@ -23,7 +23,7 @@
       },
       {
         "label": "HABITACIONES",
-        "href": "/Habitaciones"
+        "href": "/Rooms"
       },
       {
         "label": "SOBRE NOSOTROS",
@@ -35,7 +35,7 @@
       },
       {
         "label": "LEGAL",
-        "href": "/legal"
+        "href": "/Legal"
       },
       {
         "href": "/change-language",
@@ -90,7 +90,8 @@
     "submitButton": "Enviar"
   },
   "plpRoom": {
-    "title": "Habitaciones Disponibles"
+    "title": "Habitaciones Disponibles",
+	"filtrar": "FILTRA POR PISO"
   },
   "Knowus": {
     "title": "Conoce RentRoomBCN",
@@ -517,5 +518,8 @@
       "heading": "6. CAMBIOS EN LA POLÍTICA DE COOKIES",
       "content1": "[Nombre de la empresa] se reserva el derecho de modificar esta Política de Cookies en cualquier momento. Cualquier cambio significativo será comunicado a los usuarios."
     }
+  },
+  "plpFlats": {
+    "title": "Nuestros Pisos"
   }
 }

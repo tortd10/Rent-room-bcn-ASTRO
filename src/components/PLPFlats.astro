@@ -1,0 +1,28 @@
+---
+import { FLATS } from "../data/flats.ts"
+import i18next from "../i18n/config.js"
+import FlatsGrid from "./FlatsGrid.astro"
+import SectionContainer from "./SectionContainer.astro"
+
+// Obtener el idioma actual
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const plpFlats = translations.plpFlats
+---
+
+<SectionContainer class="px-0">
+	<div class="mx-auto max-w-7xl px-4 pt-6 lg:px-8">
+		<h2
+			class="xs:text-2xl text-balance pb-6 text-center text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
+		>
+			{plpFlats.title}
+		</h2>
+		<div class="grid grid-cols-1 gap-6">
+			{
+				FLATS.map((flats) => (
+					<FlatsGrid name={flats.title} imageSrc={flats.mapImage} flat_id={flats.flat_id} />
+				))
+			}
+		</div>
+	</div>
+</SectionContainer>

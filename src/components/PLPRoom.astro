@@ -11,8 +11,14 @@ const availableRooms = ROOMS.filter((room) => room.available)
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
 const plpRoom = translations.plpRoom
+
+// Obtener pisos únicos
+const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 ---
 
+<head>
+	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+</head>
 <SectionContainer class="px-0">
 	<div class="mx-auto max-w-7xl px-4 pt-6 lg:px-8">
 		<h2
@@ -20,19 +26,54 @@ const plpRoom = translations.plpRoom
 		>
 			{plpRoom.title}
 		</h2>
-		<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-			{
-				availableRooms.map((room) => (
-					<RoomsCard
-						name={room.name}
-						description={room.description}
-						imageSrc={room.imageSrc}
-						imageAlt={room.imageAlt}
-						href={`/${lang}/${room.slug}`}
-					/>
-				))
-			}
+
+		<div x-data="{ selectedFlats: [] }" class="flex flex-col justify-between gap-6 lg:flex-row">
+			<div class="flatSelector w-full text-center lg:w-36">
+				<label class="text-lg font-semibold" style="text-decoration-line: underline;">
+					{plpRoom.filtrar}
+				</label>
+				<div
+					class="mt-4 flex flex-row flex-wrap justify-center gap-4 sm:justify-center md:justify-start"
+				>
+					{
+						uniqueFlats.map((flat) => (
+							<div key={flat} class="flex items-center">
+								<input
+									type="checkbox"
+									id={flat}
+									value={flat}
+									x-model="selectedFlats"
+									class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-lg font-semibold text-white shadow-md transition hover:bg-opacity-80"
+								/>
+								<label for={flat} class="ml-2 text-lg font-semibold">
+									{flat}
+								</label>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="w-full flex-1">
+				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+					{
+						availableRooms.map((room) => (
+							<div
+								class="room-card"
+								x-show={`selectedFlats.length === 0 || selectedFlats.includes('${room.roomFlat}')`}
+							>
+								<RoomsCard
+									name={room.name}
+									description={room.description}
+									imageSrc={room.imageSrc}
+									imageAlt={room.imageAlt}
+									href={`/${lang}/${room.slug}`}
+								/>
+							</div>
+						))
+					}
+				</div>
+			</div>
 		</div>
 	</div>
-	<SectionContainer class="px-0" /></SectionContainer
->
+</SectionContainer>
