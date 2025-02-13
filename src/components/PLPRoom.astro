@@ -37,7 +37,7 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 				>
 					{
 						uniqueFlats.map((flat) => (
-							<div key={flat} class="flex items-center">
+							<div class="flex items-center">
 								<input
 									type="checkbox"
 									id={flat}
