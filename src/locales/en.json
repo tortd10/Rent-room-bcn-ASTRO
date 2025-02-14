@@ -25,6 +25,10 @@
         "label": "ROOMS",
         "href": "/Rooms"
       },
+	  {
+        "label": "FLATS",
+        "href": "/Flats"
+      },
       {
         "label": "ABOUT US",
         "href": "/About"

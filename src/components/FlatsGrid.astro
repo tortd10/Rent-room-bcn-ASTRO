@@ -30,6 +30,9 @@ const flatData = getAvailableRoomsByFlat().find((flat) => flat.flat_id === flat_
 	totalRooms: 0,
 }
 const { availableRooms, totalRooms } = flatData
+
+const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+
 ---
 
 <div
@@ -51,8 +54,8 @@ const { availableRooms, totalRooms } = flatData
 
 	{/* Texto centrado abajo */}
 	<div class="col-span-4 row-start-5 flex items-center justify-center text-center">
-		<p class="font-medium text-blue-600">
+		<a class="font-medium text-blue-600" href={`/${lang}/Rooms`}>
 			Habitaciones disponibles: {availableRooms} / {totalRooms}
-		</p>
+		</a>
 	</div>
 </div>

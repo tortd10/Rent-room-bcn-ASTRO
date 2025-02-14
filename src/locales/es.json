@@ -25,6 +25,10 @@
         "label": "HABITACIONES",
         "href": "/Rooms"
       },
+	  {
+        "label": "PISOS",
+        "href": "/Flats"
+      },
       {
         "label": "SOBRE NOSOTROS",
         "href": "/About"
