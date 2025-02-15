@@ -36,14 +36,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const rejectButton = document.getElementById("reject-cookies");
 
   // Mostrar el banner solo si las cookies no han sido aceptadas ni rechazadas
-  if (!localStorage.getItem("cookiesAccepted") && !localStorage.getItem("cookiesRejected")) {
+  if (banner && !localStorage.getItem("cookiesAccepted") && !localStorage.getItem("cookiesRejected")) {
     banner.classList.remove("hidden");
   }
 
-  function updateStorageAndNotify(key, value) {
+  function updateStorageAndNotify(key: string, value: string) {
     localStorage.setItem(key, value);
     window.dispatchEvent(new Event("storage"));
-    banner.classList.add("hidden");
+    if (banner) {
+      banner.classList.add("hidden");
+    }
   }
 
   if (acceptButton) {

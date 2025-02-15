@@ -1,6 +1,5 @@
 ---
 import i18next from "../i18n/config.js"
-import ManageCookies from "./ManageCookies.astro"
 import SectionContainer from "./SectionContainer.astro"
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
@@ -158,88 +157,86 @@ const bannerCookies = translations.bannerCookies
 </SectionContainer>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function () {
-	const googleCheckbox = document.getElementById("google-cookies");
-	const analyticsCheckbox = document.getElementById("analytics-cookies");
-	const acceptAllBtn = document.getElementById("accept-all");
-	const deleteAllBtn = document.getElementById("delete-all");
-	const saveSettingsBtn = document.getElementById("save-settings");
-  
-	function syncCookieSettings() {
-	  googleCheckbox.checked = localStorage.getItem("googleCookies") === "true";
-	  analyticsCheckbox.checked = localStorage.getItem("analyticsCookies") === "true";
-	}
-  
-	syncCookieSettings();
-  
-	function setCookie(name, value, days) {
-	  let expires = "";
-	  if (days) {
-		const date = new Date();
-		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-		expires = "; expires=" + date.toUTCString();
-	  }
-	  document.cookie = name + "=" + value + expires + "; path=/";
-	}
-  
-	function deleteCookie(name) {
-	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-	localStorage.removeItem(name); 
+document.addEventListener("DOMContentLoaded", () => {
+  const googleCheckbox = document.getElementById("google-cookies") as HTMLInputElement;
+  const analyticsCheckbox = document.getElementById("analytics-cookies") as HTMLInputElement;
+  const acceptAllBtn = document.getElementById("accept-all") as HTMLButtonElement;
+  const deleteAllBtn = document.getElementById("delete-all") as HTMLButtonElement;
+  const saveSettingsBtn = document.getElementById("save-settings") as HTMLButtonElement;
+
+  function syncCookieSettings(): void {
+    googleCheckbox.checked = localStorage.getItem("googleCookies") === "true";
+    analyticsCheckbox.checked = localStorage.getItem("analyticsCookies") === "true";
   }
-  
-  
-	acceptAllBtn.addEventListener("click", function () {
-	  localStorage.setItem("cookiesAccepted", "true");
-	  localStorage.setItem("googleCookies", "true");
-	  localStorage.setItem("analyticsCookies", "true");
-  
-	  setCookie("googleCookies", "true", 365);
-	  setCookie("analyticsCookies", "true", 365);
-	  syncCookieSettings();
-	});
-  
-	deleteAllBtn.addEventListener("click", function () {
-	  localStorage.removeItem("googleCookies");
-	  localStorage.removeItem("analyticsCookies");
-	  localStorage.removeItem("cookiesAccepted");
-	  localStorage.setItem("cookiesRejected", "true");
-  
-	  deleteCookie("googleCookies");
-	  deleteCookie("analyticsCookies");
-	  syncCookieSettings();
-	});
-  
-	saveSettingsBtn.addEventListener("click", function () {
-	let anyCookieEnabled = false;
-  
-	if (googleCheckbox.checked) {
-	  localStorage.setItem("googleCookies", "true");
-	  setCookie("googleCookies", "true", 365);
-	  anyCookieEnabled = true;
-	} else {
-	  localStorage.removeItem("googleCookies");
-	  deleteCookie("googleCookies");
-	}
-  
-	if (analyticsCheckbox.checked) {
-	  localStorage.setItem("analyticsCookies", "true");
-	  setCookie("analyticsCookies", "true", 365);
-	  anyCookieEnabled = true;
-	} else {
-	  localStorage.removeItem("analyticsCookies");
-	  deleteCookie("analyticsCookies");
-	}
-  
-	// Solo marcar cookies aceptadas si al menos una está activada
-	if (anyCookieEnabled) {
-	  localStorage.setItem("cookiesAccepted", "true");
-	} else {
-	  localStorage.removeItem("cookiesAccepted");
-	}
-  
-	syncCookieSettings();
-	alert("Configuración guardada correctamente.");
+
+  syncCookieSettings();
+
+  function setCookie(name: string, value: string, days: number): void {
+    let expires = "";
+    if (days) {
+      const date = new Date();
+      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = `${name}=${value}${expires}; path=/`;
+  }
+
+  function deleteCookie(name: string): void {
+    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+    localStorage.removeItem(name);
+  }
+
+  acceptAllBtn.addEventListener("click", () => {
+    localStorage.setItem("cookiesAccepted", "true");
+    localStorage.setItem("googleCookies", "true");
+    localStorage.setItem("analyticsCookies", "true");
+
+    setCookie("googleCookies", "true", 365);
+    setCookie("analyticsCookies", "true", 365);
+    syncCookieSettings();
   });
+
+  deleteAllBtn.addEventListener("click", () => {
+    localStorage.removeItem("googleCookies");
+    localStorage.removeItem("analyticsCookies");
+    localStorage.removeItem("cookiesAccepted");
+    localStorage.setItem("cookiesRejected", "true");
+
+    deleteCookie("googleCookies");
+    deleteCookie("analyticsCookies");
+    syncCookieSettings();
   });
-  
+
+  saveSettingsBtn.addEventListener("click", () => {
+    let anyCookieEnabled = false;
+
+    if (googleCheckbox.checked) {
+      localStorage.setItem("googleCookies", "true");
+      setCookie("googleCookies", "true", 365);
+      anyCookieEnabled = true;
+    } else {
+      localStorage.removeItem("googleCookies");
+      deleteCookie("googleCookies");
+    }
+
+    if (analyticsCheckbox.checked) {
+      localStorage.setItem("analyticsCookies", "true");
+      setCookie("analyticsCookies", "true", 365);
+      anyCookieEnabled = true;
+    } else {
+      localStorage.removeItem("analyticsCookies");
+      deleteCookie("analyticsCookies");
+    }
+
+    // Solo marcar cookies aceptadas si al menos una está activada
+    if (anyCookieEnabled) {
+      localStorage.setItem("cookiesAccepted", "true");
+    } else {
+      localStorage.removeItem("cookiesAccepted");
+    }
+
+    syncCookieSettings();
+  });
+});
+
 	</script>

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const googleCookiesEnabled = localStorage.getItem("googleCookies") === "true";
 
   document.querySelectorAll("[id^='map-container']").forEach((mapContainer) => {
-    const mapImage = mapContainer.dataset.mapImage;
+    const mapImage = (mapContainer as HTMLElement).dataset.mapImage;
 
     if (googleCookiesEnabled) {
       mapContainer.innerHTML = `<iframe src="${mapImage}" class="mb-3 h-auto w-64" loading="lazy"></iframe>`;
