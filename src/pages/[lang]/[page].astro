@@ -14,6 +14,7 @@ import RoomContactForm from "@components/RoomContactForm.astro"
 import Faqs from "../../components/Faqs.astro"
 import LegalSite from "../../components/LegalSite.astro"
 import i18next from "../../i18n/config.js"
+import CustomerReview from "@components/CustomerReview.astro"
 
 const lang = Astro.params.lang || "es" // Idioma por defecto
 const page = Astro.params.page || "index" // Página por defecto
@@ -73,6 +74,7 @@ export async function getStaticPaths() {
 			<AboutRooms />
 			<OurRoom />
 			<OurFlats />
+			<CustomerReview />
 			<ContactForm />
 		</Layout>
 	)
