@@ -1,17 +1,43 @@
 ---
-const { mapImage, title } = Astro.props
+import i18next from "../i18n/config.js"
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const bannerCookies = translations.bannerCookies
+
+const { mapImage, title, id } = Astro.props;
 ---
 
 <article
-	class="group flex h-56 w-auto min-w-[320px] snap-center flex-col items-center overflow-hidden rounded-2xl border border-texth2 bg-white p-4 md:p-6"
+  class="group flex h-56 w-auto min-w-[320px] snap-center flex-col items-center overflow-hidden rounded-2xl border border-texth2 bg-white p-4 md:p-6"
 >
-	<div class="flex items-center justify-center gap-4 transition-transform group-hover:scale-105">
-		<div class="flex h-24 flex-col items-center">
-			<iframe src={mapImage} class="mb-3 h-auto w-64" loading="lazy"></iframe>
+  <div class="flex h-full flex-col justify-between items-center">
+    <div 
+      id={"map-container-" + id} 
+      data-map-image={mapImage}
+      class="flex items-center justify-center flex-grow "
+    >
+      <p class="text-center font-medium text-texth2 md:font-semibold">
+        {bannerCookies.textGoogleMaps}
+      </p>
+    </div>
 
-			<p class="text-center font-medium text-texth2 md:font-semibold">
-				{title}
-			</p>
-		</div>
-	</div>
+    <p class="text-center font-medium text-texth2 md:font-semibold mt-auto">
+      {title}
+    </p>
+  </div>
 </article>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const googleCookiesEnabled = localStorage.getItem("googleCookies") === "true";
+
+  document.querySelectorAll("[id^='map-container']").forEach((mapContainer) => {
+    const mapImage = mapContainer.dataset.mapImage;
+
+    if (googleCookiesEnabled) {
+      mapContainer.innerHTML = `<iframe src="${mapImage}" class="mb-3 h-auto w-64" loading="lazy"></iframe>`;
+    }
+  });
+});
+
+</script>

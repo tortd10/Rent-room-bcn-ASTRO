@@ -31,31 +31,58 @@ const flatData = getAvailableRoomsByFlat().find((flat) => flat.flat_id === flat_
 }
 const { availableRooms, totalRooms } = flatData
 
-const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
-
+import i18next from "../i18n/config.js"
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const bannerCookies = translations.bannerCookies
+const gridFlats = translations.GridFlats
 ---
 
 <div
 	id={flat_id}
 	class="grid grid-cols-4 grid-rows-5 gap-6 rounded-lg border border-gray-200 bg-white p-4 shadow-sm"
 >
-	{/* Mapa a la izquierda */}
-	<div class="col-span-2 row-span-4">
-		<iframe src={imageSrc} class="h-64 w-full rounded-lg" loading="lazy"></iframe>
+	<!-- Contenedor del mapa -->
+	<div class="col-span-2 row-span-4 flex items-center justify-center">
+		<div 
+			id={"map-container-" + flat_id} 
+			data-map-image={imageSrc}
+			class="w-full h-64 flex items-center justify-center rounded-lg bg-gray-100"
+		>
+			<p class="text-center font-medium text-gray-600">
+				{bannerCookies.textGoogleMaps}
+			</p>
+		</div>
 	</div>
 
-	{/* Contenido a la derecha */}
+	<!-- Contenido a la derecha -->
 	<div class="col-span-2 col-start-3 row-span-4 flex flex-col items-center text-center">
 		<h2 class="w-full text-xl font-semibold text-gray-900">{name}</h2>
 		<p class="mt-2 w-full text-left text-gray-600">
-			Breve descripción del lugar y sus características.
+			{gridFlats.description}
 		</p>
 	</div>
 
-	{/* Texto centrado abajo */}
+	<!-- Texto centrado abajo -->
 	<div class="col-span-4 row-start-5 flex items-center justify-center text-center">
 		<a class="font-medium text-blue-600" href={`/${lang}/Rooms`}>
-			Habitaciones disponibles: {availableRooms} / {totalRooms}
+			{gridFlats.RoomsAvailable} : {availableRooms} / {totalRooms}
 		</a>
 	</div>
 </div>
+
+<!-- Script para gestionar el mapa basado en cookies -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cookiesAccepted = localStorage.getItem("cookiesAccepted") === "true";
+
+    // Buscar todos los contenedores de mapas
+    document.querySelectorAll("[id^='map-container']").forEach((mapContainer) => {
+      const mapImage = mapContainer.getAttribute("data-map-image"); // Obtener URL del mapa desde data attribute
+
+      if (cookiesAccepted) {
+        mapContainer.innerHTML = `<iframe src="${mapImage}" class="h-64 w-full rounded-lg" loading="lazy"></iframe>`;
+      }
+    });
+  });
+</script>

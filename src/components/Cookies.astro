@@ -1,10 +1,12 @@
 ---
 import i18next from "../i18n/config.js"
+import ManageCookies from "./ManageCookies.astro"
 import SectionContainer from "./SectionContainer.astro"
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const cookies = translations.Cookies
+const bannerCookies = translations.bannerCookies
 ---
 
 <SectionContainer class="px-0 py-10">
@@ -92,6 +94,44 @@ const cookies = translations.Cookies
 			</li>
 		</ul>
 		<p>{cookies.cookies4.content6}</p>
+		<h5 class="text-xl font-semibold">{cookies.cookies4.content7}</h5>
+		<ul class="mt-2 list-disc space-y-2 pl-6">
+			<li class="flex items-center justify-between">
+				<strong>{cookies.cookies4.content8}</strong>
+				<label class="relative inline-flex items-center cursor-pointer">
+					<input type="checkbox" id="google-cookies" class="sr-only peer" />
+					<div class="w-11 h-6 bg-gray-200 peer-checked:bg-indigo-600 rounded-full 
+						peer peer-checked:after:translate-x-5 peer-checked:after:border-white 
+						after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white 
+						after:border after:rounded-full after:h-5 after:w-5 after:transition-all">
+					</div>
+				</label>
+			</li>
+			<li class="flex items-center justify-between">
+				<strong>{cookies.cookies5.content2}</strong>
+				<label class="relative inline-flex items-center cursor-pointer">
+					<input type="checkbox" id="analytics-cookies" class="sr-only peer" />
+					<div class="w-11 h-6 bg-gray-200 peer-checked:bg-indigo-600 rounded-full 
+						peer peer-checked:after:translate-x-5 peer-checked:after:border-white 
+						after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white 
+						after:border after:rounded-full after:h-5 after:w-5 after:transition-all">
+					</div>
+				</label>
+			</li>
+		</ul>
+	
+		<!-- Botones de acción -->
+		<div class="mt-6 flex gap-6 justify-center">
+			<button id="accept-all" class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition">
+				{cookies.bannerCookies.accept}
+			</button>
+			<button id="delete-all" class="border-2 border-indigo-700 text-indigo-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 hover:text-white transition">
+				{cookies.bannerCookies.decline}
+			</button>
+			<button id="save-settings" class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition">
+				{cookies.bannerCookies.save}
+			</button>
+		</div>
 	</section>
 	<section class="mb-4 space-y-4">
 		<h4 class="text-xl font-semibold">{cookies.cookies5.heading}</h4>
@@ -116,3 +156,90 @@ const cookies = translations.Cookies
 		<p>{cookies.cookies6.content1}</p>
 	</section>
 </SectionContainer>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+	const googleCheckbox = document.getElementById("google-cookies");
+	const analyticsCheckbox = document.getElementById("analytics-cookies");
+	const acceptAllBtn = document.getElementById("accept-all");
+	const deleteAllBtn = document.getElementById("delete-all");
+	const saveSettingsBtn = document.getElementById("save-settings");
+  
+	function syncCookieSettings() {
+	  googleCheckbox.checked = localStorage.getItem("googleCookies") === "true";
+	  analyticsCheckbox.checked = localStorage.getItem("analyticsCookies") === "true";
+	}
+  
+	syncCookieSettings();
+  
+	function setCookie(name, value, days) {
+	  let expires = "";
+	  if (days) {
+		const date = new Date();
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+		expires = "; expires=" + date.toUTCString();
+	  }
+	  document.cookie = name + "=" + value + expires + "; path=/";
+	}
+  
+	function deleteCookie(name) {
+	document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	localStorage.removeItem(name); 
+  }
+  
+  
+	acceptAllBtn.addEventListener("click", function () {
+	  localStorage.setItem("cookiesAccepted", "true");
+	  localStorage.setItem("googleCookies", "true");
+	  localStorage.setItem("analyticsCookies", "true");
+  
+	  setCookie("googleCookies", "true", 365);
+	  setCookie("analyticsCookies", "true", 365);
+	  syncCookieSettings();
+	});
+  
+	deleteAllBtn.addEventListener("click", function () {
+	  localStorage.removeItem("googleCookies");
+	  localStorage.removeItem("analyticsCookies");
+	  localStorage.removeItem("cookiesAccepted");
+	  localStorage.setItem("cookiesRejected", "true");
+  
+	  deleteCookie("googleCookies");
+	  deleteCookie("analyticsCookies");
+	  syncCookieSettings();
+	});
+  
+	saveSettingsBtn.addEventListener("click", function () {
+	let anyCookieEnabled = false;
+  
+	if (googleCheckbox.checked) {
+	  localStorage.setItem("googleCookies", "true");
+	  setCookie("googleCookies", "true", 365);
+	  anyCookieEnabled = true;
+	} else {
+	  localStorage.removeItem("googleCookies");
+	  deleteCookie("googleCookies");
+	}
+  
+	if (analyticsCheckbox.checked) {
+	  localStorage.setItem("analyticsCookies", "true");
+	  setCookie("analyticsCookies", "true", 365);
+	  anyCookieEnabled = true;
+	} else {
+	  localStorage.removeItem("analyticsCookies");
+	  deleteCookie("analyticsCookies");
+	}
+  
+	// Solo marcar cookies aceptadas si al menos una está activada
+	if (anyCookieEnabled) {
+	  localStorage.setItem("cookiesAccepted", "true");
+	} else {
+	  localStorage.removeItem("cookiesAccepted");
+	}
+  
+	syncCookieSettings();
+	alert("Configuración guardada correctamente.");
+  });
+  });
+  
+	</script>

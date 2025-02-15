@@ -1,48 +1,64 @@
+---
+import i18next from "../i18n/config.js"
+
+const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
+const translations = i18next.getResourceBundle(lang, "translation")
+const bannerCookies = translations.bannerCookies
+---
+
 <div 
   id="cookie-banner" 
   class="fixed bottom-5 left-1/2 transform -translate-x-1/2 w-11/12 max-w-lg bg-indigo-100 text-black-900 p-4 rounded-lg text-center shadow-lg z-50 hidden"
 >
   <p class="text-sm font-semibold">
-    Usamos cookies para mejorar tu experiencia en nuestra web.
+    {bannerCookies.text}
   </p>
   <div class="mt-3 flex justify-center gap-4">
     <button 
       id="accept-cookies" 
       class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition"
     >
-      Aceptar
+      {bannerCookies.accept}
     </button>
     <button 
       id="reject-cookies" 
       class="border-2 border-indigo-700 text-indigo-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 hover:text-white transition"
     >
-      Rechazar
+      {bannerCookies.reject}
     </button>
   </div>
 </div>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const banner = document.getElementById("cookie-banner");
-    const acceptButton = document.getElementById("accept-cookies");
-    const rejectButton = document.getElementById("reject-cookies");
+document.addEventListener("DOMContentLoaded", function () {
+  const banner = document.getElementById("cookie-banner");
+  const acceptButton = document.getElementById("accept-cookies");
+  const rejectButton = document.getElementById("reject-cookies");
 
-    if (banner && !localStorage.getItem("cookiesAccepted") && !localStorage.getItem("cookiesRejected")) {
-      banner.classList.remove("hidden");
-    }
+  // Mostrar el banner solo si las cookies no han sido aceptadas ni rechazadas
+  if (!localStorage.getItem("cookiesAccepted") && !localStorage.getItem("cookiesRejected")) {
+    banner.classList.remove("hidden");
+  }
 
-    if (acceptButton) {
-      acceptButton.addEventListener("click", function () {
-      localStorage.setItem("cookiesAccepted", "true");
-      });
-    }
-	if (rejectButton) {
-		rejectButton.addEventListener("click", function () {
-		localStorage.setItem("cookiesRejected", "true");
-			if (banner) {
-			banner.classList.add("hidden");
-			}
-		});
-	}
-  });
+  function updateStorageAndNotify(key, value) {
+    localStorage.setItem(key, value);
+    window.dispatchEvent(new Event("storage"));
+    banner.classList.add("hidden");
+  }
+
+  if (acceptButton) {
+    acceptButton.addEventListener("click", function () {
+      updateStorageAndNotify("cookiesAccepted", "true");
+      localStorage.setItem("googleCookies", "true");
+      localStorage.setItem("analyticsCookies", "true");
+      location.reload(); // Recargar para aplicar cambios
+    });
+  }
+
+  if (rejectButton) {
+    rejectButton.addEventListener("click", function () {
+      updateStorageAndNotify("cookiesRejected", "true");
+    });
+  }
+});
 </script>
