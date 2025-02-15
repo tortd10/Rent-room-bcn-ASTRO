@@ -79,7 +79,9 @@ const legal: Legal = translations.Legal
 <SectionContainer class="bg-light-gray px-4">
 	<div
 		class="bolck z-49 sticky top-0 items-center justify-between py-4 backdrop-blur-xl"
-		x-data="{ activeSection: 'aviso-legal' }"
+		x-data="{ 
+			activeSection: new URLSearchParams(window.location.search).get('section') || 'aviso-legal' 
+		}"
 	>
 		<header class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
 			<div class="desktop-menu hidden gap-4 md:flex">
