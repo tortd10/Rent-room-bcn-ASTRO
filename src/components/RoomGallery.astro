@@ -41,62 +41,55 @@ const { imagePaths, initialAlt } = Astro.props as Props
 			id="carousel"
 			style="max-width: calc(5 * 7rem);"
 		>
-			{imagePaths.map((image, index) => (
-				<img
-					src={image}
-					alt={`Miniatura ${index + 1}`}
-					class={`h-28 w-28 cursor-pointer rounded-md border-2 ${
-						index === 0 ? "border-primary" : "border-transparent"
-					} object-cover hover:border-primary`}
-					data-image={image}
-					data-alt={`Miniatura ${index + 1}`}
-					role="button"
-					tabindex="0"
-					aria-selected={index === 0 ? "true" : "false"}
-					loading="lazy"
-				/>
-			))
+			{
+				imagePaths.map((image, index) => (
+					<img
+						src={image}
+						alt={`Miniatura ${index + 1}`}
+						class={`h-28 w-28 cursor-pointer rounded-md border-2 ${
+							index === 0 ? "border-primary" : "border-transparent"
+						} object-cover hover:border-primary`}
+						data-image={image}
+						data-alt={`Miniatura ${index + 1}`}
+						role="button"
+						tabindex="0"
+						aria-selected={index === 0 ? "true" : "false"}
+						loading="lazy"
+					/>
+				))
 			}
 		</div>
 		<button
-			class="absolute left-[-2.5rem] top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full opacity-50 hover:opacity-100 transition disabled:opacity-30"
+			class="absolute left-[-2.5rem] top-1/2 -translate-y-1/2 rounded-full bg-gray-200 p-2 opacity-50 transition hover:opacity-100 disabled:opacity-30"
 			id="left-button"
 			disabled
 			aria-label="Desplazar a la izquierda"
 		>
 			<svg
-				class="w-6 h-6 text-gray-600"
+				class="h-6 w-6 text-gray-600"
 				fill="none"
 				stroke="currentColor"
 				stroke-width="2"
 				viewBox="0 0 24 24"
 				xmlns="http://www.w3.org/2000/svg"
 			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M15 19l-7-7 7-7"
-				></path>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
 			</svg>
 		</button>
 		<button
-			class="absolute right-[-2.5rem] top-1/2 -translate-y-1/2 bg-gray-200 p-2 rounded-full opacity-50 hover:opacity-100 transition"
+			class="absolute right-[-2.5rem] top-1/2 -translate-y-1/2 rounded-full bg-gray-200 p-2 opacity-50 transition hover:opacity-100"
 			id="right-button"
 			aria-label="Desplazar a la derecha"
 		>
 			<svg
-				class="w-6 h-6 text-gray-600"
+				class="h-6 w-6 text-gray-600"
 				fill="none"
 				stroke="currentColor"
 				stroke-width="2"
 				viewBox="0 0 24 24"
 				xmlns="http://www.w3.org/2000/svg"
 			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M9 5l7 7-7 7"
-				></path>
+				<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
 			</svg>
 		</button>
 	</div>
@@ -174,40 +167,40 @@ const { imagePaths, initialAlt } = Astro.props as Props
 		nextArea?.addEventListener("click", () => handleAreaClick("next"))
 	})
 
-	const leftButton = document.querySelector("#left-button") as HTMLButtonElement | null;
-	const rightButton = document.querySelector("#right-button") as HTMLButtonElement | null;
-	const carousel = document.querySelector("#carousel") as HTMLElement | null;
+	const leftButton = document.querySelector("#left-button") as HTMLButtonElement | null
+	const rightButton = document.querySelector("#right-button") as HTMLButtonElement | null
+	const carousel = document.querySelector("#carousel") as HTMLElement | null
 
 	if (leftButton && rightButton && carousel) {
-	leftButton.addEventListener("click", () => {
-		carousel.scrollBy({ left: -150, behavior: "smooth" });
-	});
+		leftButton.addEventListener("click", () => {
+			carousel.scrollBy({ left: -150, behavior: "smooth" })
+		})
 
-	rightButton.addEventListener("click", () => {
-		carousel.scrollBy({ left: 150, behavior: "smooth" });
-	});
+		rightButton.addEventListener("click", () => {
+			carousel.scrollBy({ left: 150, behavior: "smooth" })
+		})
 
-	carousel.addEventListener("scroll", () => {
-		const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth;
+		carousel.addEventListener("scroll", () => {
+			const maxScrollLeft = carousel.scrollWidth - carousel.clientWidth
 
-		leftButton.disabled = carousel.scrollLeft <= 0;
-		rightButton.disabled = carousel.scrollLeft >= maxScrollLeft;
-	});
-}
+			leftButton.disabled = carousel.scrollLeft <= 0
+			rightButton.disabled = carousel.scrollLeft >= maxScrollLeft
+		})
+	}
 </script>
 <style>
 	.custom-scrollbar::-webkit-scrollbar {
 		display: none;
 	}
-	
+
 	.custom-scrollbar {
 		-ms-overflow-style: none;
 		scrollbar-width: none;
 	}
-	
+
 	.carousel-container::before,
 	.carousel-container::after {
-		content: '';
+		content: "";
 		position: absolute;
 		top: 0;
 		bottom: 0;
@@ -215,26 +208,26 @@ const { imagePaths, initialAlt } = Astro.props as Props
 		pointer-events: none;
 		z-index: 10;
 	}
-	
+
 	.carousel-container::before {
 		left: 0;
-		background: linear-gradient(to right, #EEF2FF, transparent);
+		background: linear-gradient(to right, #eef2ff, transparent);
 	}
-	
+
 	.carousel-container::after {
 		right: 0;
-		background: linear-gradient(to left, #EEF2FF, transparent);
+		background: linear-gradient(to left, #eef2ff, transparent);
 	}
-	
+
 	#left-button,
 	#right-button {
 		transform: translateY(-50%);
 	}
-	
+
 	#left-button {
 		left: -3rem;
 	}
-	
+
 	#right-button {
 		right: -3rem;
 	}

@@ -6,65 +6,71 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const bannerCookies = translations.bannerCookies
 ---
 
-<div 
-  id="cookie-banner" 
-  class="fixed bottom-5 left-1/2 transform -translate-x-1/2 w-11/12 max-w-lg bg-indigo-100 text-black-900 p-4 rounded-lg text-center shadow-lg z-50 hidden"
+<div
+	id="cookie-banner"
+	class="text-black-900 fixed bottom-5 left-1/2 z-50 hidden w-11/12 max-w-lg -translate-x-1/2 transform rounded-lg bg-indigo-100 p-4 text-center shadow-lg"
 >
-  <p class="text-sm font-semibold">
-    {bannerCookies.text}
-  </p>
-  <div class="mt-3 flex justify-center gap-4">
-    <button 
-      id="accept-cookies" 
-      class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition"
-    >
-      {bannerCookies.accept}
-    </button>
-    <button 
-      id="reject-cookies" 
-      class="border-2 border-indigo-700 text-indigo-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 hover:text-white transition"
-    >
-      {bannerCookies.reject}
-    </button>
-	<a class="text-indigo-700 px-4 py-2 rounded-lg text-sm font-bold"
-		href={`/${lang}/Legal?section=cookies`}>
-				{bannerCookies.moreInfo}
-	</a>
-  </div>
+	<p class="text-sm font-semibold">
+		{bannerCookies.text}
+	</p>
+	<div class="mt-3 flex justify-center gap-4">
+		<button
+			id="accept-cookies"
+			class="rounded-lg bg-indigo-700 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-900"
+		>
+			{bannerCookies.accept}
+		</button>
+		<button
+			id="reject-cookies"
+			class="rounded-lg border-2 border-indigo-700 px-4 py-2 text-sm font-bold text-indigo-700 transition hover:bg-indigo-700 hover:text-white"
+		>
+			{bannerCookies.reject}
+		</button>
+		<a
+			class="rounded-lg px-4 py-2 text-sm font-bold text-indigo-700"
+			href={`/${lang}/Legal?section=cookies`}
+		>
+			{bannerCookies.moreInfo}
+		</a>
+	</div>
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  const banner = document.getElementById("cookie-banner");
-  const acceptButton = document.getElementById("accept-cookies");
-  const rejectButton = document.getElementById("reject-cookies");
+	document.addEventListener("DOMContentLoaded", function () {
+		const banner = document.getElementById("cookie-banner")
+		const acceptButton = document.getElementById("accept-cookies")
+		const rejectButton = document.getElementById("reject-cookies")
 
-  // Mostrar el banner solo si las cookies no han sido aceptadas ni rechazadas
-  if (banner && !localStorage.getItem("cookiesAccepted") && !localStorage.getItem("cookiesRejected")) {
-    banner.classList.remove("hidden");
-  }
+		// Mostrar el banner solo si las cookies no han sido aceptadas ni rechazadas
+		if (
+			banner &&
+			!localStorage.getItem("cookiesAccepted") &&
+			!localStorage.getItem("cookiesRejected")
+		) {
+			banner.classList.remove("hidden")
+		}
 
-  function updateStorageAndNotify(key: string, value: string) {
-    localStorage.setItem(key, value);
-    window.dispatchEvent(new Event("storage"));
-    if (banner) {
-      banner.classList.add("hidden");
-    }
-  }
+		function updateStorageAndNotify(key: string, value: string) {
+			localStorage.setItem(key, value)
+			window.dispatchEvent(new Event("storage"))
+			if (banner) {
+				banner.classList.add("hidden")
+			}
+		}
 
-  if (acceptButton) {
-    acceptButton.addEventListener("click", function () {
-      updateStorageAndNotify("cookiesAccepted", "true");
-      localStorage.setItem("googleCookies", "true");
-      localStorage.setItem("analyticsCookies", "true");
-      location.reload();
-    });
-  }
+		if (acceptButton) {
+			acceptButton.addEventListener("click", function () {
+				updateStorageAndNotify("cookiesAccepted", "true")
+				localStorage.setItem("googleCookies", "true")
+				localStorage.setItem("analyticsCookies", "true")
+				location.reload()
+			})
+		}
 
-  if (rejectButton) {
-    rejectButton.addEventListener("click", function () {
-      updateStorageAndNotify("cookiesRejected", "true");
-    });
-  }
-});
+		if (rejectButton) {
+			rejectButton.addEventListener("click", function () {
+				updateStorageAndNotify("cookiesRejected", "true")
+			})
+		}
+	})
 </script>

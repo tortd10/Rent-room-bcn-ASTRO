@@ -24,7 +24,7 @@ const bannerCookies = translations.bannerCookies
 		<p>{cookies.cookies3.content1}</p>
 		<section class="mb-4 space-y-4 pl-5">
 			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies31.heading}</h4>
-			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+			<ul class="mt-2 list-disc space-y-2 pl-6">
 				<li>
 					<strong>{cookies.cookies3.cookies31.content2}</strong>
 					{cookies.cookies3.cookies31.content21}
@@ -46,7 +46,7 @@ const bannerCookies = translations.bannerCookies
 		</section>
 		<section class="mb-4 space-y-4 pl-5">
 			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies32.heading}</h4>
-			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+			<ul class="mt-2 list-disc space-y-2 pl-6">
 				<li>
 					<strong>{cookies.cookies3.cookies32.content2}</strong>
 					{cookies.cookies3.cookies32.content21}
@@ -59,7 +59,7 @@ const bannerCookies = translations.bannerCookies
 		</section>
 		<section class="mb-4 space-y-4 pl-5">
 			<h4 class="text-xl font-semibold">{cookies.cookies3.cookies33.heading}</h4>
-			<ul class="mt-2 list-disc space-y-2 pl-6 ">
+			<ul class="mt-2 list-disc space-y-2 pl-6">
 				<li>
 					<strong>{cookies.cookies3.cookies33.content2}</strong>
 					{cookies.cookies3.cookies33.content21}
@@ -74,7 +74,7 @@ const bannerCookies = translations.bannerCookies
 	<section class="mb-4 space-y-4">
 		<h4 class="text-xl font-semibold">{cookies.cookies4.heading}</h4>
 		<p>{cookies.cookies4.content1}</p>
-		<ul class="mt-2 list-disc space-y-2 pl-6 ">
+		<ul class="mt-2 list-disc space-y-2 pl-6">
 			<li>
 				<strong>{cookies.cookies4.content2}</strong>
 				<a href="www.aepd.es">{cookies.cookies4.contentURL}</a>
@@ -97,37 +97,44 @@ const bannerCookies = translations.bannerCookies
 		<ul class="mt-2 list-disc space-y-2 pl-6">
 			<li class="flex items-center justify-between">
 				<strong>{cookies.cookies4.content8}</strong>
-				<label class="relative inline-flex items-center cursor-pointer">
-					<input type="checkbox" id="google-cookies" class="sr-only peer" />
-					<div class="w-11 h-6 bg-gray-200 peer-checked:bg-indigo-600 rounded-full 
-						peer peer-checked:after:translate-x-5 peer-checked:after:border-white 
-						after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white 
-						after:border after:rounded-full after:h-5 after:w-5 after:transition-all">
+				<label class="relative inline-flex cursor-pointer items-center">
+					<input type="checkbox" id="google-cookies" class="peer sr-only" />
+					<div
+						class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-5 peer-checked:after:border-white"
+					>
 					</div>
 				</label>
 			</li>
 			<li class="flex items-center justify-between">
 				<strong>{cookies.cookies5.content2}</strong>
-				<label class="relative inline-flex items-center cursor-pointer">
-					<input type="checkbox" id="analytics-cookies" class="sr-only peer" />
-					<div class="w-11 h-6 bg-gray-200 peer-checked:bg-indigo-600 rounded-full 
-						peer peer-checked:after:translate-x-5 peer-checked:after:border-white 
-						after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white 
-						after:border after:rounded-full after:h-5 after:w-5 after:transition-all">
+				<label class="relative inline-flex cursor-pointer items-center">
+					<input type="checkbox" id="analytics-cookies" class="peer sr-only" />
+					<div
+						class="peer h-6 w-11 rounded-full bg-gray-200 after:absolute after:left-0.5 after:top-0.5 after:h-5 after:w-5 after:rounded-full after:border after:bg-white after:transition-all after:content-[''] peer-checked:bg-indigo-600 peer-checked:after:translate-x-5 peer-checked:after:border-white"
+					>
 					</div>
 				</label>
 			</li>
 		</ul>
-	
+
 		<!-- Botones de acción -->
-		<div class="mt-6 flex gap-6 justify-center">
-			<button id="accept-all" class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition">
+		<div class="mt-6 flex justify-center gap-6">
+			<button
+				id="accept-all"
+				class="rounded-lg bg-indigo-700 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-900"
+			>
 				{cookies.bannerCookies.accept}
 			</button>
-			<button id="delete-all" class="border-2 border-indigo-700 text-indigo-700 px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-700 hover:text-white transition">
+			<button
+				id="delete-all"
+				class="rounded-lg border-2 border-indigo-700 px-4 py-2 text-sm font-bold text-indigo-700 transition hover:bg-indigo-700 hover:text-white"
+			>
 				{cookies.bannerCookies.decline}
 			</button>
-			<button id="save-settings" class="bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-indigo-900 transition">
+			<button
+				id="save-settings"
+				class="rounded-lg bg-indigo-700 px-4 py-2 text-sm font-bold text-white transition hover:bg-indigo-900"
+			>
 				{cookies.bannerCookies.save}
 			</button>
 		</div>
@@ -135,7 +142,7 @@ const bannerCookies = translations.bannerCookies
 	<section class="mb-4 space-y-4">
 		<h4 class="text-xl font-semibold">{cookies.cookies5.heading}</h4>
 		<p>{cookies.cookies5.content1}</p>
-		<ul class="mt-2 list-disc space-y-2 pl-6 ">
+		<ul class="mt-2 list-disc space-y-2 pl-6">
 			<li>
 				<strong>{cookies.cookies5.content2}</strong>{cookies.cookies5.content5}
 				<a href="www.aepd.es">{cookies.cookies5.content21URL}</a>{cookies.cookies5.content51}
@@ -157,86 +164,85 @@ const bannerCookies = translations.bannerCookies
 </SectionContainer>
 
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const googleCheckbox = document.getElementById("google-cookies") as HTMLInputElement;
-  const analyticsCheckbox = document.getElementById("analytics-cookies") as HTMLInputElement;
-  const acceptAllBtn = document.getElementById("accept-all") as HTMLButtonElement;
-  const deleteAllBtn = document.getElementById("delete-all") as HTMLButtonElement;
-  const saveSettingsBtn = document.getElementById("save-settings") as HTMLButtonElement;
+	document.addEventListener("DOMContentLoaded", () => {
+		const googleCheckbox = document.getElementById("google-cookies") as HTMLInputElement
+		const analyticsCheckbox = document.getElementById("analytics-cookies") as HTMLInputElement
+		const acceptAllBtn = document.getElementById("accept-all") as HTMLButtonElement
+		const deleteAllBtn = document.getElementById("delete-all") as HTMLButtonElement
+		const saveSettingsBtn = document.getElementById("save-settings") as HTMLButtonElement
 
-  function syncCookieSettings(): void {
-    googleCheckbox.checked = localStorage.getItem("googleCookies") === "true";
-    analyticsCheckbox.checked = localStorage.getItem("analyticsCookies") === "true";
-  }
+		function syncCookieSettings(): void {
+			googleCheckbox.checked = localStorage.getItem("googleCookies") === "true"
+			analyticsCheckbox.checked = localStorage.getItem("analyticsCookies") === "true"
+		}
 
-  syncCookieSettings();
+		syncCookieSettings()
 
-  function setCookie(name: string, value: string, days: number): void {
-    let expires = "";
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-      expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = `${name}=${value}${expires}; path=/`;
-  }
+		function setCookie(name: string, value: string, days: number): void {
+			let expires = ""
+			if (days) {
+				const date = new Date()
+				date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000)
+				expires = "; expires=" + date.toUTCString()
+			}
+			document.cookie = `${name}=${value}${expires}; path=/`
+		}
 
-  function deleteCookie(name: string): void {
-    document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
-    localStorage.removeItem(name);
-  }
+		function deleteCookie(name: string): void {
+			document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`
+			localStorage.removeItem(name)
+		}
 
-  acceptAllBtn.addEventListener("click", () => {
-    localStorage.setItem("cookiesAccepted", "true");
-    localStorage.setItem("googleCookies", "true");
-    localStorage.setItem("analyticsCookies", "true");
+		acceptAllBtn.addEventListener("click", () => {
+			localStorage.setItem("cookiesAccepted", "true")
+			localStorage.setItem("googleCookies", "true")
+			localStorage.setItem("analyticsCookies", "true")
 
-    setCookie("googleCookies", "true", 365);
-    setCookie("analyticsCookies", "true", 365);
-    syncCookieSettings();
-  });
+			setCookie("googleCookies", "true", 365)
+			setCookie("analyticsCookies", "true", 365)
+			syncCookieSettings()
+		})
 
-  deleteAllBtn.addEventListener("click", () => {
-    localStorage.removeItem("googleCookies");
-    localStorage.removeItem("analyticsCookies");
-    localStorage.removeItem("cookiesAccepted");
-    localStorage.setItem("cookiesRejected", "true");
+		deleteAllBtn.addEventListener("click", () => {
+			localStorage.removeItem("googleCookies")
+			localStorage.removeItem("analyticsCookies")
+			localStorage.removeItem("cookiesAccepted")
+			localStorage.setItem("cookiesRejected", "true")
 
-    deleteCookie("googleCookies");
-    deleteCookie("analyticsCookies");
-    syncCookieSettings();
-  });
+			deleteCookie("googleCookies")
+			deleteCookie("analyticsCookies")
+			syncCookieSettings()
+		})
 
-  saveSettingsBtn.addEventListener("click", () => {
-    let anyCookieEnabled = false;
+		saveSettingsBtn.addEventListener("click", () => {
+			let anyCookieEnabled = false
 
-    if (googleCheckbox.checked) {
-      localStorage.setItem("googleCookies", "true");
-      setCookie("googleCookies", "true", 365);
-      anyCookieEnabled = true;
-    } else {
-      localStorage.removeItem("googleCookies");
-      deleteCookie("googleCookies");
-    }
+			if (googleCheckbox.checked) {
+				localStorage.setItem("googleCookies", "true")
+				setCookie("googleCookies", "true", 365)
+				anyCookieEnabled = true
+			} else {
+				localStorage.removeItem("googleCookies")
+				deleteCookie("googleCookies")
+			}
 
-    if (analyticsCheckbox.checked) {
-      localStorage.setItem("analyticsCookies", "true");
-      setCookie("analyticsCookies", "true", 365);
-      anyCookieEnabled = true;
-    } else {
-      localStorage.removeItem("analyticsCookies");
-      deleteCookie("analyticsCookies");
-    }
+			if (analyticsCheckbox.checked) {
+				localStorage.setItem("analyticsCookies", "true")
+				setCookie("analyticsCookies", "true", 365)
+				anyCookieEnabled = true
+			} else {
+				localStorage.removeItem("analyticsCookies")
+				deleteCookie("analyticsCookies")
+			}
 
-    // Solo marcar cookies aceptadas si al menos una está activada
-    if (anyCookieEnabled) {
-      localStorage.setItem("cookiesAccepted", "true");
-    } else {
-      localStorage.removeItem("cookiesAccepted");
-    }
+			// Solo marcar cookies aceptadas si al menos una está activada
+			if (anyCookieEnabled) {
+				localStorage.setItem("cookiesAccepted", "true")
+			} else {
+				localStorage.removeItem("cookiesAccepted")
+			}
 
-    syncCookieSettings();
-  });
-});
-
-	</script>
+			syncCookieSettings()
+		})
+	})
+</script>

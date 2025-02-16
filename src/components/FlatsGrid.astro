@@ -7,8 +7,8 @@ interface FlatsProps {
 
 const { name, imageSrc, flat_id } = Astro.props as FlatsProps
 
-import { FLATS } from "../data/flats.ts"
-import { ROOMS } from "../data/rooms.ts"
+import { FLATS } from "../data/flats"
+import { ROOMS } from "../data/rooms"
 
 function getAvailableRoomsByFlat() {
 	return FLATS.map((flat) => {
@@ -44,10 +44,10 @@ const gridFlats = translations.GridFlats
 >
 	<!-- Contenedor del mapa -->
 	<div class="col-span-2 row-span-4 flex items-center justify-center">
-		<div 
-			id={"map-container-" + flat_id} 
+		<div
+			id={"map-container-" + flat_id}
 			data-map-image={imageSrc}
-			class="w-full h-64 flex items-center justify-center rounded-lg bg-gray-100"
+			class="flex h-64 w-full items-center justify-center rounded-lg bg-gray-100"
 		>
 			<p class="text-center font-medium text-gray-600">
 				{bannerCookies.textGoogleMaps}
@@ -73,16 +73,16 @@ const gridFlats = translations.GridFlats
 
 <!-- Script para gestionar el mapa basado en cookies -->
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const cookiesAccepted = localStorage.getItem("cookiesAccepted") === "true";
+	document.addEventListener("DOMContentLoaded", function () {
+		const cookiesAccepted = localStorage.getItem("cookiesAccepted") === "true"
 
-    // Buscar todos los contenedores de mapas
-    document.querySelectorAll("[id^='map-container']").forEach((mapContainer) => {
-      const mapImage = mapContainer.getAttribute("data-map-image"); // Obtener URL del mapa desde data attribute
+		// Buscar todos los contenedores de mapas
+		document.querySelectorAll("[id^='map-container']").forEach((mapContainer) => {
+			const mapImage = mapContainer.getAttribute("data-map-image") // Obtener URL del mapa desde data attribute
 
-      if (cookiesAccepted) {
-        mapContainer.innerHTML = `<iframe src="${mapImage}" class="h-64 w-full rounded-lg" loading="lazy"></iframe>`;
-      }
-    });
-  });
+			if (cookiesAccepted) {
+				mapContainer.innerHTML = `<iframe src="${mapImage}" class="h-64 w-full rounded-lg" loading="lazy"></iframe>`
+			}
+		})
+	})
 </script>

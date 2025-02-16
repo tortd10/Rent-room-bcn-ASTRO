@@ -25,7 +25,7 @@
         "label": "ROOMS",
         "href": "/Rooms"
       },
-	  {
+      {
         "label": "FLATS",
         "href": "/Flats"
       },
@@ -479,8 +479,8 @@
       "content5": "Microsoft Edge:",
       "contentURL": "Cookie settings",
       "content6": "If the user disables or deletes cookies, some Website functions may be affected.",
-	  "content7": "Personalize your experience by choosing which cookies you want to allow.",
-	  "content8": "Google Cookies"
+      "content7": "Personalize your experience by choosing which cookies you want to allow.",
+      "content8": "Google Cookies"
     },
     "cookies5": {
       "heading": "5. THIRD-PARTY COOKIES",
@@ -498,24 +498,24 @@
       "heading": "6. CHANGES TO THE COOKIE POLICY",
       "content1": "[Company Name] reserves the right to modify this Cookie Policy at any time. Any significant changes will be communicated to users."
     },
-	"bannerCookies": {
-		"accept": "Accept all",
-		"decline": "Decline all",
-		"save": "Save"
-	  }
+    "bannerCookies": {
+      "accept": "Accept all",
+      "decline": "Decline all",
+      "save": "Save"
+    }
   },
   "plpFlats": {
     "title": "Our Flats"
   },
   "bannerCookies": {
-	"text": "This website uses cookies to ensure you get the best experience on our website.",
-	"accept": "Accept",
-	"reject": "Reject",
-	"moreInfo": "More info",
-	"textGoogleMaps": "Please enable Google cookies to view location."
+    "text": "This website uses cookies to ensure you get the best experience on our website.",
+    "accept": "Accept",
+    "reject": "Reject",
+    "moreInfo": "More info",
+    "textGoogleMaps": "Please enable Google cookies to view location."
   },
   "GridFlats": {
-	"description": "Breve descripción del lugar y sus características.",
-	"RoomsAvailable": "Rooms available"
+    "description": "Breve descripción del lugar y sus características.",
+    "RoomsAvailable": "Rooms available"
   }
 }

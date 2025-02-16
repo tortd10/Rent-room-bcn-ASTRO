@@ -1,30 +1,51 @@
 ---
 const testimonios = [
-  { nombre: "Juan Pérez", comentario: "Una experiencia increíble, el piso estaba en perfectas condiciones y la ubicación era ideal." },
-  { nombre: "Ana Gómez", comentario: "El proceso de alquiler fue muy fácil y el equipo siempre estuvo dispuesto a ayudar." },
-  { nombre: "Carlos López", comentario: "Sin duda volvería a alquilar con ellos. Todo fue transparente y profesional." }
-];
+	{
+		nombre: "Juan Pérez",
+		comentario:
+			"Una experiencia increíble, el piso estaba en perfectas condiciones y la ubicación era ideal.",
+	},
+	{
+		nombre: "Ana Gómez",
+		comentario:
+			"El proceso de alquiler fue muy fácil y el equipo siempre estuvo dispuesto a ayudar.",
+	},
+	{
+		nombre: "Carlos López",
+		comentario: "Sin duda volvería a alquilar con ellos. Todo fue transparente y profesional.",
+	},
+]
 ---
 
 <section class="bg-gray-100 py-12">
-  <div class="container mx-auto px-6">
-    <h2 class="text-3xl font-semibold text-center text-gray-800">Testimonios de nuestros inquilinos</h2>
-    <div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {testimonios.map(({ nombre, comentario }) => (
-        <div class="bg-white p-6 rounded-lg shadow-md">
-          <p class="text-gray-600 italic">"{comentario}"</p>
-          <p class="mt-4 text-right font-semibold">- {nombre}</p>
-        </div>
-      ))}
-    </div>
-    
-    <div class="mt-12 max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Deja tu comentario</h3>
-      <form>
-        <input type="text" placeholder="Tu nombre" class="w-full p-3 border border-gray-300 rounded-lg mb-4" />
-        <textarea placeholder="Tu comentario" class="w-full p-3 border border-gray-300 rounded-lg mb-4"></textarea>
-        <button class="w-full bg-blue-600 text-white py-2 rounded-lg">Enviar</button>
-      </form>
-    </div>
-  </div>
+	<div class="container mx-auto px-6">
+		<h2 class="text-center text-3xl font-semibold text-gray-800">
+			Testimonios de nuestros inquilinos
+		</h2>
+		<div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+			{
+				testimonios.map(({ nombre, comentario }) => (
+					<div class="rounded-lg bg-white p-6 shadow-md">
+						<p class="italic text-gray-600">"{comentario}"</p>
+						<p class="mt-4 text-right font-semibold">- {nombre}</p>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="mx-auto mt-12 max-w-lg rounded-lg bg-white p-6 shadow-md">
+			<h3 class="mb-4 text-xl font-semibold text-gray-800">Deja tu comentario</h3>
+			<form>
+				<input
+					type="text"
+					placeholder="Tu nombre"
+					class="mb-4 w-full rounded-lg border border-gray-300 p-3"
+				/>
+				<textarea
+					placeholder="Tu comentario"
+					class="mb-4 w-full rounded-lg border border-gray-300 p-3"></textarea>
+				<button class="w-full rounded-lg bg-blue-600 py-2 text-white">Enviar</button>
+			</form>
+		</div>
+	</div>
 </section>

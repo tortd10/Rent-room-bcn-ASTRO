@@ -1,5 +1,5 @@
 ---
-import { ROOMS } from "../data/rooms.ts"
+import { ROOMS } from "../data/rooms"
 import i18next from "../i18n/config.js"
 import RoomsCard from "./RoomsCard.astro"
 import SectionContainer from "./SectionContainer.astro"
@@ -27,11 +27,14 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 			{plpRoom.title}
 		</h2>
 
-		<div x-data="{ 
+		<div
+			x-data="{ 
 			selectedFlats: new URLSearchParams(window.location.search).get('selectedFlat') 
 				? [new URLSearchParams(window.location.search).get('selectedFlat')] 
 				: [] 
-		}" class="flex flex-col justify-between gap-6 lg:flex-row">
+		}"
+			class="flex flex-col justify-between gap-6 lg:flex-row"
+		>
 			<div class="flatSelector w-full text-center lg:w-36">
 				<label class="text-lg font-semibold" style="text-decoration-line: underline;">
 					{plpRoom.filtrar}

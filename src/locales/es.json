@@ -25,7 +25,7 @@
         "label": "HABITACIONES",
         "href": "/Rooms"
       },
-	  {
+      {
         "label": "PISOS",
         "href": "/Flats"
       },
@@ -95,7 +95,7 @@
   },
   "plpRoom": {
     "title": "Habitaciones Disponibles",
-	"filtrar": "FILTRA POR PISO"
+    "filtrar": "FILTRA POR PISO"
   },
   "Knowus": {
     "title": "Conoce RentRoomBCN",
@@ -505,8 +505,8 @@
       "content5": "Microsoft Edge:",
       "contentURL": "Configuración de cookies",
       "content6": "Si el usuario desactiva o borra las cookies, algunas funciones del Sitio Web podrían verse afectadas.",
-	  "content7": "Personaliza tu experiencia eligiendo qué cookies deseas permitir.",
-	  "content8": "Cookies de Google"
+      "content7": "Personaliza tu experiencia eligiendo qué cookies deseas permitir.",
+      "content8": "Cookies de Google"
     },
     "cookies5": {
       "heading": "5. COOKIES DE TERCEROS",
@@ -524,24 +524,24 @@
       "heading": "6. CAMBIOS EN LA POLÍTICA DE COOKIES",
       "content1": "[Nombre de la empresa] se reserva el derecho de modificar esta Política de Cookies en cualquier momento. Cualquier cambio significativo será comunicado a los usuarios."
     },
-	"bannerCookies": {
-		"accept": "Aceptar todas",
-		"decline": "Rechazar todas",
-		"save": "Guardar"
-	  }
+    "bannerCookies": {
+      "accept": "Aceptar todas",
+      "decline": "Rechazar todas",
+      "save": "Guardar"
+    }
   },
   "plpFlats": {
     "title": "Nuestros Pisos"
   },
   "bannerCookies": {
-	"text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia de navegación.",
-	"accept": "Aceptar",
-	"reject": "Rechazar",
-	"moreInfo": "Más información",
-	"textGoogleMaps": "Habilita las cookies de Google para visualizar la ubicación."
+    "text": "Utilizamos cookies propias y de terceros para mejorar tu experiencia de navegación.",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "moreInfo": "Más información",
+    "textGoogleMaps": "Habilita las cookies de Google para visualizar la ubicación."
   },
   "GridFlats": {
-	"description": "Breve descripción del lugar y sus características.",
-	"RoomsAvailable": "Habitaciones disponibles"
+    "description": "Breve descripción del lugar y sus características.",
+    "RoomsAvailable": "Habitaciones disponibles"
   }
 }
