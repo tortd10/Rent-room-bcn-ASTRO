@@ -50,12 +50,13 @@
   "FindRoom": {
     "find_room": "Find your ideal room",
     "description": "We offer a wide range of rooms so you can find the perfect option for your stay. Browse through our portal and discover unique accommodations.",
-    "view_rooms": "View Rooms",
+    "view_rooms": "Rooms",
     "image_alt": "RentRoom photo"
   },
   "aboutRooms": {
     "title": "Find your next perfect space",
     "description": "Explore amazing options to find the ideal place that fits your needs and lifestyle.",
+    "description2": "Explore amazing options to find the ideal place that fits your needs and lifestyle.",
     "articles": [
       {
         "title": "How to find the perfect room",

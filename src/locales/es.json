@@ -50,7 +50,7 @@
   "FindRoom": {
     "find_room": "Encuentra tu habitación ideal",
     "description": "Ofrecemos una amplia gama de habitaciones para que encuentres la opción perfecta para tu estadía. Navega por nuestro portal y descubre alojamientos únicos.",
-    "view_rooms": "Ver Habitaciones",
+    "view_rooms": "Habitaciones",
     "image_alt": "foto RentRoom"
   },
   "aboutRooms": {
@@ -58,20 +58,20 @@
     "description": "Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida.",
     "articles": [
       {
-        "title": "Cómo encontrar la habitación perfecta",
-        "content": "¿Buscas un lugar cómodo y asequible? Descubre consejos prácticos sobre cómo elegir una habitación que se ajuste a tu presupuesto, estilo y necesidades diarias. ¡Haz de tu búsqueda una experiencia sencilla y efectiva!"
+        "title": "Descubre el lugar ideal para ti. Explora nuestras opciones y encuentra una habitación que se adapte a tu estilo de vida, necesidades y presupuesto.",
+        "content": "Explora nuestras opciones y encuentra una habitación que se adapte a tu estilo de vida, necesidades y presupuesto."
       },
       {
-        "title": "Las mejores zonas para alquilar en la ciudad",
-        "content": "¿No sabes qué barrio es ideal para ti? Explora las características de las mejores zonas para vivir, desde las más tranquilas hasta las más animadas. Encuentra el equilibrio perfecto entre ubicación y comodidad."
+        "title": "Encuentra la habitación perfecta para ti. Explora diferentes opciones que se adaptan a tus necesidades y estilo de vida. ¡Tu espacio ideal está a solo un clic!",
+        "content": "Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida."
       },
       {
-        "title": "Lo que dicen los inquilinos",
-        "content": "Lee las experiencias y recomendaciones de quienes ya han vivido con nosotros. Sus historias te ayudarán a tomar una decisión informada sobre dónde y cómo vivir en nuestra comunidad."
+        "title": "¡Tu nuevo hogar te espera! Explora una selección de habitaciones increíbles y elige el espacio que mejor se ajuste a tu forma de vivir.",
+        "content": "¡Tu nuevo hogar te espera! Explora una selección de habitaciones increíbles y elige el espacio que mejor se ajuste a tu forma de vivir."
       },
       {
-        "title": "¿Primera vez alquilando? Consejos para tu primera habitación",
-        "content": "Si eres nuevo en el mundo del alquiler, te ofrecemos una guía práctica sobre todo lo que necesitas saber: desde qué preguntas hacer hasta cómo prepararte para la mudanza. ¡Comienza esta nueva etapa con confianza!"
+        "title": "Explora opciones increíbles para encontrar el lugar ideal que se ajuste a tus necesidades y estilo de vida.",
+        "content": "Encuentra la habitación perfecta para ti. Explora diferentes opciones que se adaptan a tus necesidades y estilo de vida. ¡Tu espacio ideal está a solo un clic!"
       }
     ]
   },

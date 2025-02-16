@@ -7,10 +7,44 @@ const getLocalizedHref = (href: string) => {
 }
 
 import i18next from "../i18n/config.js"
+import HowWorks from "./HowWorks.astro"
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
+
+interface Article {
+	class: string
+	title: string
+	content: string
+}
+
+interface AboutRooms {
+	title: string
+	description: string
+	articles: Article[]
+}
+
+const aboutRooms: AboutRooms = translations.aboutRooms
+
+var ARTICLES = [
+	{
+		class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
+		title: "Habitaciones en pisos compartidos y hogares acogedores",
+	},
+	{
+		class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
+		title: "Espacios revisados y verificados para que puedas reservar con total confianza. ",
+	},
+	{
+		class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
+		title: "Flexibilidad para adaptarnos a tu tiempo: estancias cortas o largas.",
+	},
+	{
+		class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
+		title: "Atención personalizada para que encuentres la mejor opción según tus necesidades. ",
+	},
+]
 ---
 
 <section class="px-4 py-6 md:mx-auto md:w-full md:max-w-[90rem]">
@@ -22,21 +56,74 @@ const findRoom = translations.FindRoom
 				>
 					{findRoom.find_room}
 				</h1>
-				<h2 class="mt-6 text-balance text-2xl text-texth2">
+				<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-2xl md:text-2xl lg:text-2xl">
 					{findRoom.description}
 				</h2>
 			</div>
 			<div class="py-10">
 				<a
 					href={getLocalizedHref("/Rooms")}
-					class="rounded-md bg-texth2 px-4 py-2 text-lg tracking-tight text-white hover:contrast-150"
+					class="mt-6 rounded-md bg-texth2 px-6 py-3 text-lg font-semibold text-white shadow-lg hover:contrast-150"
 				>
 					{findRoom.view_rooms}
 				</a>
 			</div>
 		</div>
 		<div>
-			<img src="/photoRentRoom.jpg" alt="foto RentRoom" class="rounded-3xl" />
+			<img src="/Home/1.jpeg" alt="foto RentRoom" class="rounded-3xl" />
 		</div>
 	</div>
+
+	<div class="mt-5 flex flex-col items-center gap-5 md:grid md:grid-cols-3">
+		<div
+			class="flex w-full flex-col items-center justify-center text-center md:col-span-2 md:text-left"
+		>
+			<h2
+				class="text-balance text-center text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
+			>
+				¿Buscas una habitación cómoda, bien ubicada y a buen precio? ¡Aquí lo encontrarás!
+			</h2>
+			<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-2xl md:text-2xl lg:text-2xl">
+				En RentRoom conectamos a personas que buscan un espacio donde sentirse como en casa con
+				habitaciones disponibles. Ya sea para una estancia corta o para vivir durante meses, tenemos
+				la opción perfecta para ti.
+			</h2>
+			<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-2xl md:text-2xl lg:text-2xl">
+				Sabemos que buscar una habitación no es solo encontrar cuatro paredes, es encontrar un
+				espacio donde sentirse bien, donde empezar una nueva etapa, donde puedas ser tú mismo/a. Por
+				eso, estamos aquí para acompañarte en este camino.
+			</h2>
+		</div>
+		<div class="mt-5 flex w-full flex-col items-center md:mt-0">
+			<h2
+				class="text-balance text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
+			>
+				¿Qué ofrecemos?
+			</h2>
+			<div class="mt-6 flex w-full flex-col gap-2">
+				{
+					aboutRooms.articles.map(({ title, content }, index) => (
+						<div
+							class:list={[
+								index === 0
+									? "md:col-span-2 md:row-span-1"
+									: index === 1
+										? "md:row-span-2"
+										: "md:col-span-1",
+								"group relative w-full overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg",
+								ARTICLES[index]?.class,
+							]}
+						>
+							<div class="flex h-full flex-col justify-start p-4">
+								<h3 class="mb-2 text-lg text-texth2 sm:text-xl md:text-xl lg:text-xl">
+									{ARTICLES[index]?.title}
+								</h3>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+	<HowWorks />
 </section>
