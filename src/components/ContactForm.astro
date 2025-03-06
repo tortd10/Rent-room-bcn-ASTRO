@@ -9,11 +9,14 @@ const contactForm = translations.contactForm
 
 <SectionContainer>
 	<!-- Formulario -->
-	<form id="contact-form" class="rounded-lg bg-[#D0D9F2] p-6 shadow-md" method="POST">
+	<form id="contact-form" class="rounded-lg bg-[#C8D6B0] p-6 shadow-md" method="POST">
 		<!-- Campos del formulario -->
 		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
 			<div class="sm:col-span-1">
-				<label for="email" class="block text-sm font-medium text-gray-900">
+				<label
+					for="email"
+					class="block text-sm font-medium text-primary focus-within:text-secondary"
+				>
 					<span class="text-red-600">*</span>
 					{contactForm.emailLabel}
 				</label>
@@ -24,13 +27,16 @@ const contactForm = translations.contactForm
 						id="email"
 						autocomplete="email"
 						placeholder={contactForm.emailPlaceholder}
-						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 						required
 					/>
 				</div>
 			</div>
 			<div class="sm:col-span-1">
-				<label for="name" class="block text-sm font-medium text-gray-900">
+				<label
+					for="name"
+					class="block text-sm font-medium text-primary focus-within:text-secondary"
+				>
 					<span class="text-red-600">*</span>
 					{contactForm.nameLabel}
 				</label>
@@ -41,14 +47,14 @@ const contactForm = translations.contactForm
 						id="name"
 						autocomplete="name"
 						placeholder={contactForm.namePlaceholder}
-						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 						required
 					/>
 				</div>
 			</div>
 		</div>
 		<div class="mt-6">
-			<label for="room" class="block text-sm font-medium text-gray-900">
+			<label for="room" class="block text-sm font-medium text-primary focus-within:text-secondary">
 				<span class="text-red-600">*</span>
 				{contactForm.descriptionLabel}
 			</label>
@@ -58,7 +64,7 @@ const contactForm = translations.contactForm
 					name="message"
 					rows="2"
 					placeholder={contactForm.descriptionPlaceholder}
-					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 					required></textarea>
 			</div>
 		</div>
@@ -70,10 +76,10 @@ const contactForm = translations.contactForm
 					id="accept-data"
 					name="accept-data"
 					type="checkbox"
-					class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+					class="h-4 w-4 rounded border-gray-400 text-primary focus:ring-secondary"
 					required
 				/>
-				<label for="accept-data" class="ml-3 text-sm text-gray-900">
+				<label for="accept-data" class="ml-3 text-sm text-primary focus-within:text-secondary">
 					<span class="text-red-600">*</span>
 					{contactForm.acceptLabel}
 				</label>
@@ -85,7 +91,7 @@ const contactForm = translations.contactForm
 			<button
 				type="submit"
 				id="submit-button"
-				class="inline-flex w-full cursor-not-allowed justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+				class="inline-flex w-full justify-center rounded-md bg-secondary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:bg-gray-400 sm:w-auto"
 				disabled
 			>
 				{contactForm.submitButton}

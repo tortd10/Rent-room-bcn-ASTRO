@@ -20,18 +20,21 @@ const roomData = ROOMS.find((room) => room.slug.toLowerCase() === cleanSlug.toLo
 const selectedRoom = roomData || ROOMS[0]
 ---
 
-<div class="sticky top-32 rounded-lg border border-gray-300 bg-[#D0D9F2] p-6 shadow-md">
+<div class="sticky top-32 rounded-lg border border-gray-300 bg-[#C8D6B0] p-6 shadow-md">
 	<form id="contact-form" class="space-y-6" method="POST">
 		<!-- Título y descripción -->
-		<h2 class="text-xl font-semibold">{roomContactForm.title} {selectedRoom.name}</h2>
-		<p class="text-sm text-gray-600">
+		<h2 class="text-xl font-semibold text-primary">{roomContactForm.title} {selectedRoom.name}</h2>
+		<p class="text-sm text-primary">
 			{roomContactForm.description}
 			{selectedRoom.roomFlat || ""}
 		</p>
 
 		<!-- Desplegable con la habitación seleccionada por defecto -->
 		<div class="mt-4">
-			<label for="room-select" class="block text-sm font-medium text-gray-900">
+			<label
+				for="room-select"
+				class="block text-sm font-medium text-primary focus-within:text-secondary"
+			>
 				<span class="text-red-600">*</span>
 				{roomContactForm.roomLabel}
 			</label>
@@ -39,7 +42,7 @@ const selectedRoom = roomData || ROOMS[0]
 				<select
 					id="room-select"
 					name="room-select"
-					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-primary shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 					disabled
 				>
 					<option value={selectedRoom.slug} selected>{selectedRoom.name}</option>
@@ -50,7 +53,10 @@ const selectedRoom = roomData || ROOMS[0]
 		<!-- Campos del formulario -->
 		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
 			<div class="sm:col-span-1">
-				<label for="name" class="block text-sm font-medium text-gray-900">
+				<label
+					for="name"
+					class="block text-sm font-medium text-primary focus-within:text-secondary"
+				>
 					<span class="text-red-600">*</span>
 					{roomContactForm.nameLabel}
 				</label>
@@ -61,13 +67,16 @@ const selectedRoom = roomData || ROOMS[0]
 						id="name"
 						autocomplete="name"
 						placeholder={roomContactForm.namePlaceholder}
-						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 						required
 					/>
 				</div>
 			</div>
 			<div class="sm:col-span-1">
-				<label for="phone" class="block text-sm font-medium text-gray-900">
+				<label
+					for="phone"
+					class="block text-sm font-medium text-primary focus-within:text-secondary"
+				>
 					{roomContactForm.phoneLabel}
 				</label>
 				<div class="mt-2">
@@ -77,16 +86,19 @@ const selectedRoom = roomData || ROOMS[0]
 						id="phone"
 						autocomplete="tel"
 						placeholder={roomContactForm.phonePlaceholder}
-						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 					/>
 				</div>
 			</div>
 		</div>
 
-		<!-- Campo de teléfono (opcional) -->
+		<!-- Campo de email -->
 		<div class="mt-6">
 			<div class="sm:col-span-1">
-				<label for="email" class="block text-sm font-medium text-gray-900">
+				<label
+					for="email"
+					class="block text-sm font-medium text-primary focus-within:text-secondary"
+				>
 					<span class="text-red-600">*</span>
 					{roomContactForm.emailLabel}
 				</label>
@@ -97,7 +109,7 @@ const selectedRoom = roomData || ROOMS[0]
 						id="email"
 						autocomplete="email"
 						placeholder={roomContactForm.emailPlaceholder}
-						class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+						class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 						required
 					/>
 				</div>
@@ -106,7 +118,10 @@ const selectedRoom = roomData || ROOMS[0]
 
 		<!-- Fecha prevista de entrega -->
 		<div class="mt-6">
-			<label for="delivery-date" class="block text-sm font-medium text-gray-900">
+			<label
+				for="delivery-date"
+				class="block text-sm font-medium text-primary focus-within:text-secondary"
+			>
 				<span class="text-red-600">*</span>
 				{roomContactForm.deliveryDateLabel}
 			</label>
@@ -115,7 +130,7 @@ const selectedRoom = roomData || ROOMS[0]
 					type="date"
 					name="delivery_date"
 					id="delivery-date"
-					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 					required
 				/>
 			</div>
@@ -123,7 +138,10 @@ const selectedRoom = roomData || ROOMS[0]
 
 		<!-- Campo de descripción -->
 		<div class="mt-6">
-			<label for="description" class="block text-sm font-medium text-gray-900">
+			<label
+				for="description"
+				class="block text-sm font-medium text-primary focus-within:text-secondary"
+			>
 				<span class="text-red-600">*</span>
 				{roomContactForm.descriptionLabel}
 			</label>
@@ -133,7 +151,7 @@ const selectedRoom = roomData || ROOMS[0]
 					name="message"
 					rows="2"
 					placeholder={roomContactForm.descriptionPlaceholder}
-					class="block w-full rounded-md border-0 bg-white px-3 py-2 text-gray-900 placeholder-gray-400 shadow-sm ring-1 ring-inset ring-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+					class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 					required></textarea>
 			</div>
 		</div>
@@ -145,10 +163,10 @@ const selectedRoom = roomData || ROOMS[0]
 					id="accept-data"
 					name="accept-data"
 					type="checkbox"
-					class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
+					class="h-4 w-4 rounded border-gray-400 text-primary focus:ring-secondary"
 					required
 				/>
-				<label for="accept-data" class="ml-3 text-sm text-gray-900">
+				<label for="accept-data" class="ml-3 text-sm text-primary focus-within:text-secondary">
 					<span class="text-red-600">*</span>
 					{roomContactForm.acceptDataLabel}
 				</label>
@@ -160,7 +178,7 @@ const selectedRoom = roomData || ROOMS[0]
 			<button
 				type="submit"
 				id="submit-button"
-				class="inline-flex w-full cursor-not-allowed justify-center rounded-md bg-gray-400 px-4 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:w-auto"
+				class="inline-flex w-full justify-center rounded-md bg-secondary px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:cursor-not-allowed disabled:bg-gray-400 sm:w-auto"
 				disabled
 			>
 				{roomContactForm.submitButton}

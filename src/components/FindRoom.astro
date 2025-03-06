@@ -29,20 +29,16 @@ const aboutRooms: AboutRooms = translations.aboutRooms
 
 var ARTICLES = [
 	{
-		class: "bg-gradient-to-r from-[#D9E3F7] to-[#A8C4F0] text-primary",
-		title: "Habitaciones en pisos compartidos y hogares acogedores",
+		class: "bg-gradient-to-r from-[#DAD7CD] to-[#A3B18A] text-white",
+		title: "Habitaciones en pisos compartidos",
 	},
 	{
-		class: "bg-gradient-to-r from-[#C4CFFA] to-[#8FA8F0] text-primary",
-		title: "Espacios revisados y verificados para que puedas reservar con total confianza. ",
+		class: "bg-gradient-to-r from-[#A3B18A] to-[#DAD7CD] text-white",
+		title: "Flexibilidad para adaptarnos a tu tiempo tanto estancias cortas o largas.",
 	},
 	{
-		class: "bg-gradient-to-r from-[#B9D1F7] to-[#91AFE5] text-primary",
-		title: "Flexibilidad para adaptarnos a tu tiempo: estancias cortas o largas.",
-	},
-	{
-		class: "bg-gradient-to-r from-[#EEF2FF] to-[#D0D9F9] text-primary",
-		title: "Atención personalizada para que encuentres la mejor opción según tus necesidades. ",
+		class: "bg-gradient-to-r from-[#DAD7CD] to-[#E9EDC9] text-primary",
+		title: "Atención personalizada para que encuentres la mejor opción según tus necesidades.",
 	},
 ]
 ---
@@ -63,7 +59,7 @@ var ARTICLES = [
 			<div class="py-10">
 				<a
 					href={getLocalizedHref("/Rooms")}
-					class="mt-6 rounded-md bg-texth2 px-6 py-3 text-lg font-semibold text-white shadow-lg hover:contrast-150"
+					class="mt-6 rounded-md bg-primary px-6 py-3 text-lg font-semibold text-white shadow-lg hover:contrast-150"
 				>
 					{findRoom.view_rooms}
 				</a>
@@ -74,7 +70,7 @@ var ARTICLES = [
 		</div>
 	</div>
 
-	<div class="mt-5 flex flex-col items-center gap-5 md:grid md:grid-cols-3">
+	<div class="mt-7 flex flex-col items-center md:grid md:grid-cols-3">
 		<div
 			class="flex w-full flex-col items-center justify-center text-center md:col-span-2 md:text-left"
 		>
@@ -94,7 +90,7 @@ var ARTICLES = [
 				eso, estamos aquí para acompañarte en este camino.
 			</h2>
 		</div>
-		<div class="mt-5 flex w-full flex-col items-center md:mt-0">
+		<div class="mt-7 flex w-full flex-col items-center md:mt-0">
 			<h2
 				class="text-balance text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
 			>
@@ -102,7 +98,7 @@ var ARTICLES = [
 			</h2>
 			<div class="mt-6 flex w-full flex-col gap-2">
 				{
-					aboutRooms.articles.map(({ title, content }, index) => (
+					aboutRooms.articles.slice(0, ARTICLES.length).map(({ title, content }, index) => (
 						<div
 							class:list={[
 								index === 0

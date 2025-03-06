@@ -71,10 +71,10 @@ export async function getStaticPaths() {
 	) : (
 		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Inicio"}`}>
 			<FindRoom />
-			<AboutRooms />
+			{/* <AboutRooms /> */}
 			<OurRoom />
 			<OurFlats />
-			<CustomerReview />
+			{/* <CustomerReview /> */}
 			<ContactForm />
 		</Layout>
 	)
