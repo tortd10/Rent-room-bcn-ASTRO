@@ -1,7 +1,7 @@
 ---
-import SectionContainer from "./SectionContainer.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
 
-import i18next from "../i18n/config.js"
+import i18next from "@/i18n/config.js"
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")

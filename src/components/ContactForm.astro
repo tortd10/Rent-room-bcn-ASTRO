@@ -1,6 +1,6 @@
 ---
-import i18next from "../i18n/config.js"
-import SectionContainer from "./SectionContainer.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
+import i18next from "@/i18n/config.js"
 
 const lang = Astro.params.lang || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
@@ -100,7 +100,7 @@ const contactForm = translations.contactForm
 	</form>
 
 	<script>
-		import { handleSubmit } from "../lib/formHandler"
+		import { handleSubmit } from "@/lib/formHandler"
 
 		// Selecciona el formulario y agrega un event listener
 		const form = document.getElementById("contact-form") as HTMLFormElement

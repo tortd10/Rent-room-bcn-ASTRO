@@ -1,4 +1,5 @@
 ---
+import i18next from "@/i18n/config.js"
 interface Footer {
 	label: string
 	href: string
@@ -19,8 +20,6 @@ const changeLangUrl =
 const getLocalizedHref = (href: string) => {
 	return currentLang === "es" ? `/es${href}` : `/en${href}`
 }
-
-import i18next from "../i18n/config.js"
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")

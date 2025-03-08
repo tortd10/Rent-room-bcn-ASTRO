@@ -1,8 +1,8 @@
 ---
-import { FLATS } from "../data/flats"
-import FlatsCard from "./FlatsCard.astro"
+import { FLATS } from "@/data/flats"
+import FlatsCard from "@/components/FlatsCard.astro"
 
-import i18next from "../i18n/config.js"
+import i18next from "@/i18n/config.js"
 
 const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
 const translations = i18next.getResourceBundle(lang, "translation")

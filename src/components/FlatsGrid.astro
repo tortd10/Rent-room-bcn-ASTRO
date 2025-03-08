@@ -1,4 +1,7 @@
 ---
+import { FLATS } from "@/data/flats"
+import { ROOMS } from "@/data/rooms"
+import i18next from "@/i18n/config.js"
 interface FlatsProps {
 	name: string
 	imageSrc: string
@@ -7,8 +10,6 @@ interface FlatsProps {
 
 const { name, imageSrc, flat_id } = Astro.props as FlatsProps
 
-import { FLATS } from "../data/flats"
-import { ROOMS } from "../data/rooms"
 
 function getAvailableRoomsByFlat() {
 	return FLATS.map((flat) => {
@@ -31,7 +32,6 @@ const flatData = getAvailableRoomsByFlat().find((flat) => flat.flat_id === flat_
 }
 const { availableRooms, totalRooms } = flatData
 
-import i18next from "../i18n/config.js"
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
 const bannerCookies = translations.bannerCookies

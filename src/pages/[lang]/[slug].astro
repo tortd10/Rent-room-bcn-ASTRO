@@ -1,8 +1,9 @@
 ---
-import PDPRoom from "../../components/PDPRoom.astro"
-import SectionContainer from "../../components/SectionContainer.astro"
-import { ROOMS } from "../../data/rooms"
-import Layout from "../../layouts/Layout.astro"
+import PDPRoom from "@/components/PDPRoom.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
+import { ROOMS } from "@/data/rooms"
+import i18next from "@/i18n/config.js"
+import Layout from "@/layouts/Layout.astro"
 
 export async function getStaticPaths() {
 	// Generate paths for both 'es' and 'en' languages for each room
@@ -24,9 +25,13 @@ const room = ROOMS.find((room) => room.slug === slug)
 if (!room) {
 	throw new Error(`No se encontró la habitación con el slug: ${slug}`)
 }
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const findRoom = translations.FindRoom
 ---
 
-<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+<Layout title={`RentRoomBcn - ${findRoom.find_room}`}>
 	<SectionContainer class="px-0">
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
 			<PDPRoom room={room} />

@@ -1,6 +1,6 @@
+import en from "@/locales/en.json"
+import es from "@/locales/es.json"
 import i18next from "i18next"
-import en from "../locales/en.json"
-import es from "../locales/es.json"
 
 i18next.init({
 	lng: "en", // Idioma por defecto

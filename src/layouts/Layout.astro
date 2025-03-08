@@ -1,25 +1,31 @@
 ---
-import CookieBanner from "../components/CookieBanner.astro"
-import Footer from "../components/Footer.astro"
-import Header from "../components/Header.astro"
+import CookieBanner from "@/components/CookieBanner.astro"
+import Footer from "@/components/Footer.astro"
+import Header from "@/components/Header.astro"
 
 interface Props {
 	title: string
 }
 
 const { title } = Astro.props
+
+import i18next from "@/i18n/config.js"
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const findRoom = translations.FindRoom
 ---
 
 <!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content="Encuentra tu habitación ideal" />
+		<meta name="description" content={`${findRoom.find_room}`} />
 		<meta name="viewport" content="width=device-width" />
 		<title>{title}</title>
 		<meta property="og:site_name" content="rentroombcn.com" />
 		<meta property="og:title" content={title} />
-		<meta property="og:description" content="Encuentra tu habitación ideal" />
+		<meta property="og:description" content={`${findRoom.find_room}`} />
 		<meta property="og:url" content="https://rentroombcn.com/" />
 		<!-- Google tag (gtag.js) -->
 		<script

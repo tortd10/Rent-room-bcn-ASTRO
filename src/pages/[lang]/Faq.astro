@@ -1,6 +1,11 @@
 ---
-import Faqs from "../../components/Faqs.astro"
-import Layout from "../../layouts/Layout.astro"
+import Faqs from "@/components/Faqs.astro"
+import i18next from "@/i18n/config.js"
+import Layout from "@/layouts/Layout.astro"
+
+const lang = Astro.url.pathname.split("/")[1] || "es"
+const translations = i18next.getResourceBundle(lang, "translation")
+const findRoom = translations.FindRoom
 
 export async function getStaticPaths() {
 	return [
@@ -20,6 +25,6 @@ export async function getStaticPaths() {
 }
 ---
 
-<Layout title="RentRoomBcn - ¡Encuentra tu habitación ideal!">
+<Layout title={`RentRoomBcn - ${findRoom.find_room}`}>
 	<Faqs />
 </Layout>

@@ -1,8 +1,8 @@
 ---
-import { ROOMS } from "../data/rooms"
-import i18next from "../i18n/config.js"
-import RoomsCard from "./RoomsCard.astro"
-import SectionContainer from "./SectionContainer.astro"
+import RoomsCard from "@/components/RoomsCard.astro"
+import SectionContainer from "@/components/SectionContainer.astro"
+import { ROOMS } from "@/data/rooms"
+import i18next from "@/i18n/config.js"
 
 // Filtrar habitaciones disponibles
 const availableRooms = ROOMS.filter((room) => room.available)

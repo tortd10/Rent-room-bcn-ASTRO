@@ -1,13 +1,13 @@
 ---
+import HowWorks from "@/components/HowWorks.astro"
+import i18next from "@/i18n/config.js"
+
 const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
 
 // Función para ajustar las URLs de las opciones del menú según el idioma actual
 const getLocalizedHref = (href: string) => {
 	return currentLang === "es" ? `/es${href}` : `/en${href}`
 }
-
-import i18next from "../i18n/config.js"
-import HowWorks from "./HowWorks.astro"
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
