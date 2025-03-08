@@ -1,6 +1,7 @@
 ---
 import RoomsCard from "@/components/RoomsCard.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
+import { FLATS } from "@/data/flats"
 import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
 
@@ -12,7 +13,23 @@ const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no 
 const translations = i18next.getResourceBundle(lang, "translation")
 const plpRoom = translations.plpRoom
 
-// Obtener pisos únicos
+// Definir el tipo para la estructura de los flats
+interface Flat {
+	flat_id: string
+	title: string
+	mapImage: string
+}
+
+// Definir el tipo de flatMap como un objeto con claves de tipo string y valores de tipo string
+const flatMap: { [key: string]: string } = FLATS.reduce(
+	(acc, flat: Flat) => {
+		acc[flat.flat_id] = flat.title
+		return acc
+	},
+	{} as { [key: string]: string }
+)
+
+// Relacionar el título del flat en el filtro
 const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 ---
 
@@ -20,10 +37,8 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
 </head>
 <SectionContainer class="px-0">
-	<div class="mx-auto max-w-7xl px-4 pt-6 lg:px-8">
-		<h2
-			class="xs:text-2xl text-balance pb-6 text-center text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
-		>
+	<div class="mx-auto max-w-7xl px-4 pt-6">
+		<h2 class="text-balance pb-6 text-center text-2xl font-black tracking-tight text-primary">
 			{plpRoom.title}
 		</h2>
 
@@ -33,30 +48,31 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 				? [new URLSearchParams(window.location.search).get('selectedFlat')] 
 				: [] 
 		}"
-			class="flex flex-col justify-between gap-6 lg:flex-row"
+			class="flex flex-col justify-between gap-6"
 		>
-			<div class="flatSelector w-full text-center lg:w-36">
+			<div class="flatSelector w-full text-center">
 				<label class="text-lg font-semibold" style="text-decoration-line: underline;">
 					{plpRoom.filtrar}
 				</label>
-				<div
-					class="mt-4 flex flex-row flex-wrap justify-center gap-4 sm:justify-center md:justify-center lg:justify-start"
-				>
+				<div class="mt-4 flex flex-row flex-wrap justify-center gap-4">
 					{
-						uniqueFlats.map((flat) => (
-							<div class="flex items-center">
-								<input
-									type="checkbox"
-									id={flat}
-									value={flat}
-									x-model="selectedFlats"
-									class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-lg font-semibold text-white shadow-md transition hover:bg-opacity-80"
-								/>
-								<label for={flat} class="ml-2 text-lg font-semibold">
-									{flat}
-								</label>
-							</div>
-						))
+						uniqueFlats.map((flatId) => {
+							const flatTitle = flatMap[flatId]
+							return (
+								<div class="flex items-center">
+									<input
+										type="checkbox"
+										id={flatId}
+										value={flatId}
+										x-model="selectedFlats"
+										class="cursor-pointer rounded-lg bg-primary px-4 py-2 text-lg font-semibold text-white shadow-md transition hover:bg-opacity-80"
+									/>
+									<label for={flatId} class="ml-2 text-lg font-semibold">
+										{flatTitle}
+									</label>
+								</div>
+							)
+						})
 					}
 				</div>
 			</div>
@@ -66,15 +82,18 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 					{
 						availableRooms.map((room) => (
 							<div
-								class="room-card"
+								class={`room-card ${room.status === "soon" ? "cursor-not-allowed opacity-50" : ""} flex h-full flex-col`}
 								x-show={`selectedFlats.length === 0 || selectedFlats.includes('${room.roomFlat}')`}
 							>
 								<RoomsCard
 									name={room.name}
-									description={room.description}
-									imageSrc={room.imageSrc}
+									description={
+										room.status === "soon" ? plpRoom.soon : plpRoom.RoomCard[room.roomFlat]
+									}
+									imageSrc={room.status === "soon" ? "/Flats/soon-available.jpeg" : room.imageSrc}
 									imageAlt={room.imageAlt}
-									href={`/${lang}/${room.slug}`}
+									href={room.status === "soon" ? null : `/${lang}/${room.slug}`}
+									class={room.status === "soon" ? "pointer-events-none" : ""}
 								/>
 							</div>
 						))

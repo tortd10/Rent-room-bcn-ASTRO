@@ -51,7 +51,35 @@
     "find_room": "Encuentra tu habitación ideal",
     "description": "Ofrecemos una amplia gama de habitaciones para que encuentres la opción perfecta para tu estadía. Navega por nuestro portal y descubre alojamientos únicos.",
     "view_rooms": "HABITACIONES",
-    "image_alt": "foto RentRoom"
+    "image_alt": "foto RentRoom",
+    "section2": {
+      "question1": "¿Buscas una habitación cómoda, bien ubicada y a buen precio? ¡Aquí lo encontrarás!",
+      "text1": "En RentRoom conectamos a personas que buscan un espacio donde sentirse como en casa con habitaciones disponibles. Ya sea para una estancia corta o para vivir durante meses, tenemos la opción perfecta para ti.",
+      "text2": "Sabemos que buscar una habitación no es solo encontrar cuatro paredes, es encontrar un espacio donde sentirse bien, donde empezar una nueva etapa, donde puedas ser tú mismo/a. Por eso, estamos aquí para acompañarte en este camino.",
+      "title2": "¿Qué ofrecemos?",
+      "articles": [
+        {
+          "title": "Habitaciones en pisos compartidos"
+        },
+        { "title": "Flexibilidad para adaptarnos a tu tiempo tanto estancias cortas o largas." },
+        {
+          "title": "Atención personalizada para que encuentres la mejor opción según tus necesidades."
+        }
+      ]
+    },
+    "howwork": {
+      "title": "Cómo funciona?",
+      "pasos": [
+        {
+          "title": "Busca habitaciones",
+          "imagen": "/Home/findRoom.jpg",
+          "link": "Rooms"
+        },
+        { "title": "Contacta con el propietario", "imagen": "/Home/bookRoom.jpg", "link": "" },
+        { "title": "Reserva fácil y segura", "imagen": "/Home/bookSafe.jpg", "link": "" },
+        { "title": "¡Instálate!", "imagen": "/Home/installRoom.jpg", "link": "" }
+      ]
+    }
   },
   "aboutRooms": {
     "title": "Encuentra tu próximo espacio perfecto",
@@ -95,7 +123,19 @@
   },
   "plpRoom": {
     "title": "Habitaciones Disponibles",
-    "filtrar": "FILTRA POR PISO"
+    "filtrar": "FILTRA POR PISO",
+    "soon": "PRÓXIMAMENTE DISPONIBLE",
+    "RoomCard": {
+      "FFCC71": [
+        "Habitación económica en la Zona Franca, zona tranquila junto a parques. Cama individual, escritorio y wifi."
+      ],
+      "RB219": [
+        "Habitación individual en Sants-Montjuïc a 10 minutos de todos los servicios de la ciudad. Cama individual, escritorio y wifi."
+      ],
+      "AAFF33": [
+        "Habitación en piso compartido en la Zona Franca, cerca del centro comercial Granvia 2. Cama individual, escritorio y wifi."
+      ]
+    }
   },
   "Knowus": {
     "title": "Conoce RentRoomBCN",
@@ -194,9 +234,8 @@
       "Entreplanta exterior con ascensor.",
       "5 habitaciones.",
       "1 baño.",
-      "Capacidad máxima: 2 personas.",
       "Conexión a internet.",
-      "Cocina equipada: nevera, horno, microondas.",
+      "Cocina equipada: nevera, horno, microondas, lavadora.",
       "Portero físico."
     ],
     "roomFeaturesTitle": "Características de la habitación:",
@@ -217,40 +256,13 @@
     "roomDetailsTitle": "Descripción de la habitación",
     "roomDetails": [
       "Habitación amplia y luminosa con ventana",
-      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción y ventilador",
+      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción.",
       "Acceso a internet de fibra óptica (conexión wifi y por cable)",
       "Puerta con cerradura",
       "Ropa de cama y toallas no incluidas"
     ],
     "roomConditionsTitle": "Condiciones",
     "roomConditions": [
-      "Alquiler: 550 €/mes",
-      "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
-      "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
-      "Contrato mínimo de 2 meses",
-      "No se permiten mascotas",
-      "No se permite fumar dentro del piso",
-      "Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida"
-    ],
-    "roomAtmosphereTitle": "Ambiente de la casa",
-    "roomAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio"],
-    "contactInfo": "Para más información, contacta con nosotros",
-    "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!"
-  },
-  "RoomDetails": {
-    "roomTitle": "HABITACIÓN CON CAMA INDIVIDUAL",
-    "roomDescription": "Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría ser perfecta para ti.",
-    "roomDetailsTitle": "Descripción de la habitación",
-    "roomDetails": [
-      "Habitación amplia y luminosa con ventana",
-      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción y ventilador",
-      "Acceso a internet de fibra óptica (conexión wifi y por cable)",
-      "Puerta con cerradura",
-      "Ropa de cama y toallas no incluidas"
-    ],
-    "roomConditionsTitle": "Condiciones",
-    "roomConditions": [
-      "Alquiler: 550 €/mes",
       "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
       "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
       "Contrato mínimo de 2 meses",
@@ -263,7 +275,8 @@
     "contactInfo": "Para más información, contacta con nosotros",
     "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!",
     "availableText": "Disponible",
-    "unavailableText": "No disponible"
+    "unavailableText": "No disponible",
+    "soon": "Próximamente disponible"
   },
   "RoomContactForm": {
     "title": "Contáctanos sobre",

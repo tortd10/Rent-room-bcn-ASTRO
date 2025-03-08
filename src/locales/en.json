@@ -51,7 +51,37 @@
     "find_room": "Find your ideal room",
     "description": "We offer a wide range of rooms so you can find the perfect option for your stay. Browse through our portal and discover unique accommodations.",
     "view_rooms": "Rooms",
-    "image_alt": "RentRoom photo"
+    "image_alt": "RentRoom photo",
+    "section2": {
+      "question1": "Are you looking for a comfortable, well-located, and affordable room? You'll find it here!",
+      "text1": "At RentRoom, we connect people looking for a place to feel at home with available rooms. Whether for a short stay or to live for months, we have the perfect option for you.",
+      "text2": "We know that looking for a room is not just about finding four walls; it's about finding a space where you feel good, where you can start a new chapter, where you can be yourself. That's why we're here to accompany you on this journey.",
+      "title2": "What do we offer?",
+      "articles": [
+        {
+          "title": "Rooms in shared apartments"
+        },
+        {
+          "title": "Flexibility to adapt to your time, whether for short or long stays."
+        },
+        {
+          "title": "Personalized attention to help you find the best option according to your needs."
+        }
+      ]
+    },
+    "howwork": {
+      "title": "How does it work?",
+      "pasos": [
+        {
+          "title": "Search for rooms",
+          "imagen": "/Home/findRoom.jpg",
+          "link": "Rooms"
+        },
+        { "title": "Contact the owner", "imagen": "/Home/bookRoom.jpg", "link": "" },
+        { "title": "Book easily and securely", "imagen": "/Home/bookSafe.jpg", "link": "" },
+        { "title": "Move in!", "imagen": "/Home/installRoom.jpg", "link": "" }
+      ]
+    }
   },
   "aboutRooms": {
     "title": "Find your next perfect space",
@@ -122,7 +152,19 @@
   },
   "plpRoom": {
     "title": "Available Rooms",
-    "filtrar": "FILTER BY FLAT"
+    "filtrar": "FILTER BY FLAT",
+    "soon": "COMING SOON",
+    "RoomCard": {
+      "FFCC71": [
+        "Budget room in Zona Franca, quiet area next to parks. Single bed, desk and wifi."
+      ],
+      "RB219": [
+        "Single room in Sants-Montjuïc 10 minutes from all city services. Single bed, desk and wifi."
+      ],
+      "AAFF33": [
+        "Room in shared flat in Zona Franca, near Granvia 2 shopping centre. Single bed, desk and wifi."
+      ]
+    }
   },
   "property_features": {
     "title": "Property Features:",
@@ -195,9 +237,8 @@
       "Exterior mezzanine with elevator.",
       "5 bedrooms.",
       "1 bathroom.",
-      "Maximum capacity: 2 people.",
       "Internet connection.",
-      "Equipped kitchen: fridge, oven, microwave.",
+      "Equipped kitchen: fridge, oven, microwave, washing machine",
       "Doorman."
     ],
     "roomFeaturesTitle": "Room Features:",
@@ -225,7 +266,6 @@
     ],
     "roomConditionsTitle": "Conditions",
     "roomConditions": [
-      "Rent: 550 €/month",
       "50€/month for shared expenses such as electricity, water, gas, and fiber optic internet",
       "One-month deposit. Refundable deposit upon contract completion and room vacating",
       "Minimum contract of 2 months",

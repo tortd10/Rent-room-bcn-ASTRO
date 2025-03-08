@@ -1,29 +1,10 @@
 ---
-import i18next from "@/i18n/config.js"
 import SectionContainer from "@/components/SectionContainer.astro"
+import i18next from "@/i18n/config.js"
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
-
-const pasos = [
-	{
-		titulo: "Busca habitaciones",
-		imagen: "/Home/findRoom.jpg",
-		link: `/${lang}/Rooms`,
-	},
-	{
-		titulo: "Contacta con el propietario",
-		imagen: "/Home/bookRoom.jpg",
-	},
-	{
-		titulo: "Reserva fácil y segura",
-		imagen: "/Home/bookSafe.jpg",
-	},
-	{
-		titulo: "¡Instálate!",
-		imagen: "/Home/installRoom.jpg",
-	},
-]
+const findRoom = translations.FindRoom
 ---
 
 <SectionContainer class="mt-5 px-4">
@@ -32,7 +13,7 @@ const pasos = [
 			<h1
 				class="text-balance text-4xl font-black tracking-tight text-primary sm:text-5xl md:text-6xl lg:text-5xl"
 			>
-				¿Cómo funciona?
+				{findRoom.howwork.title}
 			</h1>
 		</div>
 
@@ -40,18 +21,18 @@ const pasos = [
 			class="mx-auto mt-12 grid max-w-6xl grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4"
 		>
 			{
-				pasos.map((paso) => (
+				findRoom.howwork.pasos.map((paso: { link: any; imagen: string; title: string }) => (
 					<div class="flex flex-col items-center">
 						<div class="flex h-52 w-52 items-center justify-center overflow-hidden rounded-full border-4 border-primary bg-white shadow-xl">
-							<a href={paso.link}>
+							<a href={`/${lang}/${paso.link}`}>
 								<img
 									src={paso.imagen}
-									alt={paso.titulo}
+									alt={paso.title}
 									class="h-full w-full rounded-full object-cover"
 								/>
 							</a>
 						</div>
-						<h3 class="mt-4 w-52 text-center text-lg font-semibold text-gray-800">{paso.titulo}</h3>
+						<h3 class="mt-4 w-52 text-center text-lg font-semibold text-gray-800">{paso.title}</h3>
 					</div>
 				))
 			}

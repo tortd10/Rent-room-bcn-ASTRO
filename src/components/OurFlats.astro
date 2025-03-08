@@ -1,6 +1,6 @@
 ---
-import { FLATS } from "@/data/flats"
 import FlatsCard from "@/components/FlatsCard.astro"
+import { FLATS } from "@/data/flats"
 
 import i18next from "@/i18n/config.js"
 
@@ -23,8 +23,8 @@ const ourFlats = translations.ourFlats
 			class="no-scrollbar -mx-4 flex max-w-[1536px] snap-x snap-mandatory items-center gap-7 overflow-x-auto px-4 pb-6 md:grid md:grid-cols-2 md:justify-items-center md:overflow-visible lg:z-10 lg:m-0 lg:grid-cols-3 lg:p-0 xl:grid-cols-3"
 		>
 			{
-				FLATS.map(({ mapImage, title, flat_id }) => (
-					<FlatsCard mapImage={mapImage} title={title} id={flat_id} />
+				FLATS.map(({ mapImage, street, flat_id }) => (
+					<FlatsCard mapImage={mapImage} title={street} id={flat_id} />
 				))
 			}
 		</a>

@@ -21,7 +21,6 @@ interface Article {
 
 interface AboutRooms {
 	title: string
-	description: string
 	articles: Article[]
 }
 
@@ -30,21 +29,18 @@ const aboutRooms: AboutRooms = translations.aboutRooms
 var ARTICLES = [
 	{
 		class: "bg-gradient-to-r from-[#DAD7CD] to-[#A3B18A] text-white",
-		title: "Habitaciones en pisos compartidos",
 	},
 	{
 		class: "bg-gradient-to-r from-[#A3B18A] to-[#DAD7CD] text-white",
-		title: "Flexibilidad para adaptarnos a tu tiempo tanto estancias cortas o largas.",
 	},
 	{
 		class: "bg-gradient-to-r from-[#DAD7CD] to-[#E9EDC9] text-primary",
-		title: "Atención personalizada para que encuentres la mejor opción según tus necesidades.",
 	},
 ]
 ---
 
 <section class="px-4 py-6 md:mx-auto md:w-full md:max-w-[90rem]">
-	<div class="grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 md:grid-rows-1 md:p-0">
+	<section class="grid grid-cols-1 place-items-center gap-4 md:grid-cols-2 md:grid-rows-1 md:p-0">
 		<div>
 			<div>
 				<h1
@@ -68,33 +64,29 @@ var ARTICLES = [
 		<div>
 			<img src="/Home/1.jpeg" alt="foto RentRoom" class="rounded-3xl" />
 		</div>
-	</div>
+	</section>
 
-	<div class="mt-7 flex flex-col items-center md:grid md:grid-cols-3">
+	<section class="mt-7 flex flex-col items-center md:grid md:grid-cols-3">
 		<div
 			class="flex w-full flex-col items-center justify-center text-center md:col-span-2 md:text-left"
 		>
 			<h2
 				class="text-balance text-center text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
 			>
-				¿Buscas una habitación cómoda, bien ubicada y a buen precio? ¡Aquí lo encontrarás!
+				{findRoom.section2.question1}
 			</h2>
 			<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-2xl md:text-2xl lg:text-2xl">
-				En RentRoom conectamos a personas que buscan un espacio donde sentirse como en casa con
-				habitaciones disponibles. Ya sea para una estancia corta o para vivir durante meses, tenemos
-				la opción perfecta para ti.
+				{findRoom.section2.texet1}
 			</h2>
 			<h2 class="mt-6 text-balance text-lg text-texth2 sm:text-2xl md:text-2xl lg:text-2xl">
-				Sabemos que buscar una habitación no es solo encontrar cuatro paredes, es encontrar un
-				espacio donde sentirse bien, donde empezar una nueva etapa, donde puedas ser tú mismo/a. Por
-				eso, estamos aquí para acompañarte en este camino.
+				{findRoom.section2.text2}
 			</h2>
 		</div>
 		<div class="mt-7 flex w-full flex-col items-center md:mt-0">
 			<h2
 				class="text-balance text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
 			>
-				¿Qué ofrecemos?
+				{findRoom.section2.title2}
 			</h2>
 			<div class="mt-6 flex w-full flex-col gap-2">
 				{
@@ -112,7 +104,7 @@ var ARTICLES = [
 						>
 							<div class="flex h-full flex-col justify-start p-4">
 								<h3 class="mb-2 text-lg text-texth2 sm:text-xl md:text-xl lg:text-xl">
-									{ARTICLES[index]?.title}
+									{findRoom.section2.articles[index]?.title}
 								</h3>
 							</div>
 						</div>
@@ -120,6 +112,6 @@ var ARTICLES = [
 				}
 			</div>
 		</div>
-	</div>
+	</section>
 	<HowWorks />
 </section>
