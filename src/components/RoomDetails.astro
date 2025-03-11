@@ -1,11 +1,14 @@
 ---
-import i18next from "@/i18n/config.js"
 import RoomCharacteristics from "@/components/RoomCharacteristics.astro"
+import i18next from "@/i18n/config.js"
 
 // Obtener el idioma actual y los textos traducidos
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
-const roomDetails = translations.RoomDetails
+const pdpRoom = translations.pdpRoom
+
+// Extraer el identificador de la habitación desde la URL
+const flatId = Astro.url.pathname.split("/")[2]?.split("-")[0] || "defaultId"
 
 // Obtener los datos de la habitación
 const { roomData } = Astro.props
@@ -15,12 +18,12 @@ const { roomData } = Astro.props
 	<!-- Descripción de la habitación -->
 	<div class="space-y-4">
 		<p class="text-sm text-gray-600">
-			<strong>{roomDetails.roomTitle}</strong><br />
-			{roomDetails.roomDescription}<br /><br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.roomTitle}</strong><br />
+			{pdpRoom[flatId]?.RoomDetails.roomDescription}<br /><br />
 
-			<strong>{roomDetails.roomDetailsTitle}</strong><br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.RoomDetailsTitle}</strong><br />
 			{
-				roomDetails.roomDetails.map((detail: string) => (
+				pdpRoom[flatId]?.RoomDetails.roomDetails.map((detail: string) => (
 					<>
 						<span>- {detail}</span>
 						<br />
@@ -29,9 +32,9 @@ const { roomData } = Astro.props
 			}
 
 			<br />
-			<strong>{roomDetails.roomConditionsTitle}</strong><br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.roomConditionsTitle}</strong><br />
 			{
-				roomDetails.roomConditions.map((condition: string) => (
+				pdpRoom[flatId]?.RoomDetails.roomConditions.map((condition: string) => (
 					<>
 						<span>- {condition}</span>
 						<br />
@@ -40,9 +43,9 @@ const { roomData } = Astro.props
 			}
 
 			<br />
-			<strong>{roomDetails.roomAtmosphereTitle}</strong><br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.roomAtmosphereTitle}</strong><br />
 			{
-				roomDetails.roomAtmosphere.map((atmosphere: string) => (
+				pdpRoom[flatId]?.RoomDetails.roomAtmosphere.map((atmosphere: string) => (
 					<>
 						<span>- {atmosphere}</span>
 						<br />
@@ -51,8 +54,8 @@ const { roomData } = Astro.props
 			}
 
 			<br />
-			<strong>{roomDetails.contactInfo}</strong><br />
-			{roomDetails.contactInfoDescription}
+			<strong>{pdpRoom[flatId]?.RoomDetails.contactInfo}</strong><br />
+			{pdpRoom[flatId]?.RoomDetails.contactInfoDescription}
 		</p>
 	</div>
 </div>
@@ -62,7 +65,11 @@ const { roomData } = Astro.props
 
 	<div class="flex items-center space-x-2">
 		<span class={`text-sm font-semibold ${roomData.available ? "text-green-500" : "text-red-500"}`}>
-			{roomData.available ? roomDetails.availableText : roomDetails.unavailableText}
+			{
+				roomData.available
+					? pdpRoom[flatId]?.RoomDetails.availableText
+					: pdpRoom[flatId]?.RoomDetails.unavailableText
+			}
 		</span>
 		<span class={`w-2.5 h-2.5 rounded-full ${roomData.available ? "bg-green-500" : "bg-red-500"}`}
 		></span>

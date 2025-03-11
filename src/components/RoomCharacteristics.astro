@@ -4,16 +4,19 @@ import i18next from "@/i18n/config.js"
 // Obtener el idioma actual y los textos traducidos
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
-const roomCharacteristics = translations.roomCharacteristics
+const pdpRooms = translations.pdpRoom
+
+// Extraer el identificador de la habitación desde la URL
+const flatId = Astro.url.pathname.split("/")[2]?.split("-")[0] || "defaultId"
 ---
 
 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
 	<!-- Características de la vivienda -->
 	<div>
 		<p class="text-sm text-gray-600">
-			<strong>{roomCharacteristics.houseFeaturesTitle}</strong><br />
+			<strong>{pdpRooms[flatId]?.roomCharacteristics.houseFeaturesTitle}</strong><br />
 			{
-				roomCharacteristics.houseFeatures.map((feature: string) => (
+				pdpRooms[flatId]?.roomCharacteristics.houseFeatures.map((feature: string) => (
 					<>
 						<span>- {feature}</span>
 						<br />
@@ -26,9 +29,9 @@ const roomCharacteristics = translations.roomCharacteristics
 	<!-- Características de la habitación y otros detalles -->
 	<div>
 		<p class="text-sm text-gray-600">
-			<strong>{roomCharacteristics.roomFeaturesTitle}</strong><br />
+			<strong>{pdpRooms[flatId]?.roomCharacteristics.roomFeaturesTitle}</strong><br />
 			{
-				roomCharacteristics.roomFeatures.map((feature: string) => (
+				pdpRooms[flatId]?.roomCharacteristics.roomFeatures.map((feature: string) => (
 					<>
 						<span>- {feature}</span>
 						<br />
@@ -37,9 +40,9 @@ const roomCharacteristics = translations.roomCharacteristics
 			}
 
 			<br />
-			<strong>{roomCharacteristics.roommatesTitle}</strong><br />
+			<strong>{pdpRooms[flatId]?.roomCharacteristics.roommatesTitle}</strong><br />
 			{
-				roomCharacteristics.roommates.map((info: string) => (
+				pdpRooms[flatId]?.roomCharacteristics.roommates.map((info: string) => (
 					<>
 						<span>- {info}</span>
 						<br />
@@ -48,9 +51,9 @@ const roomCharacteristics = translations.roomCharacteristics
 			}
 
 			<br />
-			<strong>{roomCharacteristics.houseAtmosphereTitle}</strong><br />
+			<strong>{pdpRooms[flatId]?.roomCharacteristics.houseAtmosphereTitle}</strong><br />
 			{
-				roomCharacteristics.houseAtmosphere.map((atmosphere: string) => (
+				pdpRooms[flatId]?.roomCharacteristics.houseAtmosphere.map((atmosphere: string) => (
 					<>
 						<span>- {atmosphere}</span>
 						<br />

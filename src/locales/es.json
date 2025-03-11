@@ -225,58 +225,60 @@
     "subtitle": "¿Tienes más preguntas? ¡Contáctanos!"
   },
   "pdpRoom": {
-    "backButton": "Volver atrás"
-  },
-  "roomCharacteristics": {
-    "houseFeaturesTitle": "Características de la vivienda:",
-    "houseFeatures": [
-      "Habitación en piso de 72 m².",
-      "Entreplanta exterior con ascensor.",
-      "5 habitaciones.",
-      "1 baño.",
-      "Conexión a internet.",
-      "Cocina equipada: nevera, horno, microondas, lavadora.",
-      "Portero físico."
-    ],
-    "roomFeaturesTitle": "Características de la habitación:",
-    "roomFeatures": ["Habitación amueblada.", "Cama individual.", "Ventana al patio."],
-    "roommatesTitle": "Tus compañeros/as:",
-    "roommates": [
-      "Chicos y chicas.",
-      "Entre 1 y 99 años.",
-      "Estudian/Trabajan.",
-      "El propietario/a no vive en la casa."
-    ],
-    "houseAtmosphereTitle": "Ambiente de la casa:",
-    "houseAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio."]
-  },
-  "RoomDetails": {
-    "roomTitle": "HABITACIÓN CON CAMA INDIVIDUAL",
-    "roomDescription": "Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría ser perfecta para ti.",
-    "roomDetailsTitle": "Descripción de la habitación",
-    "roomDetails": [
-      "Habitación amplia y luminosa con ventana",
-      "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción.",
-      "Acceso a internet de fibra óptica (conexión wifi y por cable)",
-      "Puerta con cerradura",
-      "Ropa de cama y toallas no incluidas"
-    ],
-    "roomConditionsTitle": "Condiciones",
-    "roomConditions": [
-      "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
-      "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
-      "Contrato mínimo de 2 meses",
-      "No se permiten mascotas",
-      "No se permite fumar dentro del piso",
-      "Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida"
-    ],
-    "roomAtmosphereTitle": "Ambiente de la casa",
-    "roomAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio"],
-    "contactInfo": "Para más información, contacta con nosotros",
-    "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!",
-    "availableText": "Disponible",
-    "unavailableText": "No disponible",
-    "soon": "Próximamente disponible"
+    "backButton": "Volver atrás",
+    "FFCC71": {
+      "roomCharacteristics": {
+        "houseFeaturesTitle": "Características de la vivienda:",
+        "houseFeatures": [
+          "Habitación en piso de 72 m².",
+          "Entreplanta exterior con ascensor.",
+          "5 habitaciones.",
+          "1 baño.",
+          "Conexión a internet.",
+          "Cocina equipada: nevera, horno, microondas, lavadora.",
+          "Portero físico."
+        ],
+        "roomFeaturesTitle": "Características de la habitación:",
+        "roomFeatures": ["Habitación amueblada.", "Cama individual.", "Ventana al patio."],
+        "roommatesTitle": "Tus compañeros/as:",
+        "roommates": [
+          "Chicos y chicas.",
+          "Entre 1 y 99 años.",
+          "Estudian/Trabajan.",
+          "El propietario/a no vive en la casa."
+        ],
+        "houseAtmosphereTitle": "Ambiente de la casa:",
+        "houseAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio."]
+      },
+      "RoomDetails": {
+        "roomTitle": "HABITACIÓN CON CAMA INDIVIDUAL",
+        "roomDescription": "Si estás buscando un lugar cómodo y bien ubicado para vivir, esta habitación en Zona Franca podría ser perfecta para ti.",
+        "roomDetailsTitle": "Descripción de la habitación",
+        "roomDetails": [
+          "Habitación amplia y luminosa con ventana",
+          "Totalmente amueblada: cama de 90x200, armario, escritorio, silla de estudio, calefacción.",
+          "Acceso a internet de fibra óptica (conexión wifi y por cable)",
+          "Puerta con cerradura",
+          "Ropa de cama y toallas no incluidas"
+        ],
+        "roomConditionsTitle": "Condiciones",
+        "roomConditions": [
+          "Cuota de 50€/mes por los gastos comunes de luz, agua, gas e internet de fibra óptica",
+          "Un mes de fianza. Depósito retornable al finalizar el contrato y dejar la habitación",
+          "Contrato mínimo de 2 meses",
+          "No se permiten mascotas",
+          "No se permite fumar dentro del piso",
+          "Limpieza semanal de zonas comunes (pasillo, baño y cocina) incluida"
+        ],
+        "roomAtmosphereTitle": "Ambiente de la casa",
+        "roomAtmosphere": ["Tranquilo, no suelen tener visitas y abunda el silencio"],
+        "contactInfo": "Para más información, contacta con nosotros",
+        "contactInfoDescription": "¡Estoy disponible para responder cualquier pregunta que tengas!",
+        "availableText": "Disponible",
+        "unavailableText": "No disponible",
+        "soon": "Próximamente disponible"
+      }
+    }
   },
   "RoomContactForm": {
     "title": "Contáctanos sobre",
