@@ -21,7 +21,7 @@ const { roomData } = Astro.props
 			<strong>{pdpRoom[flatId]?.RoomDetails.roomTitle}</strong><br />
 			{pdpRoom[flatId]?.RoomDetails.roomDescription}<br /><br />
 
-			<strong>{pdpRoom[flatId]?.RoomDetails.RoomDetailsTitle}</strong><br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.roomDetailsTitle}</strong><br />
 			{
 				pdpRoom[flatId]?.RoomDetails.roomDetails.map((detail: string) => (
 					<>
@@ -44,16 +44,11 @@ const { roomData } = Astro.props
 
 			<br />
 			<strong>{pdpRoom[flatId]?.RoomDetails.roomAtmosphereTitle}</strong><br />
-			{
-				pdpRoom[flatId]?.RoomDetails.roomAtmosphere.map((atmosphere: string) => (
-					<>
-						<span>- {atmosphere}</span>
-						<br />
-					</>
-				))
-			}
+			{pdpRoom[flatId]?.RoomDetails.roomAtmosphere}<br /><br />
 
-			<br />
+			<strong>{pdpRoom[flatId]?.RoomDetails.roomUbiTitle}</strong><br />
+			{pdpRoom[flatId]?.RoomDetails.roomUbi}<br /><br />
+
 			<strong>{pdpRoom[flatId]?.RoomDetails.contactInfo}</strong><br />
 			{pdpRoom[flatId]?.RoomDetails.contactInfoDescription}
 		</p>

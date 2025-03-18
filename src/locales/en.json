@@ -45,7 +45,8 @@
         "href": "/change-language",
         "icon": "/Flags/{currentLang === 'es' ? 'en' : 'es'}.svg"
       }
-    ]
+    ],
+    "copy": "© 2025 RENTROOMBCN all rights reserved."
   },
   "FindRoom": {
     "find_room": "Find your ideal room",
@@ -115,13 +116,24 @@
     "title": "Flats"
   },
   "Knowus": {
-    "title": "Know RentRoomBCN",
-    "description": "Welcome to RentRoomBCN, where finding your ideal space is our mission. We specialize in connecting people with unique accommodations, offering personalized and secure solutions to make every stay in Barcelona a memorable experience."
+    "title": "WHO WE ARE",
+    "description": "At Rent Room, we are not a big company or a cold rental platform. We understand that searching for a room can be a journey full of doubts and important decisions. That’s why we created this space with you in mind, to make your search easy, safe, and tailored to your needs."
   },
   "OurBeliefs": {
-    "text1": "At RentRoomBCN, we strongly believe that everyone deserves a space that not only meets their needs but also feels like home. We take pride in offering a personalized experience where each client feels supported from the very beginning. We know that everyone has their own style and lifestyle, which is why we work tirelessly to offer options that perfectly match your needs and expectations. From choosing the perfect room to continuous advice during your stay, we are here to ensure your experience is unique and special.",
-    "text2": "Transparency is one of our core pillars. We are committed to providing clear and accurate information at all times so that you can make informed and secure decisions. We believe that trust is the foundation of any relationship, and at RentRoomBCN, we provide you with all the details about our spaces, contracts, and terms with no surprises or fine print. Additionally, we strive to maintain the highest quality standards in every accommodation we offer. Every room and space is carefully selected and reviewed to ensure your stay is as comfortable, safe, and pleasant as possible."
+    "title1": "What drives us?",
+    "text1": [
+      "We believe that a home is much more than just a place to sleep. It’s where your days begin and where you return to rest. It’s your refuge.",
+      "We are committed to trust and transparency. We want you to feel free to ask anything you need, without pressure.",
+      "We love connecting people. We want every room listed on our website to be an opportunity to create a pleasant, respectful coexistence where you feel at home."
+    ],
+    "title2": "Our commitment to you:",
+    "text2": [
+      "We review every listing to ensure everything is in order.",
+      "We support you throughout the entire process. If you have any questions or need help, we are here to listen.",
+      "We want you to arrive at your new home with the peace of mind that you have made the best decision."
+    ]
   },
+
   "OurTeam": {
     "title": "Our Team",
     "description": "At RentRoomBCN, our team is made up of passionate individuals who love what they do. We believe that the success of our company is based on the dedication, commitment, and experience of each team member.",
@@ -151,7 +163,7 @@
     "submitButton": "Submit"
   },
   "plpRoom": {
-    "title": "Available Rooms",
+    "title": "OUR ROOMS",
     "filtrar": "FILTER BY FLAT",
     "soon": "COMING SOON",
     "RoomCard": {
@@ -198,7 +210,7 @@
     "FAQ": [
       {
         "question": "Are pets allowed?",
-        "answer": "Yes, some rooms allow pets. Please check the description of each room for more details."
+        "answer": "No pets allowed in the rooms."
       },
       {
         "question": "Are there weekly cleaning services?",
@@ -231,72 +243,157 @@
     "backButton": "Go back",
     "FFCC71": {
       "roomCharacteristics": {
-        "houseFeaturesTitle": "House Features:",
+        "houseFeaturesTitle": "House features:",
         "houseFeatures": [
           "Room in a 72 m² apartment.",
-          "Exterior mezzanine with elevator.",
-          "5 bedrooms.",
+          "Mezzanine exterior with elevator.",
+          "5 rooms.",
           "1 bathroom.",
           "Internet connection.",
-          "Equipped kitchen: fridge, oven, microwave, washing machine",
-          "Doorman."
+          "Equipped kitchen: fridge, oven, microwave, washing machine."
         ],
-        "roomFeaturesTitle": "Room Features:",
-        "roomFeatures": ["Furnished room.", "Single bed.", "Window to the courtyard."],
-        "roommatesTitle": "Your Roommates:",
-        "roommates": [
-          "Boys and girls.",
-          "Between 1 and 99 years old.",
-          "They study/work.",
-          "The owner does not live in the house."
-        ],
-        "houseAtmosphereTitle": "House Atmosphere:",
-        "houseAtmosphere": ["Quiet, there are usually no visitors, and silence prevails."]
+        "roomFeaturesTitle": "Room features:",
+        "roomFeatures": ["Furnished room.", "Single bed.", "Door with lock."]
       },
       "RoomDetails": {
-        "roomTitle": "ROOM WITH SINGLE BED",
-        "roomDescription": "If you're looking for a comfortable and well-located place to live, this room in Zona Franca might be perfect for you.",
-        "roomDetailsTitle": "Room Description",
+        "roomTitle": "Affordable room in Zona Franca – tranquility and comfort",
+        "roomDescription": "If you are looking for a comfortable and well-located place to live, this room in Zona Franca could be perfect for you.",
+        "roomDetailsTitle": "Room description",
         "roomDetails": [
           "Spacious and bright room with a window",
-          "Fully furnished: 90x200 bed, wardrobe, desk, study chair, heating, and fan",
-          "Fiber optic internet access (Wi-Fi and wired connection)",
+          "Fully furnished: 90x200 bed, wardrobe, desk, study chair, heating.",
+          "Fiber optic internet access (WiFi and wired connection)",
           "Door with lock",
-          "Bedding and towels not included"
+          "* Bed linen and towels not included"
         ],
         "roomConditionsTitle": "Conditions",
         "roomConditions": [
-          "50€/month for shared expenses such as electricity, water, gas, and fiber optic internet",
-          "One-month deposit. Refundable deposit upon contract completion and room vacating",
+          "€50/month fee for shared expenses (electricity, water, gas, and fiber optic internet)",
+          "One-month deposit. Refundable upon contract completion and room handover",
           "Minimum contract of 2 months",
-          "No pets allowed",
-          "No smoking inside the apartment",
+          "Pets are not allowed",
+          "Smoking is not allowed inside the apartment",
           "Weekly cleaning of common areas (hallway, bathroom, and kitchen) included"
         ],
-        "roomAtmosphereTitle": "House Atmosphere",
-        "roomAtmosphere": ["Quiet, no visitors usually, and peaceful"],
+        "roomAtmosphereTitle": "House atmosphere",
+        "roomAtmosphere": "Your housemates are men aged between 20 and 70, who study or work. The apartment is usually very quiet, visits are rare, and silence prevails. The owner does not live in the house.",
+        "roomUbiTitle": "Location",
+        "roomUbi": "Sants-Montjuïc District – Zona Franca. An industrial area that has transformed into a modern and constantly developing environment. It is located southwest of Barcelona, very close to the port and the airport. Perfect for those looking for a functional and well-connected place.",
         "contactInfo": "For more information, contact us",
-        "contactInfoDescription": "I am available to answer any questions you have!",
+        "contactInfoDescription": "I'm available to answer any questions you may have!",
         "availableText": "Available",
-        "unavailableText": "Not Available"
+        "unavailableText": "Unavailable",
+        "soon": "Available soon"
+      }
+    },
+    "RB219": {
+      "roomCharacteristics": {
+        "houseFeaturesTitle": "House features:",
+        "houseFeatures": [
+          "Room in an 85 m² apartment.",
+          "4th floor",
+          "Elevator",
+          "5 rooms.",
+          "2 bathrooms.",
+          "Internet connection.",
+          "Equipped kitchen: fridge, oven, microwave, washing machine."
+        ],
+        "roomFeaturesTitle": "Room features:",
+        "roomFeatures": ["Furnished room.", "Single bed.", "Door with lock."]
+      },
+      "RoomDetails": {
+        "roomTitle": "Single room in Sants-Montjuïc – great connections",
+        "roomDescription": "AAAAAAAAAAAAAAAAAAAAAAA",
+        "roomDetailsTitle": "Room description",
+        "roomDetails": [
+          "Spacious and bright room",
+          "Fully furnished: 90x200 bed, wardrobe, desk, study chair, heating.",
+          "Fiber optic internet access (WiFi and wired connection)",
+          "Door with lock",
+          "* Bed linen and towels not included"
+        ],
+        "roomConditionsTitle": "Conditions",
+        "roomConditions": [
+          "€50/month fee for shared expenses (electricity, water, gas, and fiber optic internet)",
+          "One-month deposit. Refundable upon contract completion and room handover",
+          "Minimum contract of 2 months",
+          "Pets are not allowed",
+          "Smoking is not allowed inside the apartment",
+          "Weekly cleaning of common areas (hallway, bathroom, and kitchen) included"
+        ],
+        "roomAtmosphereTitle": "House atmosphere",
+        "roomAtmosphere": "Your housemates are men aged between 20 and 70, who study or work. The apartment is usually very quiet, visits are rare, and silence prevails. The owner does not live in the house.",
+        "roomUbiTitle": "Location",
+        "roomUbi": "Sants-Montjuïc District. A neighborhood with history and life, but also green areas like Montjuïc. Ideal if you want to combine tranquility with excellent transport connections, thanks to Sants station. It also has many services nearby.",
+        "contactInfo": "For more information, contact us",
+        "contactInfoDescription": "I'm available to answer any questions you may have!",
+        "availableText": "Available",
+        "unavailableText": "Unavailable",
+        "soon": "Available soon"
+      }
+    },
+    "AAFF33": {
+      "roomCharacteristics": {
+        "houseFeaturesTitle": "House features:",
+        "houseFeatures": [
+          "Room in a 90 m² apartment.",
+          "5th floor",
+          "Elevator",
+          "5 rooms.",
+          "2 bathrooms.",
+          "Internet connection.",
+          "Equipped kitchen: fridge, oven, microwave, washing machine."
+        ],
+        "roomFeaturesTitle": "Room features:",
+        "roomFeatures": ["Furnished room.", "Single bed.", "Door with lock."]
+      },
+      "RoomDetails": {
+        "roomTitle": "Affordable room in Zona Franca – well connected",
+        "roomDescription": "AAAAAAAAAAAAAAAAAAAAAAA",
+        "roomDetailsTitle": "Room description",
+        "roomDetails": [
+          "Spacious and bright room",
+          "Fully furnished: 90x200 bed, wardrobe, desk, study chair, heating.",
+          "Fiber optic internet access (WiFi and wired connection)",
+          "Door with lock",
+          "* Bed linen and towels not included"
+        ],
+        "roomConditionsTitle": "Conditions",
+        "roomConditions": [
+          "€50/month fee for shared expenses (electricity, water, gas, and fiber optic internet)",
+          "One-month deposit. Refundable upon contract completion and room handover",
+          "Minimum contract of 2 months",
+          "Pets are not allowed",
+          "Smoking is not allowed inside the apartment",
+          "Weekly cleaning of common areas (hallway, bathroom, and kitchen) included"
+        ],
+        "roomAtmosphereTitle": "House atmosphere",
+        "roomAtmosphere": "Your housemates are men aged between 20 and 70, who study or work. The apartment is usually very quiet, visits are rare, and silence prevails. The owner does not live in the house.",
+        "roomUbiTitle": "Location",
+        "roomUbi": "Sants-Montjuïc District – Zona Franca. An industrial area that has transformed into a modern and constantly developing environment. It is located southwest of Barcelona, very close to the port and the airport. Perfect for those looking for a functional and well-connected place.",
+        "contactInfo": "For more information, contact us",
+        "contactInfoDescription": "I'm available to answer any questions you may have!",
+        "availableText": "Available",
+        "unavailableText": "Unavailable",
+        "soon": "Available soon"
       }
     }
   },
   "RoomContactForm": {
     "title": "Contact us about",
-    "description": "Provide your details for more information about this room on the floor",
+    "description": "Provide your details for more information about this room in the apartment",
     "roomLabel": "Room",
     "nameLabel": "Name",
     "namePlaceholder": "Your full name",
     "phoneLabel": "Phone (optional)",
     "phonePlaceholder": "Your phone number (optional)",
-    "emailLabel": "Email address",
-    "emailPlaceholder": "Your email address",
-    "deliveryDateLabel": "Expected entry date",
+    "emailLabel": "Email",
+    "emailPlaceholder": "Your email",
+    "deliveryDateLabel": "Expected move-in date",
     "descriptionLabel": "Description",
     "descriptionPlaceholder": "Write any questions or additional details",
     "acceptDataLabel": "I accept the processing of my personal data.",
-    "submitButton": "Submit"
+    "submitButton": "Send"
   },
   "Legal": {
     "title": "Legal Information",
@@ -548,7 +645,7 @@
     }
   },
   "plpFlats": {
-    "title": "Our Flats"
+    "title": "OUR LOCATIONS"
   },
   "bannerCookies": {
     "text": "This website uses cookies to ensure you get the best experience on our website.",
@@ -558,7 +655,70 @@
     "textGoogleMaps": "Please enable Google cookies to view location."
   },
   "GridFlats": {
-    "description": "Breve descripción del lugar y sus características.",
-    "RoomsAvailable": "Rooms available"
+    "FFCC71": {
+      "description": "Located in the heart of Zona Franca, this street is in an industrial area that has evolved into a zone with modern infrastructure, ideal for workers seeking proximity to industrial estates and quick connections to the rest of the city. Additionally, being close to Montjuïc Mountain, it offers tranquility and nature.",
+      "title1": "Features and Services",
+      "text1": [
+        "Quiet area with modern buildings and spacious surroundings.",
+        "Close to the Zona Franca Industrial Estate and the Port of Barcelona.",
+        "Gran Via 2 shopping center, supermarkets, and local shops.",
+        "Sports centers."
+      ],
+      "title2": "Transport",
+      "text2": [
+        "Direct buses to Barcelona city center (lines H16, V3, 109).",
+        "Near Fira metro station (L9S), with a direct connection to the airport.",
+        "Easy access by car to Ronda Litoral and Gran Via."
+      ],
+      "title3": "Green Spaces",
+      "text3": [
+        "Surrounded by parks, ideal for walking and exercising.",
+        "Open areas and landscaped spaces nearby."
+      ]
+    },
+    "RB219": {
+      "description": "Riera Blanca is a lively street that separates the neighborhoods of Sants and La Bordeta. It is a strategic location for those looking to live close to everything, with a neighborhood atmosphere and excellent transport connections.",
+      "title1": "Features and Services",
+      "text1": [
+        "Area with local shops, supermarkets, and traditional markets.",
+        "Wide variety of bars and restaurants, offering tapas and Mediterranean cuisine.",
+        "Pharmacies, banks, and all essential services.",
+        "Close to Mercat de Sants, a market with fresh products and a local atmosphere.",
+        "Near the Gran Via 2 shopping center."
+      ],
+      "title2": "Transport",
+      "text2": [
+        "Badal (L5) and Santa Eulalia (L1) metro stations within walking distance.",
+        "Several bus lines (D20, H10, V3) connecting you to the city center and other areas.",
+        "10-minute walk to Sants Station, a key railway hub in Barcelona."
+      ],
+      "title3": "Green Spaces",
+      "text3": [
+        "Parc de l’Espanya Industrial, with a lake, sports areas, and relaxation spots.",
+        "Open areas and landscaped spaces nearby."
+      ]
+    },
+    "AAFF33": {
+      "description": "This street is located in one of the fastest-growing areas of Zona Franca, featuring modern buildings and a strategic location for those working nearby or seeking a quiet environment with good transport links.",
+      "title1": "Features and Services",
+      "text1": [
+        "Residential and quiet area, with new apartments and wide streets.",
+        "Local shops and supermarkets.",
+        "Restaurants and bars, ideal for breakfast and lunch menus.",
+        "Close to Gran Via 2 Shopping Center, with shops, restaurants, and cinemas."
+      ],
+      "title2": "Transport",
+      "text2": [
+        "Fira metro station (L9S) with direct connection to the airport and University Zone.",
+        "Urban buses linking to Sants and Plaza España (lines H12, 79, 109).",
+        "Easy access by car to Gran Via and Ronda Litoral."
+      ],
+      "title3": "Green Spaces",
+      "text3": [
+        "Nearby parks and gardens for walking or exercising.",
+        "Open spaces around, ideal for walking and unwinding."
+      ]
+    },
+    "RoomsAvailable": "Available Rooms"
   }
 }

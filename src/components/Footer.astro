@@ -5,6 +5,7 @@ interface Footer {
 	href: string
 	icon: string
 	LINKS: Footer[]
+	copy: string
 }
 
 const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
@@ -58,6 +59,7 @@ const footer: Footer = translations.Footer
 					</a>
 				</li>
 			</ul>
+			<p class="pt-2 text-primary">{footer.copy}</p>
 		</div>
 	</section>
 </footer>
