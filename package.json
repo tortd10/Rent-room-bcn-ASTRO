@@ -16,10 +16,10 @@
 		"prepare": "husky install && bash -c 'chmod ug+x .husky/*'"
 	},
 	"dependencies": {
-		"@astrojs/db": "^0.14.8",
 		"@astrojs/partytown": "^2.1.4",
 		"@auth/core": "^0.37.4",
 		"@fontsource-variable/jost": "5.0.19",
+		"@supabase/supabase-js": "^2.49.4",
 		"@typescript-eslint/eslint-plugin": "^8.18.0",
 		"astro": "^5.4.2",
 		"astro-i18next": "^1.0.0-beta.21",

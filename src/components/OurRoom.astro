@@ -1,13 +1,19 @@
 ---
 import Rooms from "@/components/Rooms.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
-import { ROOMS } from "@/data/rooms"
+import { supabase } from "@/lib/supabase"
 import i18next from "@/i18n/config.js"
 import Icon from "./ui/Icon.astro"
 
-const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
+const lang = Astro.params.lang || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const ourRoom = translations.ourRoom
+
+const { data: ROOMS } = await supabase
+  .from('rooms')
+  .select('*')
+  .eq('available', true)
+  .order('id', { ascending: true })
 ---
 
 <SectionContainer class="px-0">
@@ -46,7 +52,7 @@ const ourRoom = translations.ourRoom
 			class="custom-scrollbar -mr-4 flex snap-x snap-mandatory gap-x-4 overflow-scroll pr-4 md:mr-0 md:gap-x-8 md:pr-0"
 			id="carousel"
 		>
-			{ROOMS.slice(0, 5).map((room) => <Rooms {...room} />)}
+			{ROOMS?.slice(0, 5).map((room) => <Rooms {...room} />)}
 		</div>
 	</div>
 </SectionContainer>
