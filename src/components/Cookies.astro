@@ -5,7 +5,6 @@ import i18next from "@/i18n/config.js"
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const cookies = translations.Cookies
-const bannerCookies = translations.bannerCookies
 ---
 
 <SectionContainer class="px-0 py-10">

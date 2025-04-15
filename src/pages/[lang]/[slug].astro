@@ -5,6 +5,8 @@ import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
 
+export const prerender = true
+
 export async function getStaticPaths() {
 	// Generate paths for both 'es' and 'en' languages for each room
 	const paths = ROOMS.flatMap((room) => [
