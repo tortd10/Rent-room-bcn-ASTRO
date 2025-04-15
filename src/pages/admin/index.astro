@@ -1,0 +1,84 @@
+---
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+---
+
+<script>
+	import { supabase } from "@/lib/supabase"
+	const form = document.getElementById("login-form")
+	if (form instanceof HTMLFormElement) {
+		form.addEventListener("submit", async (e) => {
+			e.preventDefault()
+
+			const target = e.target as HTMLFormElement
+			const formData = new FormData(target)
+			const email = formData.get("email")?.toString() || ""
+			const password = formData.get("password")?.toString() || ""
+
+			const { error } = await supabase.auth.signInWithPassword({
+				email,
+				password,
+			})
+
+			if (error) {
+				alert(error.message)
+			} else {
+				window.location.href = "/admin/dashboard"
+			}
+		})
+	}
+</script>
+
+<LayoutAdmin title="RentRoomBcn - Admin Login">
+	<main class="flex flex-grow items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+		<div class="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-md">
+			<div class="text-center">
+				<h2 class="mt-6 text-3xl font-extrabold text-primary">Iniciar Sesión</h2>
+				<p class="mt-2 text-sm text-secondary">Accede al panel de administración</p>
+			</div>
+
+			<form
+				class="mt-8 space-y-6"
+				method="POST"
+				enctype="application/x-www-form-urlencoded"
+				id="login-form"
+			>
+				<div class="space-y-4 rounded-md shadow-sm">
+					<div>
+						<label for="email" class="block text-sm font-medium text-primary"> Email </label>
+						<input
+							id="email"
+							name="email"
+							autocomplete="email"
+							required
+							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+							placeholder="Email"
+						/>
+					</div>
+
+					<div>
+						<label for="password" class="block text-sm font-medium text-primary">
+							Contraseña
+						</label>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							autocomplete="current-password"
+							required
+							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+							placeholder="••••••••"
+						/>
+					</div>
+				</div>
+				<div>
+					<button
+						type="submit"
+						class="hover:bg-primaryDark flex w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+					>
+						Entrar
+					</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</LayoutAdmin>
