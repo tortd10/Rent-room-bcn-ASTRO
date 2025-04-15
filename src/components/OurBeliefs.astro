@@ -16,20 +16,28 @@ const ourBeliefs = translations.OurBeliefs
 		<!-- Imagen 2 (tamaño mediano) -->
 		<div class="overflow-hidden rounded-lg shadow-lg">
 			<img src="/About/AboutUs2.jpeg" alt="Imagen 2" class="h-auto w-full object-cover" />
-			<div class="bg-white p-5 text-center text-primary">
-				<p class="text-base sm:text-lg">
-					{ourBeliefs.text1}
-				</p>
+			<div class="bg-white p-5 text-primary">
+				<!-- Título centrado -->
+				<strong class="block text-center font-semibold text-gray-900 underline">
+					{ourBeliefs.title1}
+				</strong>
+				<ul class="list-disc pl-4 pt-4 text-gray-600">
+					{ourBeliefs.text1.map((detail: string) => <li>{detail}</li>)}
+				</ul>
 			</div>
 		</div>
 
 		<!-- Imagen 3 (tamaño mediano) -->
 		<div class="overflow-hidden rounded-lg shadow-lg">
 			<img src="/About/AboutUs3.jpeg" alt="Imagen 3" class="h-auto w-full object-cover" />
-			<div class="bg-white p-5 text-center text-primary">
-				<p class="text-base sm:text-lg">
-					{ourBeliefs.text2}
-				</p>
+			<div class="bg-white p-5 text-primary">
+				<!-- Título centrado -->
+				<strong class="block text-center font-semibold text-gray-900 underline">
+					{ourBeliefs.title2}
+				</strong>
+				<ul class="list-disc pl-4 pt-4 text-gray-600">
+					{ourBeliefs.text2.map((detail: string) => <li>{detail}</li>)}
+				</ul>
 			</div>
 		</div>
 

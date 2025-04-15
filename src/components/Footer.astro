@@ -5,6 +5,7 @@ interface Footer {
 	href: string
 	icon: string
 	LINKS: Footer[]
+	copy: string
 }
 
 const currentLang = Astro.params.lang || "es" // Idioma actual (es o en)
@@ -26,7 +27,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const footer: Footer = translations.Footer
 ---
 
-<footer class="mt-20 bg-headerBg py-6 lg:py-10">
+<footer class="mt-20 bg-headerBg py-6 lg:py-8">
 	<section class="mx-auto w-full max-w-7xl px-4">
 		<div class="flex flex-col items-center px-10">
 			<ul
@@ -58,6 +59,7 @@ const footer: Footer = translations.Footer
 					</a>
 				</li>
 			</ul>
+			<p class="pt-2 text-center text-xs text-primary">{footer.copy}</p>
 		</div>
 	</section>
 </footer>
