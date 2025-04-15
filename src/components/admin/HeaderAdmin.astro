@@ -1,19 +1,4 @@
 <style>
-	.mobile-menu {
-		position: absolute;
-		top: 100%;
-		right: 0;
-		background: var(--headerBg, white);
-		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		padding: 1rem;
-		gap: 0.5rem;
-		width: 100%;
-		text-align: center;
-	}
-
 	.hidden {
 		display: none;
 	}
@@ -22,12 +7,8 @@
 		width: 15rem;
 	}
 
-	@media (min-width: 768px) {
-		.desktop-menu {
-			display: flex;
-		}
-
-		.mobile-menu {
+	@media (max-width: 768px) {
+		#logout-button-desktop {
 			display: none;
 		}
 	}
@@ -42,30 +23,38 @@
 			<img src="/logo.svg" alt="Logo RentRoomBcn" />
 		</a>
 
-		<!-- Menú desktop (inicialmente oculto hasta que JS lo active) -->
-		<div class="desktop-menu hidden" id="desktop-menu">
-			<button id="logout-button-desktop" class="hover:text-primaryDark hidden text-sm font-medium">
+		<!-- Contenedor para elementos del lado derecho -->
+		<div class="flex items-center gap-4">
+			<!-- Botón de logout DESKTOP (visible solo en desktop) -->
+			<button
+				id="logout-button-desktop"
+				class="hover:text-primaryDark hidden text-sm font-medium md:inline-block"
+			>
 				Cerrar sesión
 			</button>
-		</div>
 
-		<!-- Menú mobile (inicialmente oculto hasta que JS lo active) -->
-		<button id="mobile-menu-button" class="flex hidden items-center p-2 md:hidden">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="h-6 w-6"
+			<!-- Botón mobile (visible solo en mobile) -->
+			<button
+				id="mobile-menu-button"
+				class="inline-block pt-2 md:hidden"
+				aria-label="Cerrar sesión"
 			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
-				></path>
-			</svg>
-		</button>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="h-6 w-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+					></path>
+				</svg>
+			</button>
+		</div>
 	</div>
 </header>
 
@@ -73,39 +62,32 @@
 	import { supabase } from "@/lib/supabase"
 	document.addEventListener("DOMContentLoaded", async () => {
 		try {
-			// 1. Verificar sesión
 			const {
 				data: { session },
 			} = await supabase.auth.getSession()
 
-			// 2. Mostrar elementos solo si está logueado
 			if (session) {
-				// Mostrar botón de logout en desktop
-				const desktopMenu = document.getElementById("desktop-menu")
+				// Mostrar elementos solo si hay sesión
 				const logoutBtnDesktop = document.getElementById("logout-button-desktop")
-
-				if (desktopMenu && logoutBtnDesktop) {
-					desktopMenu.classList.remove("hidden")
-					logoutBtnDesktop.classList.remove("hidden")
-
-					// Manejar logout
-					logoutBtnDesktop.addEventListener("click", async () => {
-						const { error } = await supabase.auth.signOut()
-						if (!error) window.location.href = "/admin"
-					})
-				}
-
-				// Mostrar botón mobile
 				const mobileMenuBtn = document.getElementById("mobile-menu-button")
-				if (mobileMenuBtn) {
-					mobileMenuBtn.classList.remove("hidden")
 
-					// Manejar logout en mobile
-					mobileMenuBtn.addEventListener("click", async () => {
-						const { error } = await supabase.auth.signOut()
-						if (!error) window.location.href = "/admin"
-					})
+				// Solo necesitamos mostrar el botón de desktop, el mobile ya es visible por defecto
+				if (logoutBtnDesktop) logoutBtnDesktop.classList.remove("hidden")
+
+				// Manejar logout
+				const handleLogout = async () => {
+					const { error } = await supabase.auth.signOut()
+					if (!error) window.location.href = "/admin"
 				}
+
+				if (logoutBtnDesktop) logoutBtnDesktop.addEventListener("click", handleLogout)
+				if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", handleLogout)
+			} else {
+				// Ocultar ambos si no hay sesión
+				const logoutBtnDesktop = document.getElementById("logout-button-desktop")
+				const mobileMenuBtn = document.getElementById("mobile-menu-button")
+				if (logoutBtnDesktop) logoutBtnDesktop.classList.add("hidden")
+				if (mobileMenuBtn) mobileMenuBtn.classList.add("hidden")
 			}
 		} catch (error) {
 			console.error("Error checking auth:", error)
