@@ -2,31 +2,21 @@
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 import { supabase } from "@/lib/supabase"
 
+const { user } = Astro.locals
+if (!user) {
+	return Astro.redirect("/admin")
+}
+
 // Datos estáticos (pre-renderizados)
 const { count: roomsCount } = await supabase
 	.from("rooms")
 	.select("*", { count: "exact", head: true })
-
-const { user } = Astro.locals
 ---
 
 <LayoutAdmin title="RentRoomBcn - Admin">
-	<!-- Script de protección de ruta en cliente -->
-	<script is:inline>
-		// Verificar si hay sesión al cargar la página
-		document.addEventListener("DOMContentLoaded", async () => {
-			const {
-				data: { session },
-			} = await supabase.auth.getSession()
-			if (!session) {
-				window.location.href = "/admin/login"
-			}
-		})
-	</script>
-
 	<div class="p-6">
 		<h1 class="text-2xl font-bold">
-			Bienvenido, {user?.email || "Invitado"}
+			Bienvenido, {user?.email}
 		</h1>
 
 		<div class="dashboard-grid">
