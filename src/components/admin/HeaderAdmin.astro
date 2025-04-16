@@ -1,0 +1,96 @@
+<style>
+	.hidden {
+		display: none;
+	}
+
+	img {
+		width: 15rem;
+	}
+
+	@media (max-width: 768px) {
+		#logout-button-desktop {
+			display: none;
+		}
+	}
+</style>
+
+<header
+	class="sticky top-0 z-50 flex w-full items-center justify-between bg-headerBg px-9 py-4 backdrop-blur-xl"
+>
+	<div class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
+		<!-- Logo -->
+		<a href="/">
+			<img src="/logo.svg" alt="Logo RentRoomBcn" />
+		</a>
+
+		<!-- Contenedor para elementos del lado derecho -->
+		<div class="flex items-center gap-4">
+			<!-- Botón de logout DESKTOP (visible solo en desktop) -->
+			<button
+				id="logout-button-desktop"
+				class="hover:text-primaryDark hidden text-sm font-medium md:inline-block"
+			>
+				Cerrar sesión
+			</button>
+
+			<!-- Botón mobile (visible solo en mobile) -->
+			<button
+				id="mobile-menu-button"
+				class="inline-block pt-2 md:hidden"
+				aria-label="Cerrar sesión"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke-width="1.5"
+					stroke="currentColor"
+					class="h-6 w-6"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9"
+					></path>
+				</svg>
+			</button>
+		</div>
+	</div>
+</header>
+
+<script>
+	import { supabase } from "@/lib/supabase"
+	document.addEventListener("DOMContentLoaded", async () => {
+		try {
+			const {
+				data: { session },
+			} = await supabase.auth.getSession()
+
+			if (session) {
+				// Mostrar elementos solo si hay sesión
+				const logoutBtnDesktop = document.getElementById("logout-button-desktop")
+				const mobileMenuBtn = document.getElementById("mobile-menu-button")
+
+				// Solo necesitamos mostrar el botón de desktop, el mobile ya es visible por defecto
+				if (logoutBtnDesktop) logoutBtnDesktop.classList.remove("hidden")
+
+				// Manejar logout
+				const handleLogout = async () => {
+					const { error } = await supabase.auth.signOut()
+					if (!error) window.location.href = "/admin"
+				}
+
+				if (logoutBtnDesktop) logoutBtnDesktop.addEventListener("click", handleLogout)
+				if (mobileMenuBtn) mobileMenuBtn.addEventListener("click", handleLogout)
+			} else {
+				// Ocultar ambos si no hay sesión
+				const logoutBtnDesktop = document.getElementById("logout-button-desktop")
+				const mobileMenuBtn = document.getElementById("mobile-menu-button")
+				if (logoutBtnDesktop) logoutBtnDesktop.classList.add("hidden")
+				if (mobileMenuBtn) mobileMenuBtn.classList.add("hidden")
+			}
+		} catch (error) {
+			console.error("Error checking auth:", error)
+		}
+	})
+</script>

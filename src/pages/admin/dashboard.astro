@@ -1,0 +1,90 @@
+---
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import { supabase } from "@/lib/supabase"
+
+// Datos estáticos (pre-renderizados)
+const { count: roomsCount } = await supabase
+	.from("rooms")
+	.select("*", { count: "exact", head: true })
+---
+
+<LayoutAdmin title="RentRoomBcn - Admin">
+	<script>
+		// Importación para tipos (si usas @supabase/supabase-js)
+		import { supabase } from "@/lib/supabase"
+		import type { Session } from "@supabase/supabase-js"
+
+		document.addEventListener("DOMContentLoaded", async () => {
+			try {
+				// 1. Obtener sesión con tipado
+				const {
+					data: { session },
+					error,
+				} = (await supabase.auth.getSession()) as {
+					data: { session: Session | null }
+					error: Error | null
+				}
+
+				// 2. Redirigir si no hay sesión
+				if (!session || error) {
+					window.location.href = "/"
+					return
+				}
+
+				// 3. Mostrar email (con verificación de null)
+				const emailElement = document.getElementById("user-email")
+				if (emailElement && session.user?.email) {
+					emailElement.textContent = session.user.email
+				} else {
+					console.error("Elemento #user-email no encontrado o email no disponible")
+				}
+			} catch (err) {
+				console.error("Error al verificar sesión:", err)
+				window.location.href = "/"
+			}
+		})
+	</script>
+
+	<div class="p-6">
+		<h1 class="text-2xl font-bold">
+			Bienvenido, <span id="user-email"> </span>
+			<div class="dashboard-grid">
+				<div class="card">
+					<h3>Habitaciones activas</h3>
+					<p>{roomsCount}</p>
+				</div>
+
+				<div class="card">
+					<h3>Reservas activas</h3>
+				</div>
+
+				<div class="quick-actions">
+					<a href="/admin/rooms/new" class="button">Nueva Habitación</a>
+					<a href="/admin/bookings" class="button">Ver Reservas</a>
+				</div>
+			</div>
+		</h1>
+	</div>
+
+	<style>
+		.dashboard-grid {
+			display: grid;
+			gap: 1rem;
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+		}
+		.card {
+			padding: 1.5rem;
+			background: white;
+			border-radius: 8px;
+			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		}
+		.button {
+			display: inline-block;
+			padding: 0.8rem 1.5rem;
+			background: #0070f3;
+			color: white;
+			border-radius: 4px;
+			text-decoration: none;
+		}
+	</style>
+</LayoutAdmin>

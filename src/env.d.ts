@@ -1,4 +1,8 @@
-/// <reference path="@/.astro/types.d.ts" />
-interface Window {
-	dataLayer: any[]
+/// <reference types="astro/client" />
+
+declare namespace App {
+	interface Locals {
+		supabase: SupabaseClient
+		user: import("@supabase/supabase-js").User | null
+	}
 }
