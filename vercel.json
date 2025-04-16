@@ -1,0 +1,18 @@
+{
+  "environments": {
+    "preview": {
+      "build": {
+        "env": {
+          "NEXT_PUBLIC_ENVIRONMENT": "preview"
+        }
+      }
+    },
+    "production": {
+      "build": {
+        "env": {
+          "NEXT_PUBLIC_ENVIRONMENT": "production"
+        }
+      }
+    }
+  }
+}
