@@ -1,0 +1,11 @@
+{
+  "environments": {
+    "preview": {
+      "build": {
+        "env": {
+          "NODE_ENV": "staging"
+        }
+      }
+    }
+  }
+}
