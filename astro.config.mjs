@@ -32,4 +32,9 @@ export default defineConfig({
 	],
 	output: "static",
 	adapter: vercel(),
+	vite: {
+		ssr: {
+			noExternal: ["@supabase/supabase-js"], // ← Essential for Supabase
+		},
+	},
 })
