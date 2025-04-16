@@ -1,18 +1,17 @@
 {
-  "environments": {
-    "preview": {
-      "build": {
-        "env": {
-          "NEXT_PUBLIC_ENVIRONMENT": "preview"
-        }
-      }
-    },
-    "production": {
-      "build": {
-        "env": {
-          "NEXT_PUBLIC_ENVIRONMENT": "production"
-        }
+  "version": 2,
+  "builds": [
+    {
+      "src": "dist/**",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/_astro/.*",
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable"
       }
     }
-  }
+  ]
 }
