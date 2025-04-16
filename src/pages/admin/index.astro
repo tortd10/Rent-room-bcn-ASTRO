@@ -1,32 +1,42 @@
 ---
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
----
+import { supabase } from "@/lib/supabase"
 
-<script>
-	import { supabase } from "@/lib/supabase"
-	const form = document.getElementById("login-form")
-	if (form instanceof HTMLFormElement) {
-		form.addEventListener("submit", async (e) => {
-			e.preventDefault()
+// Verificar sesión existente
+const {
+	data: { session },
+} = await supabase.auth.getSession()
 
-			const target = e.target as HTMLFormElement
-			const formData = new FormData(target)
-			const email = formData.get("email")?.toString() || ""
-			const password = formData.get("password")?.toString() || ""
+// Redirigir si ya está autenticado
+if (session) {
+	return Astro.redirect("/admin/dashboard")
+}
 
-			const { error } = await supabase.auth.signInWithPassword({
-				email,
-				password,
-			})
+// Manejar el envío del formulario
+let errorMessage = null
 
-			if (error) {
-				alert(error.message)
-			} else {
-				window.location.href = "/admin/dashboard"
-			}
+if (Astro.request.method === "POST") {
+	try {
+		const formData = await Astro.request.formData()
+		const email = formData.get("email")?.toString() || ""
+		const password = formData.get("password")?.toString() || ""
+
+		const { error } = await supabase.auth.signInWithPassword({
+			email,
+			password,
 		})
+
+		if (error) {
+			errorMessage = error.message
+		} else {
+			return Astro.redirect("/admin/dashboard")
+		}
+	} catch (err) {
+		errorMessage = "Error al procesar el formulario. Por favor intenta nuevamente."
+		console.error("Error en login:", err)
 	}
-</script>
+}
+---
 
 <LayoutAdmin title="RentRoomBcn - Admin Login">
 	<main class="flex flex-grow items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
@@ -36,12 +46,7 @@ import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 				<p class="mt-2 text-sm text-secondary">Accede al panel de administración</p>
 			</div>
 
-			<form
-				class="mt-8 space-y-6"
-				method="POST"
-				enctype="application/x-www-form-urlencoded"
-				id="login-form"
-			>
+			<form class="mt-8 space-y-6" method="POST">
 				<div class="space-y-4 rounded-md shadow-sm">
 					<div>
 						<label for="email" class="block text-sm font-medium text-primary"> Email </label>
@@ -69,7 +74,15 @@ import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 							placeholder="••••••••"
 						/>
 					</div>
+					{
+						errorMessage && (
+							<div class="rounded-md bg-red-50 p-4">
+								<p class="text-sm text-red-800">{errorMessage}</p>
+							</div>
+						)
+					}
 				</div>
+
 				<div>
 					<button
 						type="submit"

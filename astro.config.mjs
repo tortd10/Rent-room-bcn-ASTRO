@@ -30,7 +30,7 @@ export default defineConfig({
 		}),
 		partytown(),
 	],
-	output: "static",
+	output: "server",
 	adapter: vercel(),
 	vite: {
 		ssr: {
