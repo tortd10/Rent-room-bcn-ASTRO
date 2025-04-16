@@ -55,7 +55,7 @@ if (Astro.url.pathname.includes("/admin")) {
 		data: { session },
 	} = await supabase.auth.getSession()
 	if (!session) {
-		return Response.redirect("/admin/login", 302)
+		return Response.redirect("/admin", 302)
 	}
 }
 ---
