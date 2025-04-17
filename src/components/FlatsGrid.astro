@@ -1,7 +1,6 @@
 ---
-import { FLATS } from "@/data/flats"
-import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
+import { supabase } from "@/lib/supabase"
 interface FlatsProps {
 	name: string
 	imageSrc: string
@@ -10,9 +9,20 @@ interface FlatsProps {
 
 const { name, imageSrc, flat_id } = Astro.props as FlatsProps
 
+// Obtener flats y rooms desde Supabase
+const [{ data: flats, error: flatsError }, { data: rooms, error: roomsError }] = await Promise.all([
+	supabase.from("flats").select("*"),
+	supabase.from("rooms").select("*"),
+])
+
+if (flatsError || roomsError) {
+	console.error("Error al obtener datos desde Supabase:", flatsError || roomsError)
+}
+
+// Función para obtener cuartos disponibles por flat
 function getAvailableRoomsByFlat() {
-	return FLATS.map((flat) => {
-		const roomsInFlat = ROOMS.filter((room) => room.roomFlat === flat.flat_id)
+	return (flats || []).map((flat) => {
+		const roomsInFlat = (rooms || []).filter((room) => room.roomFlat === flat.flat_id)
 		const availableRooms = roomsInFlat.filter((room) => room.available).length
 
 		return {

@@ -2,8 +2,8 @@
 import RoomContactForm from "@/components//RoomContactForm.astro"
 import RoomDetails from "@/components/RoomDetails.astro"
 import RoomGallery from "@/components/RoomGallery.astro"
-import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
+import { supabase } from "@/lib/supabase"
 
 const { slug } = Astro.params
 
@@ -12,8 +12,10 @@ const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no 
 const translations = i18next.getResourceBundle(lang, "translation")
 const pdpRoom = translations.pdpRoom
 
-const roomData = ROOMS.find((room) => room.slug === slug)
-if (!roomData) {
+// Obtener la habitación desde Supabase
+const { data: roomData, error } = await supabase.from("rooms").select("*").eq("slug", slug).single()
+
+if (error || !roomData) {
 	throw new Error("Room not found")
 }
 

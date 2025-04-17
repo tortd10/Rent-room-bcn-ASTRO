@@ -1,5 +1,5 @@
 ---
-import { ROOMS } from "@/data/rooms"
+import { supabase } from "@/lib/supabase"
 import i18next from "i18next"
 
 // Obtener el idioma de la URL
@@ -14,10 +14,16 @@ const slug = pathname.replace(/^\/|\/$/g, "") // Remueve los slashes iniciales y
 // Eliminar el prefijo del idioma (cualquier idioma de 2 letras)
 const cleanSlug = slug.replace(/^[a-z]{2}\//, "")
 
-// Buscar los datos de la habitación en ROOMS usando el slug limpio
-const roomData = ROOMS.find((room) => room.slug.toLowerCase() === cleanSlug.toLowerCase())
+// Obtener los datos desde Supabase
+const { data: rooms, error } = await supabase.from("rooms").select("*")
 
-const selectedRoom = roomData || ROOMS[0]
+if (error) {
+	console.error("Error fetching rooms from Supabase:", error)
+}
+
+const roomData = rooms?.find((room) => room.slug.toLowerCase() === cleanSlug.toLowerCase())
+
+const selectedRoom = roomData || rooms?.[0]
 ---
 
 <div class="sticky top-32 rounded-lg border border-gray-300 bg-[#C8D6B0] p-6 shadow-md">

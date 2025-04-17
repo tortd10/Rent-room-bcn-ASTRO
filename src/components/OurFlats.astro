@@ -1,8 +1,15 @@
 ---
 import FlatsCard from "@/components/FlatsCard.astro"
-import { FLATS } from "@/data/flats"
+import { supabase } from "@/lib/supabase"
 
 import i18next from "@/i18n/config.js"
+
+// Obtener flats desde Supabase
+const { data: flats, error } = await supabase.from("flats").select("*")
+
+if (error) {
+	console.error("Error al obtener flats desde Supabase:", error)
+}
 
 const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
 const translations = i18next.getResourceBundle(lang, "translation")
@@ -23,7 +30,7 @@ const ourFlats = translations.ourFlats
 			class="no-scrollbar -mx-4 flex max-w-[1536px] snap-x snap-mandatory items-center gap-7 overflow-x-auto px-4 pb-6 md:grid md:grid-cols-2 md:justify-items-center md:overflow-visible lg:z-10 lg:m-0 lg:grid-cols-3 lg:p-0 xl:grid-cols-3"
 		>
 			{
-				FLATS.map(({ mapImage, street, flat_id }) => (
+				(flats || []).map(({ mapImage, street, flat_id }) => (
 					<FlatsCard mapImage={mapImage} title={street} id={flat_id} />
 				))
 			}
