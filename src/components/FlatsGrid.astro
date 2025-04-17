@@ -23,12 +23,13 @@ if (flatsError || roomsError) {
 function getAvailableRoomsByFlat() {
 	return (flats || []).map((flat) => {
 		const roomsInFlat = (rooms || []).filter((room) => room.roomFlat === flat.flat_id)
-		const availableRooms = roomsInFlat.filter((room) => room.available).length
-
+		const availableRooms = roomsInFlat.filter((room) => room.status === "available").length
+		const comingSoon = roomsInFlat.filter((room) => room.status === "soon").length
 		return {
 			flat: flat.title,
 			flat_id: flat.flat_id,
 			availableRooms,
+			comingSoon,
 			totalRooms: roomsInFlat.length,
 		}
 	})
@@ -37,9 +38,10 @@ function getAvailableRoomsByFlat() {
 // Buscar datos del piso actual
 const flatData = getAvailableRoomsByFlat().find((flat) => flat.flat_id === flat_id) || {
 	availableRooms: 0,
+	comingSoon: 0,
 	totalRooms: 0,
 }
-const { availableRooms, totalRooms } = flatData
+const { availableRooms, comingSoon, totalRooms } = flatData
 
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
@@ -112,9 +114,20 @@ const gridFlats = translations.GridFlats
 
 	<!-- Texto centrado abajo (siempre debajo de la card) -->
 	<div class="order-3 col-span-1 flex items-center justify-center text-center md:col-span-4">
-		<a class="font-medium text-blue-600" href={`/${lang}/Rooms?selectedFlat=${flat_id}`}>
-			{gridFlats.RoomsAvailable} : {availableRooms} / {totalRooms}
-		</a>
+		{
+			availableRooms > 0 || comingSoon > 0 ? (
+				<a
+					class={`font-medium ${availableRooms > 0 ? "text-blue-600" : "text-orange-600"}`}
+					href={`/${lang}/Rooms?selectedFlat=${flat_id}`}
+				>
+					{availableRooms > 0 && `${gridFlats.RoomsAvailable}: ${availableRooms}/${totalRooms}`}
+					{availableRooms > 0 && comingSoon > 0 && " · "}
+					{comingSoon > 0 && `${gridFlats.ComingSoon}: ${comingSoon}`}
+				</a>
+			) : (
+				<span class="font-medium text-red-600">{gridFlats.soldOut}</span>
+			)
+		}
 	</div>
 </div>
 

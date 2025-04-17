@@ -719,6 +719,8 @@
         "Open spaces around, ideal for walking and unwinding."
       ]
     },
-    "RoomsAvailable": "Available Rooms"
+    "RoomsAvailable": "Available Rooms",
+    "ComingSoon": "Rooms coming soon",
+    "soldOut": "Rooms NOT available"
   }
 }

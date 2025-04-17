@@ -5,7 +5,7 @@ import { supabase } from "@/lib/supabase"
 import i18next from "@/i18n/config.js"
 
 // Obtener flats desde Supabase
-const { data: flats, error } = await supabase.from("flats").select("*")
+const { data: flats, error } = await supabase.from("flats").select("*").eq("available", true)
 
 if (error) {
 	console.error("Error al obtener flats desde Supabase:", error)

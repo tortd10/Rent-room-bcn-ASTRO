@@ -18,6 +18,7 @@ const fetchData = async () => {
 		const { data: flats, error: flatsError } = await supabase
 			.from("flats")
 			.select("*")
+			.eq("available", true)
 			.order("flat_id", { ascending: true })
 
 		if (roomsError) throw new Error(`Error fetching rooms: ${roomsError.message}`)

@@ -10,7 +10,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const plpFlats = translations.plpFlats
 
 // Obtener datos de Supabase
-const { data: flats, error } = await supabase.from("flats").select("*")
+const { data: flats, error } = await supabase.from("flats").select("*").eq("available", true)
 
 if (error) {
 	console.error("Error al obtener flats desde Supabase:", error)
