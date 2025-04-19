@@ -1,5 +1,5 @@
 // src/pages/api/auth/logout.ts
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/db/supabase"
 import type { APIRoute } from "astro"
 
 export const POST: APIRoute = async () => {

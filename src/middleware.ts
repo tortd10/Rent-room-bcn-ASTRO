@@ -1,6 +1,6 @@
 // src/middleware.ts
 import { defineMiddleware } from "astro:middleware"
-import { supabase } from "./lib/supabase"
+import { supabase } from "./db/supabase"
 
 export const onRequest = defineMiddleware(async (context, next) => {
 	// 1. Obtiene la sesión del usuario desde Supabase

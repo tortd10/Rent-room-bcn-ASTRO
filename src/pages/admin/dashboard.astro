@@ -1,7 +1,7 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import { supabase } from "@/lib/supabase"
+import { supabase } from "@/db/supabase"
 
 const { user } = Astro.locals
 if (!user) {
