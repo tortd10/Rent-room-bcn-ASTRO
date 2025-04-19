@@ -21,7 +21,8 @@ export default defineConfig({
 	devToolbar: {
 		enabled: false,
 	},
-
+	redirects: {
+	},
 	integrations: [
 		tailwind(),
 		i18next({
@@ -36,5 +37,10 @@ export default defineConfig({
 		ssr: {
 			noExternal: ["@supabase/supabase-js"], // ← Essential for Supabase
 		},
+		server: {
+			fs: {
+			  strict: false
+			}
+		  },
 	},
 })

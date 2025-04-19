@@ -1,0 +1,13 @@
+---
+// src/pages/404.astro
+import LayoutAdmin from '@/layouts/LayoutAdmin.astro';
+
+export const prerender = false; // Importante para evitar problemas
+---
+
+<LayoutAdmin title="Página no encontrada">
+	<div class="flex flex-col items-center justify-center text-center bg-white">
+		<img src="/404.jpg" alt="404" class="w-full h-auto" />
+	</div>
+</LayoutAdmin>
+
