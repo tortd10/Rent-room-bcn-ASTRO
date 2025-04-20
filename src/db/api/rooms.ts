@@ -20,10 +20,6 @@ type Flat = {
   available: boolean
 }
 
-type RoomWithFlat = Room & {
-  flats: Flat | null
-}
-
 // Obtener todas las habitaciones con info de piso
 export async function getAllRooms() {
   return await supabase
