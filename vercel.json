@@ -6,16 +6,5 @@
       "use": "@vercel/static-build",
       "config": { "distDir": "dist" }
     }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Set-Cookie",
-          "value": "Secure; HttpOnly; SameSite=Lax"
-        }
-      ]
-    }
   ]
 }
