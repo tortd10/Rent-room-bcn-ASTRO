@@ -62,11 +62,9 @@
 		"typescript": "5.5.3",
 		"vite-plugin-pwa": "0.20.0"
 	},
-	
-		"resolutions": {
-		  "@typescript-eslint/eslint-plugin": "7.0.0",
-		  "@typescript-eslint/parser": "7.0.0",
-		  "eslint-plugin-import": "2.29.1"
-		}
-	  
+	"resolutions": {
+		"@typescript-eslint/eslint-plugin": "7.0.0",
+		"@typescript-eslint/parser": "7.0.0",
+		"eslint-plugin-import": "2.29.1"
+	}
 }
