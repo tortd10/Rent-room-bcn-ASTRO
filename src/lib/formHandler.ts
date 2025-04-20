@@ -1,4 +1,4 @@
-import emailjs from "emailjs-com"
+import emailjs from '@emailjs/browser'
 
 // Inicializa EmailJS
 emailjs.init("kMxl9GUIW4TrqNfQ6")
