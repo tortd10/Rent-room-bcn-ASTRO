@@ -32,7 +32,9 @@ export default defineConfig({
 		partytown(),
 	],
 	output: "server",
-	adapter: vercel(),
+	adapter: vercel({
+		skewProtection: true,
+	  }),
 	vite: {
 		ssr: {
 			noExternal: ["@supabase/supabase-js"], // ← Essential for Supabase
