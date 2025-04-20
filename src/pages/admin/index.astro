@@ -1,4 +1,6 @@
 ---
+// src/pages/admin/rooms/index.astro
+import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 import { supabase } from "@/db/supabase"
 
@@ -44,7 +46,7 @@ if (Astro.request.method === "POST") {
 			<div class="text-center">
 				<h2 class="mt-6 text-3xl font-extrabold text-primary">Iniciar Sesión</h2>
 				<p class="mt-2 text-sm text-secondary">Accede al panel de administración</p>
-			</div>
+      </div>
 
 			<form class="mt-8 space-y-6" method="POST">
 				<div class="space-y-4 rounded-md shadow-sm">
@@ -58,7 +60,7 @@ if (Astro.request.method === "POST") {
 							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 							placeholder="Email"
 						/>
-					</div>
+      </div>
 
 					<div>
 						<label for="password" class="block text-sm font-medium text-primary">
@@ -73,7 +75,7 @@ if (Astro.request.method === "POST") {
 							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
 							placeholder="••••••••"
 						/>
-					</div>
+    </div>
 					{
 						errorMessage && (
 							<div class="rounded-md bg-red-50 p-4">

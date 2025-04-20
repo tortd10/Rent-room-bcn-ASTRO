@@ -1,0 +1,122 @@
+---
+import type { Flat, Room } from '@/types';
+
+interface Props {
+  flats?: Flat[];
+  room?: Partial<Room>;
+  action?: string;
+  method?: string;
+}
+
+const { flats = [], room = {}, action = "", method = "POST" } = Astro.props as Props;
+---
+
+<form 
+  action={action}
+  method={method}
+  class="space-y-6 p-6"
+  enctype="multipart/form-data"
+>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <!-- Campo Nombre -->
+    <div class="space-y-2">
+      <label for="name" class="block text-sm font-medium text-gray-700">Nombre*</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        value={room.name || ""}
+        required
+        class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      />
+    </div>
+
+    <!-- Selector de Piso -->
+    <div class="space-y-2">
+      <label for="flat_id" class="block text-sm font-medium text-gray-700">Piso*</label>
+      <select 
+        id="flat_id" 
+        name="flat_id" 
+        required 
+        class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+      >
+        <option value="">Seleccionar piso</option>
+        {flats.map((flat: Flat) => (
+          <option
+            value={flat.flat_id}
+            selected={room.flat_id === flat.flat_id}
+          >
+            {flat.title}
+          </option>
+        ))}
+      </select>
+    </div>
+
+	<div class="space-y-2">
+		<label for="name" class="block text-sm font-medium text-gray-700">Slug*</label>
+		<input
+		  type="text"
+		  id="slug"
+		  name="slug"
+		  value={room.slug || ""}
+		  required
+		  class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+		/>
+	  </div>
+  </div>
+
+  <!-- Campo Imagen -->
+  <div class="space-y-2">
+    <label for="imageSrc" class="block text-sm font-medium text-gray-700">URL de la Imagen</label>
+    <input
+      type="text"
+      id="imageSrc"
+      name="imageSrc"
+      value={room.imageSrc || ""}
+      class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    />
+  </div>
+
+  <!-- Checkbox Disponible -->
+  <div class="flex items-center space-x-2">
+    <input
+      type="checkbox"
+      id="available"
+      name="available"
+      checked={room.available ?? true}
+      class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+    />
+    <label for="available" class="block text-sm text-gray-700">
+      Habitación disponible
+    </label>
+  </div>
+
+  <!-- Selector de Estado -->
+  <div class="space-y-2">
+    <label for="status" class="block text-sm font-medium text-gray-700">Estado</label>
+    <select 
+      id="status" 
+      name="status" 
+      class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm py-2 px-3 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+    >
+      <option value="available" selected={room.status === 'available'}>Activa</option>
+      <option value="soon" selected={room.status === 'soon'}>Próximamente</option>
+    </select>
+  </div>
+
+  <!-- Botones de Acción -->
+  <div class="flex justify-end space-x-4 pt-6 border-t border-gray-200">
+    <a 
+      href="/admin/rooms" 
+      class="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+    >
+      Cancelar
+    </a>
+    <button 
+      type="submit" 
+      class="inline-flex justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+    >
+      Guardar Cambios
+    </button>
+  </div>
+</form>

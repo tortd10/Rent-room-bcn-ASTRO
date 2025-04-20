@@ -1,0 +1,104 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import { getRoomBySlug } from "@/db/api/rooms"
+
+const { user } = Astro.locals
+if (!user) return Astro.redirect("/admin")
+
+const { id } = Astro.params
+
+const { data: room } = id ? await getRoomBySlug(id) : { data: null }
+---
+
+<LayoutAdmin title={room?.name || 'Detalle Habitación'}>
+  <SectionContainer>
+    <div class="p-6">
+		<div class="flex justify-between items-center mb-6">
+			<h1 class="text-2xl font-bold">{room?.name || 'Habitación'}</h1>
+			<div class="flex space-x-3">
+			  <a href="/admin/rooms" class="btn-secondary">
+				← Volver al listado
+			  </a>
+			  <a href={`/admin/rooms/edit/${room.id}`} class="btn-primary">
+				Editar
+			  </a>
+			</div>
+		  </div>
+
+      {room ? (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="md:col-span-2">
+            <div class="card p-6">
+              <h2 class="text-xl font-semibold mb-4">Información</h2>
+              
+              <div class="space-y-4">
+                <div>
+                  <h3 class="text-sm text-gray-500">Descripción</h3>
+                  <p>{room.description || 'No hay descripción'}</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                  <div>
+                    <h3 class="text-sm text-gray-500">Piso</h3>
+                    <p>{room.flats?.title || room.flat_id}</p>
+                    <p class="text-sm text-gray-500">{room.flats?.street}</p>
+                  </div>
+                  
+                  <div>
+                    <h3 class="text-sm text-gray-500">Estado</h3>
+                    <span class={`badge ${room.available ? 'badge-success' : 'badge-error'}`}>
+                      {room.available ? 'Disponible' : 'Ocupada'}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="card p-6">
+              <h2 class="text-xl font-semibold mb-4">Imagen</h2>
+              {room.imageSrc ? (
+                <img 
+                  src={room.imageSrc} 
+                  alt={room.imageAlt || room.name} 
+                  class="w-full rounded"
+                />
+              ) : (
+                <div class="bg-gray-100 h-48 flex items-center justify-center text-gray-400">
+                  Sin imagen
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p>Habitación no encontrada</p>
+      )}
+    </div>
+  </SectionContainer>
+</LayoutAdmin>
+
+<style>
+  .badge {
+    @apply px-2 py-1 text-xs rounded-full;
+  }
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow;
+  }
+  .btn-primary {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+	
+  }
+  
+  .btn-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+  }
+</style>

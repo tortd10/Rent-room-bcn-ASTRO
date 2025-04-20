@@ -1,0 +1,106 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import RoomForm from "@/components/admin/RoomForm.astro"
+import { getRoomById, getAvailableFlats, updateRoom } from "@/db/api/rooms"
+import type { Flat, Room } from "@/types"
+
+const { user } = Astro.locals
+if (!user) return Astro.redirect("/admin")
+
+const { id } = Astro.params
+let errors: { name?: string; flat_id?: string; general?: string } = {}
+let successMessage = ""
+
+// Obtener datos con tipado seguro
+const { data: room } = id ? await getRoomById(Number(id)) : { data: null }
+const { data: flatsData } = await getAvailableFlats()
+const flats: Flat[] = flatsData || []
+
+// Procesar formulario
+if (Astro.request.method === "POST") {
+  const formData = await Astro.request.formData()
+  const formValues = Object.fromEntries(formData.entries())
+  
+  const updateData: Partial<Room> = {
+    name: formValues.name.toString(),
+    flat_id: formValues.flat_id.toString(),
+    available: formValues.available === "on",
+    status: formValues.status?.toString() as Room['status'] || "available",
+    imageSrc: formValues.imageSrc?.toString(),
+    imageAlt: formValues.imageAlt?.toString()
+  }
+
+  // Validación
+  if (!updateData.name) errors.name = "El nombre es requerido"
+  if (!updateData.flat_id) errors.flat_id = "Debe seleccionar un piso"
+
+  if (Object.keys(errors).length === 0) {
+    const { error } = await updateRoom(Number(id), updateData)
+    
+    if (error) {
+      console.error("Error al actualizar:", error)
+      errors.general = "Error al guardar. Contacte al administrador."
+    } else {
+      return Astro.redirect("/admin/rooms?success=true")
+    }
+  }
+}
+---
+
+<LayoutAdmin title={`Editar ${room?.name || 'Habitación'}`}>
+  <SectionContainer>
+    <div class="p-6 space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h1 class="text-2xl font-bold text-gray-800">
+            {room ? 'Editar Habitación' : 'Habitación no encontrada'}
+          </h1>
+          {room && <p class="text-sm text-gray-500">ID: {id} - {room.name}</p>}
+        </div>
+        <a href="/admin/rooms" class="btn-secondary">
+          ← Volver al listado
+        </a>
+      </div>
+
+      {!room ? (
+        <div class="rounded-md bg-red-50 p-4">
+          <div class="flex">
+            <div class="ml-3">
+              <h3 class="text-sm font-medium text-red-800">Habitación no encontrada</h3>
+              <div class="mt-2 text-sm text-red-700">
+                <p>No se encontró la habitación con ID {id}</p>
+                <a href="/admin/rooms" class="mt-2 inline-block text-sm font-medium text-red-600 hover:text-red-800">
+                  Volver al listado
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <>
+          {successMessage && (
+            <div class="rounded-md bg-green-50 p-4 mb-4">
+              <p class="text-sm font-medium text-green-800">{successMessage}</p>
+            </div>
+          )}
+
+          <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
+            <RoomForm 
+              flats={flats} 
+              room={room} 
+              action={`/admin/rooms/edit/${id}`}
+              method="POST"
+            />
+          </div>
+        </>
+      )}
+    </div>
+  </SectionContainer>
+</LayoutAdmin>
+
+<style is:global>
+  .btn-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+  }
+</style>

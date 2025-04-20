@@ -5,59 +5,89 @@ import { supabase } from "@/db/supabase"
 
 const { user } = Astro.locals
 if (!user) {
-	return Astro.redirect("/admin")
+  return Astro.redirect("/admin")
 }
 
-// Datos estáticos (pre-renderizados)
+// Obtener datos de habitaciones
 const { count: roomsCount } = await supabase
-	.from("rooms")
-	.select("*", { count: "exact", head: true })
+  .from("rooms")
+  .select("*", { count: "exact", head: true })
+
+// Obtener habitaciones disponibles
+const { count: availableRoomsCount } = await supabase
+  .from("rooms")
+  .select("*", { count: "exact", head: true })
+  .eq("available", true)
+
+// Obtener datos de pisos
+const { count: flatsCount } = await supabase
+  .from("flats")
+  .select("*", { count: "exact", head: true })
+
+// Obtener pisos disponibles
+const { count: availableFlatsCount } = await supabase
+  .from("flats")
+  .select("*", { count: "exact", head: true })
+  .eq("available", true)
+
+// Últimas 5 habitaciones añadidas
+const { data: recentRooms } = await supabase
+  .from("rooms")
+  .select("id, name, available, flat_id")
+  .order("created_at", { ascending: false })
+  .limit(5)
 ---
 
 <LayoutAdmin title="RentRoomBcn - Admin">
-	<SectionContainer>
-		<div class="p-6">
-			<h1 class="text-2xl font-bold">
-				Bienvenido, {user?.email}
-			</h1>
+  <SectionContainer>
+    <div class="p-6 space-y-8">
+      <div>
+        <h1 class="text-3xl font-bold text-gray-800">Bienvenido, {user?.email}</h1>
+        <p class="text-gray-600">Panel de administración de RentRoomBcn</p>
+      </div>
 
-			<div class="dashboard-grid">
-				<div class="card">
-					<h3>Habitaciones activas</h3>
-					<p>{roomsCount}</p>
-				</div>
+      <!-- Estadísticas rápidas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Tarjeta de Pisos -->
+        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-blue-500">
+          <h3 class="text-lg font-medium text-gray-700">Pisos registrados</h3>
+          <div class="flex items-end gap-4">
+            <p class="text-3xl font-bold my-2">{flatsCount}</p>
+            <p class="text-green-600 text-sm mb-2">
+              {availableFlatsCount} <span class="text-gray-500">disponibles</span>
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <a href="/admin/flats" class="text-blue-600 hover:text-blue-800 text-sm font-medium">Ver todos</a>
+            <a href="/admin/flats/new" class="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded hover:bg-blue-200">+ Nuevo</a>
+          </div>
+        </div>
 
-				<div class="card">
-					<h3>Reservas activas</h3>
-				</div>
+        <!-- Tarjeta de Habitaciones -->
+        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-green-500">
+          <h3 class="text-lg font-medium text-gray-700">Habitaciones</h3>
+          <div class="flex items-end gap-4">
+            <p class="text-3xl font-bold my-2">{roomsCount}</p>
+            <p class="text-green-600 text-sm mb-2">
+              {availableRoomsCount} <span class="text-gray-500">disponibles</span>
+            </p>
+          </div>
+          <div class="flex justify-between items-center mt-4">
+            <a href="/admin/rooms" class="text-green-600 hover:text-green-800 text-sm font-medium">Ver todas</a>
+            <a href="/admin/rooms/new" class="text-sm bg-green-100 text-green-700 px-3 py-1 rounded hover:bg-green-200">+ Nueva</a>
+          </div>
+        </div>
 
-				<div class="quick-actions">
-					<a href="/admin/rooms/new" class="button">Nueva Habitación</a>
-					<a href="/admin/bookings" class="button">Ver Reservas</a>
-				</div>
-			</div>
-		</div>
-	</SectionContainer>
+        <!-- Tarjeta de Reservas (placeholder) -->
+        <div class="bg-white rounded-lg shadow p-6 border-l-4 border-purple-500">
+          <h3 class="text-lg font-medium text-gray-700">Reservas</h3>
+          <p class="text-3xl font-bold my-2">-</p>
+          <div class="flex justify-between items-center mt-4">
+            <a href="/admin/bookings" class="text-purple-600 hover:text-purple-800 text-sm font-medium">Ver todas</a>
+            <a href="/admin/bookings/new" class="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded hover:bg-purple-200">+ Nueva</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </SectionContainer>
 </LayoutAdmin>
-
-<style>
-	.dashboard-grid {
-		display: grid;
-		gap: 1rem;
-		grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	}
-	.card {
-		padding: 1.5rem;
-		background: white;
-		border-radius: 8px;
-		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	}
-	.button {
-		display: inline-block;
-		padding: 0.8rem 1.5rem;
-		background: #0070f3;
-		color: white;
-		border-radius: 4px;
-		text-decoration: none;
-	}
-</style>

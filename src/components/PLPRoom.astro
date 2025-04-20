@@ -48,7 +48,7 @@ const flatMap = FLATS.reduce((acc, flat) => {
 }, {})
 
 // Relacionar el título del flat en el filtro
-const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
+const uniqueFlats = [...new Set(availableRooms.map((room) => room.flat_id))]
 ---
 
 <head>
@@ -103,12 +103,12 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.roomFlat))]
 						availableRooms.map((room) => (
 							<div
 								class={`room-card ${room.status === "soon" ? "cursor-not-allowed opacity-50" : ""} flex h-full flex-col`}
-								x-show={`selectedFlats.length === 0 || selectedFlats.includes('${room.roomFlat}')`}
+								x-show={`selectedFlats.length === 0 || selectedFlats.includes('${room.flat_id}')`}
 							>
 								<RoomsCard
 									name={room.name}
 									description={
-										room.status === "soon" ? plpRoom.soon : plpRoom.RoomCard[room.roomFlat]
+										room.status === "soon" ? plpRoom.soon : plpRoom.RoomCard[room.flat_id]
 									}
 									imageSrc={room.status === "soon" ? "/Flats/soon-available.jpeg" : room.imageSrc}
 									imageAlt={room.imageAlt}

@@ -13,7 +13,7 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // 1. Permitir todas las rutas admin sin verificación de idioma
   if (url.pathname.startsWith(ADMIN_PREFIX)) {
     // Opcional: Añadir verificación de autenticación solo para admin
-    const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await supabase.auth.getSession();
     if (!session && !url.pathname.startsWith('/admin')) {
       return new Response(null, {
         status: 302,

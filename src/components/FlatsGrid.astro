@@ -22,7 +22,7 @@ if (flatsError || roomsError) {
 // Función para obtener cuartos disponibles por flat
 function getAvailableRoomsByFlat() {
 	return (flats || []).map((flat) => {
-		const roomsInFlat = (rooms || []).filter((room) => room.roomFlat === flat.flat_id)
+		const roomsInFlat = (rooms || []).filter((room) => room.flat_id === flat.flat_id)
 		const availableRooms = roomsInFlat.filter((room) => room.status === "available").length
 		const comingSoon = roomsInFlat.filter((room) => room.status === "soon").length
 		return {

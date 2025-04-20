@@ -1,0 +1,140 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import { getAllRooms } from "@/db/api/rooms"
+
+const { user } = Astro.locals
+if (!user) {
+  return Astro.redirect("/admin")
+}
+
+// Obtener todas las habitaciones con información del piso
+const { data: rooms, error } = await getAllRooms()
+---
+
+<LayoutAdmin title="RentRoomBcn - Habitaciones">
+  <SectionContainer>
+    <div class="p-6 space-y-6">
+      <!-- Encabezado con botón de acción -->
+	  <div class="flex justify-between items-center">
+		<div>
+		  <h1 class="text-2xl font-bold text-gray-800">Gestión de Habitaciones</h1>
+		  <p class="text-sm text-gray-500">
+			{rooms?.length || 0} habitaciones registradas
+		  </p>
+		</div>
+		<div class="flex space-x-3">
+		  <a href="/admin" class="btn-secondary">
+			Dashboard
+		  </a>
+		  <a href="/admin/rooms/new" class="btn-primary">
+			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
+			  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+			</svg>
+			Nueva Habitación
+		  </a>
+		</div>
+	  </div>
+
+      <!-- Tabla de habitaciones -->
+      <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+          <thead class="bg-gray-50">
+            <tr>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Piso</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white divide-y divide-gray-200">
+            {rooms && rooms.length > 0 ? (
+              rooms.map((room) => (
+                <tr id={room.id} class="hover:bg-gray-50 transition-colors">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      {room.imageSrc && (
+                        <div class="flex-shrink-0 h-10 w-10 mr-3">
+                          <img class="h-10 w-10 rounded-full object-cover" src={room.imageSrc} alt={room.imageAlt || room.name} />
+                        </div>
+                      )}
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">{room.name}</div>
+                        <div class="text-sm text-gray-500">{room.slug}</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900 font-medium">{room.flats?.title || 'Sin piso'}</div>
+                    {room.flats?.street && (
+                      <div class="text-xs text-gray-500">{room.flats.street}</div>
+                    )}
+                  </td>
+				  <td class="px-6 py-4 whitespace-nowrap">
+					<span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+						room.available 
+						? (room.status === 'soon' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')
+						: 'bg-red-100 text-red-800'
+					}`}>
+						{room.available ? 'Disponible' : 'Ocupada'}
+					</span>
+					{room.status && (
+						<span class="ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+						{room.status}
+						</span>
+					)}
+				</td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <div class="flex space-x-3">
+                      <a 
+                        href={`/admin/rooms/edit/${room.id}`} 
+                        class="text-indigo-600 hover:text-indigo-900 flex items-center"
+                        title="Editar"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        Editar
+                      </a>
+                      <a 
+                        href={`/admin/rooms/view/${room.slug || room.id}`} 
+                        class="text-green-600 hover:text-green-900 flex items-center"
+                        title="Ver detalles"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        Ver
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                  No hay habitaciones registradas
+                  {error && (
+                    <div class="text-red-500 text-sm mt-2">
+                      Error al cargar: {error.message}
+                    </div>
+                  )}
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </SectionContainer>
+</LayoutAdmin>
+
+<style is:global>
+  .btn-primary {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+  }
+</style>
