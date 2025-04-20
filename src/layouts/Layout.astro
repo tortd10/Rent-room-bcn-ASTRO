@@ -2,6 +2,8 @@
 import CookieBanner from "@/components/CookieBanner.astro"
 import Footer from "@/components/Footer.astro"
 import Header from "@/components/Header.astro"
+import Analytics from '@vercel/analytics/astro'
+import SpeedInsights from "@vercel/speed-insights/astro"
 
 interface Props {
 	title: string
@@ -46,6 +48,8 @@ const findRoom = translations.FindRoom
 
 	<body class="bg-primaryBg">
 		<Header />
+		<Analytics />
+		<SpeedInsights />
 		<main class="flex flex-col gap-10 md:gap-20">
 			<slot />
 		</main>
