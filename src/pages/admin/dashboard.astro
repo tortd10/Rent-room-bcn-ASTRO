@@ -30,12 +30,6 @@ const { count: availableFlatsCount } = await supabase
   .select("*", { count: "exact", head: true })
   .eq("available", true)
 
-// Últimas 5 habitaciones añadidas
-const { data: recentRooms } = await supabase
-  .from("rooms")
-  .select("id, name, available, flat_id")
-  .order("created_at", { ascending: false })
-  .limit(5)
 ---
 
 <LayoutAdmin title="RentRoomBcn - Admin">

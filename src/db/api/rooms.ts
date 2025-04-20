@@ -12,14 +12,6 @@ type Room = {
   status?: string
 }
 
-type Flat = {
-  flat_id: string
-  title: string
-  street?: string | null
-  mapImage?: string | null
-  available: boolean
-}
-
 // Obtener todas las habitaciones con info de piso
 export async function getAllRooms() {
   return await supabase

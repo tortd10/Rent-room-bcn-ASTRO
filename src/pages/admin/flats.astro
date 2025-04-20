@@ -9,7 +9,7 @@ if (!user) {
   return Astro.redirect("/admin")
 }
 
-const { data: flats, error } = await getAllFlats()
+const { data: flats } = await getAllFlats()
 ---
 
 <LayoutAdmin title="RentRoomBcn - Pisos">
