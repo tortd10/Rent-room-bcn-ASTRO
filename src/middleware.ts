@@ -3,52 +3,62 @@ import { defineMiddleware } from "astro:middleware";
 import { supabase } from "./db/supabase";
 
 const SUPPORTED_LANGS = ['es', 'en'];
-const EXCLUDED_PATHS = ['404', 'api', '_astro', 'favicon.ico'];
-const ADMIN_PREFIX = '/admin';
+const EXCLUDED_PATHS = ['404', 'api', '_astro', 'favicon.ico', 'utils'];
+const LOGIN_PATH = '/admin';
+const PUBLIC_PATHS = [LOGIN_PATH];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
-  const pathSegments = url.pathname.split('/').filter(Boolean);
+  const pathname = url.pathname;
+  const pathSegments = pathname.split('/').filter(Boolean);
 
-  // 1. Permitir todas las rutas admin sin verificación de idioma
-  if (url.pathname.startsWith(ADMIN_PREFIX)) {
-    // Opcional: Añadir verificación de autenticación solo para admin
-  const { data: { session } } = await supabase.auth.getSession();
-    if (!session && !url.pathname.startsWith('/admin')) {
-      return new Response(null, {
-        status: 302,
-        headers: { 'Location': '/admin' }
-      });
-    }
-    context.locals.user = session?.user || null;
+  // 1. Excluir rutas técnicas y assets
+  if (EXCLUDED_PATHS.some(path => pathname.includes(path))) {
     return next();
   }
 
-  // 2. Excluir rutas técnicas
-  if (EXCLUDED_PATHS.some(path => url.pathname.includes(path))) {
-    return next();
-  }
-
-  // 3. Verificar idiomas para rutas no-admin
-  if (pathSegments.length > 0 && !SUPPORTED_LANGS.includes(pathSegments[0])) {
-    if (!url.pathname.startsWith('/404')) {
-      return new Response(null, {
-        status: 307,
-        headers: { 'Location': '/404' }
-      });
-    }
-  }
-
-  // 4. Autenticación para rutas principales
+  // 2. Manejo de sesión
   const { data: { session } } = await supabase.auth.getSession();
   context.locals.user = session?.user || null;
 
+  // 3. Manejo de cookies
   if (session?.access_token) {
     context.cookies.set("sb-access-token", session.access_token, {
       path: "/",
       httpOnly: true,
       secure: true,
+      sameSite: 'lax',
+      maxAge: 604800
     });
+  } else {
+    context.cookies.delete("sb-access-token", { path: "/" });
+  }
+
+  // 4. Permitir rutas públicas
+  if (PUBLIC_PATHS.some(path => pathname.startsWith(path))) {
+    return next();
+  }
+
+// 5. Proteger TODAS las rutas bajo /admin (excepto el login)
+if (pathname.startsWith('/admin/') && pathname !== LOGIN_PATH) {
+	if (!session) {
+	  return new Response(null, {
+		status: 302,
+		headers: { 'Location': LOGIN_PATH }
+	  });
+	}
+	return next();
+  }
+
+  // 6. Verificación de idiomas para rutas principales
+  if (pathSegments.length > 0 && pathSegments[0] === 'lang') {
+    const lang = pathSegments[1];
+    if (!SUPPORTED_LANGS.includes(lang)) {
+      return new Response(null, {
+        status: 307,
+        headers: { 'Location': '/404' }
+      });
+    }
   }
 
   return next();
