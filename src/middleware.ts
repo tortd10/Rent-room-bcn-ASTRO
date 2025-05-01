@@ -11,6 +11,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   const url = new URL(context.request.url);
   const pathname = url.pathname;
   const pathSegments = pathname.split('/').filter(Boolean);
+  const isSecure = url.protocol === 'https:';
+  const domain = url.hostname === 'localhost' ? undefined : `.${url.hostname}`;
 
   // 1. Excluir rutas técnicas y assets
   if (EXCLUDED_PATHS.some(path => pathname.includes(path))) {
@@ -22,16 +24,31 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.user = session?.user || null;
 
   // 3. Manejo de cookies
+  const cookieOptions = {
+    path: "/",
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: (isSecure ? 'none' : 'lax') as 'none' | 'lax' | 'strict',
+    domain,
+    maxAge: 604800 // 1 semana
+  };
+
+  const deleteOptions = {
+    path: "/",
+    domain
+  };
+
   if (session?.access_token) {
-    context.cookies.set("sb-access-token", session.access_token, {
-      path: "/",
-      httpOnly: true,
-      secure: true,
-      sameSite: 'lax',
-      maxAge: 604800
+    context.cookies.set("sb-access-token", session.access_token, cookieOptions);
+    
+    // Cookie adicional para compatibilidad
+    context.cookies.set("sb-token-fallback", session.access_token, {
+      ...cookieOptions,
+      sameSite: 'lax'
     });
   } else {
-    context.cookies.delete("sb-access-token", { path: "/" });
+    context.cookies.delete("sb-access-token", deleteOptions);
+    context.cookies.delete("sb-token-fallback", deleteOptions);
   }
 
   // 4. Permitir rutas públicas
