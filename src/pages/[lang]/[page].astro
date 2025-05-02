@@ -15,6 +15,9 @@ import PLPFlats from "@/components/PLPFlats.astro"
 import RoomContactForm from "@/components/RoomContactForm.astro"
 import i18next from "@/i18n/config.js"
 
+//TODO: BORRAR ESTA LÍNEA
+export const prerender = true;
+
 const lang = Astro.params.lang || "es" // Idioma por defecto
 const page = Astro.params.page || "index" // Página por defecto
 
