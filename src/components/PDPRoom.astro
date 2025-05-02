@@ -17,7 +17,7 @@ if (!roomData) {
 	throw new Error("Room not found")
 }
 
-const allImages = import.meta.glob("/public/Flats/**/*.{jpg,jpeg,png,webp}")
+const allImages = import.meta.glob("/public/Flats/**/*.{jpg,jpeg,png,webp,JPEG}")
 
 let flat = ""
 let room = ""
@@ -27,11 +27,21 @@ if (slug && typeof slug === "string" && slug.includes("-")) {
 	;[flat, room] = slug.split("-")
 }
 
-// Filtrar las imágenes de la carpeta correspondiente
-const folderPath = `/public/Flats/${flat}/${room}/`
-const imagePaths = Object.keys(allImages)
-	.filter((path) => path.startsWith(folderPath))
-	.map((path) => path.replace("/public", ""))
+// Filtrar las imágenes de la carpeta de la habitación específica (ej: Flats/FFCCT1/HAB1/)
+const roomFolderPath = `/public/Flats/${flat}/${room}/`
+const roomImages = Object.keys(allImages)
+  .filter((path) => path.startsWith(roomFolderPath))
+  .map((path) => path.replace("/public", ""))
+
+// Filtrar las imágenes de la carpeta EXTRA (ej: Flats/FFCCT1/EXTRA/)
+const extraFolderPath = `/public/Flats/${flat}/EXTRA/`
+const extraImages = Object.keys(allImages)
+  .filter((path) => path.startsWith(extraFolderPath))
+  .map((path) => path.replace("/public", ""))
+
+  // Combinar las imágenes (primero las de la habitación y luego las de EXTRA)
+const imagePaths = [...roomImages, ...extraImages]
+
 ---
 
 <div class="container mx-auto px-4 py-6">
