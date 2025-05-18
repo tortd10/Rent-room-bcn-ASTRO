@@ -57,18 +57,9 @@
       "question1": "Are you looking for a comfortable, well-located, and affordable room? You'll find it here!",
       "text1": "At RentRoom, we connect people looking for a place to feel at home with available rooms. Whether for a short stay or to live for months, we have the perfect option for you.",
       "text2": "We know that looking for a room is not just about finding four walls; it's about finding a space where you feel good, where you can start a new chapter, where you can be yourself. That's why we're here to accompany you on this journey.",
-      "title2": "What do we offer?",
-      "articles": [
-        {
-          "title": "Rooms in shared apartments"
-        },
-        {
-          "title": "Flexibility to adapt to your time, whether for short or long stays."
-        },
-        {
-          "title": "Personalized attention to help you find the best option according to your needs."
-        }
-      ]
+      "title1": "FLATS",
+      "title2": "ROOMS",
+      "title3": "TENANTS"
     },
     "howwork": {
       "title": "How does it work?",

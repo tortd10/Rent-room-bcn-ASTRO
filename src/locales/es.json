@@ -57,16 +57,9 @@
       "question1": "¿Buscas una habitación cómoda, bien ubicada y a buen precio? ¡Aquí lo encontrarás!",
       "text1": "En RentRoom conectamos a personas que buscan un espacio donde sentirse como en casa con habitaciones disponibles. Ya sea para una estancia corta o para vivir durante meses, tenemos la opción perfecta para ti.",
       "text2": "Sabemos que buscar una habitación no es solo encontrar cuatro paredes, es encontrar un espacio donde sentirse bien, donde empezar una nueva etapa, donde puedas ser tú mismo/a. Por eso, estamos aquí para acompañarte en este camino.",
-      "title2": "¿Qué ofrecemos?",
-      "articles": [
-        {
-          "title": "Habitaciones en pisos compartidos"
-        },
-        { "title": "Flexibilidad para adaptarnos a tu tiempo tanto estancias cortas o largas." },
-        {
-          "title": "Atención personalizada para que encuentres la mejor opción según tus necesidades."
-        }
-      ]
+      "title1": "PISOS",
+      "title2": "HABITACIONES",
+      "title3": "INQUILINOS"
     },
     "howwork": {
       "title": "Cómo funciona?",

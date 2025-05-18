@@ -23,20 +23,6 @@ interface AboutRooms {
 	title: string
 	articles: Article[]
 }
-
-const aboutRooms: AboutRooms = translations.aboutRooms
-
-var ARTICLES = [
-	{
-		class: "bg-gradient-to-r from-[#DAD7CD] to-[#A3B18A] text-white",
-	},
-	{
-		class: "bg-gradient-to-r from-[#A3B18A] to-[#DAD7CD] text-white",
-	},
-	{
-		class: "bg-gradient-to-r from-[#DAD7CD] to-[#E9EDC9] text-primary",
-	},
-]
 ---
 
 <section class="px-4 py-6 md:mx-auto md:w-full md:max-w-[90rem]">
@@ -82,34 +68,86 @@ var ARTICLES = [
 				{findRoom.section2.text2}
 			</h2>
 		</div>
-		<div class="mt-7 flex w-full flex-col items-center md:mt-0">
-			<h2
-				class="text-balance text-2xl font-black tracking-tight text-primary sm:text-3xl md:text-2xl lg:text-3xl"
-			>
-				{findRoom.section2.title2}
-			</h2>
-			<div class="mt-6 flex w-full flex-col gap-2">
-				{
-					aboutRooms.articles.slice(0, ARTICLES.length).map(({ title, content }, index) => (
-						<div
-							class:list={[
-								index === 0
-									? "md:col-span-2 md:row-span-1"
-									: index === 1
-										? "md:row-span-2"
-										: "md:col-span-1",
-								"group relative w-full overflow-hidden rounded-lg shadow-md transition-shadow duration-300 hover:shadow-lg",
-								ARTICLES[index]?.class,
-							]}
+		<div class="mt-4 flex flex-col items-center md:mt-0">
+			<!-- Contenedor principal en línea -->
+			<div class="flex flex-wrap justify-center gap-4 md:gap-6">
+				<!-- Pisos -->
+				<div
+					class="flex min-w-[120px] items-center gap-3 rounded-xl border-2 border-primary bg-white p-3 shadow-sm"
+				>
+					<div class="h-10 w-10 rounded-full bg-primary/10 p-1.5">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-7 w-7 text-primary"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							fill="none"
 						>
-							<div class="flex h-full flex-col justify-start p-4">
-								<h3 class="mb-2 text-lg text-texth2 sm:text-xl md:text-xl lg:text-xl">
-									{findRoom.section2.articles[index]?.title}
-								</h3>
-							</div>
-						</div>
-					))
-				}
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+							></path>
+						</svg>
+					</div>
+					<div>
+						<div class="font-medium text-gray-600">{findRoom.section2.title1}</div>
+						<div class="text-center text-2xl font-bold text-primary">3</div>
+					</div>
+				</div>
+
+				<!-- Habitaciones -->
+				<div
+					class="flex min-w-[120px] items-center gap-3 rounded-xl border-2 border-primary bg-white p-3 shadow-sm"
+				>
+					<div class="h-10 w-10 rounded-full bg-primary/10 p-1.5">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-7 w-7 text-primary"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							fill="none"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
+							></path>
+						</svg>
+					</div>
+					<div>
+						<div class="font-medium text-gray-600">{findRoom.section2.title2}</div>
+						<div class="text-center text-2xl font-bold text-primary">15</div>
+					</div>
+				</div>
+
+				<!-- Inquilinos destacado -->
+				<div
+					class="flex min-w-[120px] items-center gap-3 rounded-xl bg-gradient-to-r from-primary to-primary/90 p-3 shadow-sm"
+				>
+					<div class="h-10 w-10 rounded-full bg-white/20 p-1.5">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="h-7 w-7 text-white"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+							fill="none"
+						>
+							<path
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								stroke-width="2"
+								d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
+							></path>
+						</svg>
+					</div>
+					<div>
+						<div class="font-medium text-white">{findRoom.section2.title3}</div>
+						<div class="text-center text-2xl font-bold text-white">+50</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</section>
