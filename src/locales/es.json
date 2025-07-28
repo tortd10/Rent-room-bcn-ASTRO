@@ -43,7 +43,7 @@
       },
       {
         "href": "/change-language",
-        "icon": "/Flags/{currentLang === 'es' ? 'en' : 'es'}.svg"
+        "icon": "/flags/{currentLang === 'es' ? 'en' : 'es'}.svg"
       }
     ],
     "copy": "© 2025 RENTROOMBCN, todos los derechos reservados."
