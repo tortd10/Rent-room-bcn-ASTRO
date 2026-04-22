@@ -1,6 +1,7 @@
 ---
 import PDPRoom from "@/components/PDPRoom.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
+import { FLATS } from "@/data/flats"
 import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
@@ -29,9 +30,38 @@ if (!room) {
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
+
+const flat = FLATS.find((f) => f.flat_id === room.roomFlat)
+
+const schema = {
+	"@context": "https://schema.org",
+	"@type": "Accommodation",
+	"name": room.name,
+	"description": room.metaDescription,
+	"image": `https://www.rentroombcn.com${room.imageSrc}`,
+	"url": `https://www.rentroombcn.com/${lang}/${room.slug}`,
+	"address": {
+		"@type": "PostalAddress",
+		"streetAddress": flat?.street ?? "",
+		"addressLocality": flat?.city ?? "Barcelona",
+		"postalCode": flat?.postalCode ?? "",
+		"addressCountry": "ES",
+	},
+	"accommodationCategory": "Room",
+	"petsAllowed": false,
+}
 ---
 
-<Layout title={`RentRoomBcn - ${findRoom.find_room}`}>
+<Layout title={room.metaTitle} description={room.metaDescription}>
+	<Fragment slot="head">
+		<meta property="og:title" content={room.metaTitle} />
+		<meta property="og:description" content={room.metaDescription} />
+		<meta property="og:image" content={`https://www.rentroombcn.com${room.imageSrc}`} />
+		<meta property="og:url" content={`https://www.rentroombcn.com/${lang}/${room.slug}`} />
+		<meta property="og:type" content="website" />
+		<script type="application/ld+json" set:html={JSON.stringify(schema)} />
+	</Fragment>
+
 	<SectionContainer class="px-0">
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
 			<PDPRoom room={room} />

@@ -7,28 +7,32 @@ import SpeedInsights from "@vercel/speed-insights/astro"
 
 interface Props {
 	title: string
+	description?: string
 }
 
-const { title } = Astro.props
+const { title, description } = Astro.props
 
 import i18next from "@/i18n/config.js"
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
+
+const metaDescription = description ?? findRoom.find_room
 ---
 
 <!doctype html>
-<html lang="es">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
-		<meta name="description" content={`${findRoom.find_room}`} />
 		<meta name="viewport" content="width=device-width" />
+		<meta name="description" content={metaDescription} />
 		<title>{title}</title>
 		<meta property="og:site_name" content="rentroombcn.com" />
 		<meta property="og:title" content={title} />
-		<meta property="og:description" content={`${findRoom.find_room}`} />
-		<meta property="og:url" content="https://rentroombcn.com/" />
+		<meta property="og:description" content={metaDescription} />
+		<meta property="og:url" content={Astro.url.href} />
+		<slot name="head" />
 		<!-- Google tag (gtag.js) -->
 		<script
 			type="text/partytown"
@@ -40,7 +44,6 @@ const findRoom = translations.FindRoom
 				dataLayer.push(arguments)
 			}
 			gtag("js", new Date())
-
 			gtag("config", "G-L6RW5H70E1")
 		</script>
 	</head>
