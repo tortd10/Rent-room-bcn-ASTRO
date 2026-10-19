@@ -1,34 +1,16 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import { supabase } from "@/db/supabase"
+import { getRoomsStats } from "@/db/api/rooms"
 
 const { user } = Astro.locals
 if (!user) {
   return Astro.redirect("/admin")
 }
 
-// Obtener datos de habitaciones
-const { count: roomsCount } = await supabase
-  .from("rooms")
-  .select("*", { count: "exact", head: true })
-
-// Obtener habitaciones disponibles
-const { count: availableRoomsCount } = await supabase
-  .from("rooms")
-  .select("*", { count: "exact", head: true })
-  .eq("available", true)
-
-// Obtener datos de pisos
-const { count: flatsCount } = await supabase
-  .from("flats")
-  .select("*", { count: "exact", head: true })
-
-// Obtener pisos disponibles
-const { count: availableFlatsCount } = await supabase
-  .from("flats")
-  .select("*", { count: "exact", head: true })
-  .eq("available", true)
+const { roomsCount, availableRoomsCount, flatsCount, availableFlatsCount } = await getRoomsStats(
+  Astro.locals.supabase
+)
 
 ---
 

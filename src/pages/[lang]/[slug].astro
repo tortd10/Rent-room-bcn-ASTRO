@@ -3,43 +3,26 @@ import PDPRoom from "@/components/PDPRoom.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
-import { supabase } from "@/db/supabase"
+import { getFlats, getRoomBySlug } from "@/db/public"
 
-export const prerender = true
+// Render bajo demanda: los cambios hechos en el admin se ven sin redeploy.
+export const prerender = false
 
-export async function getStaticPaths() {
-	// Obtener todas las habitaciones desde Supabase
-	const { data: rooms, error } = await supabase.from("rooms").select("slug")
+const { slug, lang: langParam } = Astro.params
 
-	if (error) {
-		console.error("Error fetching rooms:", error)
-		return []
-	}
+if (langParam !== "es" && langParam !== "en") return Astro.redirect("/404")
 
-	// Generate paths for both 'es' and 'en' languages for each room
-	const paths = rooms.flatMap((room) => [
-		{ params: { lang: "es", slug: room.slug } },
-		{ params: { lang: "en", slug: room.slug } },
-	])
+const room = await getRoomBySlug(slug as string)
+if (!room) return Astro.redirect("/404")
 
-	return paths
-}
-
-// Obtén el slug desde la URL
-const { slug } = Astro.params
-
-// Busca la habitación correspondiente al slug en Supabase
-const { data: room, error } = await supabase.from("rooms").select("*").eq("slug", slug).single()
-
-if (!room || error) {
-	throw new Error(`No se encontró la habitación con el slug: ${slug}`)
-}
+// Caché en el CDN de Vercel: rápido, y se refresca en segundo plano
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
 
-const { data: flat } = await supabase.from("flats").select("*").eq("flat_id", room.flat_id).single()
+const flat = (await getFlats()).find((f) => f.flat_id === room.flat_id)
 
 const schema = {
 	"@context": "https://schema.org",
@@ -60,7 +43,7 @@ const schema = {
 }
 ---
 
-<Layout title={room.metaTitle} description={room.metaDescription}>
+<Layout title={room.metaTitle ?? room.name} description={room.metaDescription ?? undefined}>
 	<Fragment slot="head">
 		<meta property="og:title" content={room.metaTitle} />
 		<meta property="og:description" content={room.metaDescription} />

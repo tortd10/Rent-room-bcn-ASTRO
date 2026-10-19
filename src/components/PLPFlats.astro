@@ -2,19 +2,14 @@
 import FlatsGrid from "@/components/FlatsGrid.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
 import i18next from "@/i18n/config.js"
-import { supabase } from "@/db/supabase"
+import { getFlats } from "@/db/public"
 
 // Obtener el idioma actual
 const lang = Astro.url.pathname.split("/")[1] || "es" // 'es' por defecto si no hay idioma en la URL
 const translations = i18next.getResourceBundle(lang, "translation")
 const plpFlats = translations.plpFlats
 
-// Obtener datos de Supabase
-const { data: flats, error } = await supabase.from("flats").select("*").eq("available", true)
-
-if (error) {
-	console.error("Error al obtener flats desde Supabase:", error)
-}
+const flats = await getFlats({ availableOnly: true })
 ---
 
 <SectionContainer class="px-0">

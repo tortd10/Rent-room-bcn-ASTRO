@@ -9,7 +9,7 @@ if (!user) {
   return Astro.redirect("/admin")
 }
 
-const { data: flats } = await getAllFlats()
+const { data: flats } = await getAllFlats(Astro.locals.supabase)
 ---
 
 <LayoutAdmin title="RentRoomBcn - Pisos">

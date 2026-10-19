@@ -1,15 +1,10 @@
 ---
 import FlatsCard from "@/components/FlatsCard.astro"
-import { supabase } from "@/db/supabase"
+import { getFlats } from "@/db/public"
 
 import i18next from "@/i18n/config.js"
 
-// Obtener flats desde Supabase
-const { data: flats, error } = await supabase.from("flats").select("*").eq("available", true)
-
-if (error) {
-	console.error("Error al obtener flats desde Supabase:", error)
-}
+const flats = await getFlats({ availableOnly: true })
 
 const lang = Astro.params.lang || "es" // Obtener el idioma de la URL
 const translations = i18next.getResourceBundle(lang, "translation")

@@ -1,8 +1,8 @@
-import { supabase } from "@/db/supabase"
+import { getRooms } from "@/db/public"
 import type { APIRoute } from "astro"
 
 export const GET: APIRoute = async (): Promise<Response> => {
-	const { data: rooms } = await supabase.from("rooms").select("slug")
+	const rooms = await getRooms()
 	const baseUrl = "https://www.rentroombcn.com"
 	const langs = ["es", "en"]
 
@@ -20,7 +20,7 @@ export const GET: APIRoute = async (): Promise<Response> => {
 	)
 
 	const roomUrls = langs.flatMap((lang) =>
-		(rooms ?? []).map(
+		rooms.map(
 			(room) => `
   <url>
     <loc>${baseUrl}/${lang}/${room.slug}</loc>

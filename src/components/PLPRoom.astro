@@ -2,37 +2,9 @@
 import RoomsCard from "@/components/RoomsCard.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
 import i18next from "@/i18n/config.js"
-import { supabase } from "@/db/supabase"
+import { getFlats, getRooms } from "@/db/public"
 
-// Función para obtener datos
-const fetchData = async () => {
-	try {
-		// Obtener habitaciones disponibles
-		const { data: rooms, error: roomsError } = await supabase
-			.from("rooms")
-			.select("*")
-			.eq("available", true)
-			.order("id", { ascending: true })
-
-		// Obtener todos los flats
-		const { data: flats, error: flatsError } = await supabase
-			.from("flats")
-			.select("*")
-			.eq("available", true)
-			.order("flat_id", { ascending: true })
-
-		if (roomsError) throw new Error(`Error fetching rooms: ${roomsError.message}`)
-		if (flatsError) throw new Error(`Error fetching flats: ${flatsError.message}`)
-
-		return { rooms, flats }
-	} catch (error) {
-		console.error("Error in fetchData:", error)
-		// Puedes mostrar un mensaje de error en la UI si lo prefieres
-		return { rooms: [], flats: [] }
-	}
-}
-
-const { rooms: ROOMS, flats: FLATS } = await fetchData()
+const [ROOMS, FLATS] = await Promise.all([getRooms({ availableOnly: true }), getFlats({ availableOnly: true })])
 // Filtrar habitaciones disponibles
 const availableRooms = ROOMS.filter((room) => room.available)
 
@@ -42,10 +14,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const plpRoom = translations.plpRoom
 
 // Mapeo de flats
-const flatMap = FLATS.reduce((acc, flat) => {
-	acc[flat.flat_id] = flat.title
-	return acc
-}, {})
+const flatMap: Record<string, string> = Object.fromEntries(FLATS.map((f) => [f.flat_id, f.title]))
 
 // Relacionar el título del flat en el filtro
 const uniqueFlats = [...new Set(availableRooms.map((room) => room.flat_id))]

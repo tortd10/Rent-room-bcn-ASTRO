@@ -1,7 +1,7 @@
 ---
 import Rooms from "@/components/Rooms.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
-import { supabase } from "@/db/supabase"
+import { getRooms } from "@/db/public"
 import i18next from "@/i18n/config.js"
 import Icon from "./ui/Icon.astro"
 
@@ -9,11 +9,7 @@ const lang = Astro.params.lang || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const ourRoom = translations.ourRoom
 
-const { data: ROOMS } = await supabase
-  .from('rooms')
-  .select('*')
-  .eq('available', true)
-  .order('id', { ascending: true })
+const ROOMS = await getRooms({ availableOnly: true })
 ---
 
 <SectionContainer class="px-0">

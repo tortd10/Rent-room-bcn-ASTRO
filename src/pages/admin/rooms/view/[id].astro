@@ -8,7 +8,7 @@ if (!user) return Astro.redirect("/admin")
 
 const { id } = Astro.params
 
-const { data: room } = id ? await getRoomBySlug(id) : { data: null }
+const { data: room } = id ? await getRoomBySlug(Astro.locals.supabase, id) : { data: null }
 ---
 
 <LayoutAdmin title={room?.name || 'Detalle Habitación'}>
@@ -20,7 +20,7 @@ const { data: room } = id ? await getRoomBySlug(id) : { data: null }
 			  <a href="/admin/rooms" class="btn-secondary">
 				← Volver al listado
 			  </a>
-			  <a href={`/admin/rooms/edit/${room.id}`} class="btn-primary">
+			  <a href={`/admin/rooms/edit/${room?.id}`} class="btn-primary">
 				Editar
 			  </a>
 			</div>

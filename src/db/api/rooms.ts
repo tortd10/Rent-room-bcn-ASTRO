@@ -1,144 +1,73 @@
-import { supabase } from "@/db/supabase"
+import type { SupabaseClient } from "@supabase/supabase-js"
+import type { Room, RoomInput } from "@/types"
 
-// Tipos TypeScript para tus tablas
-type Room = {
-  id: number
-  slug: string
-  name: string
-  imageSrc?: string | null
-  imageAlt?: string | null
-  flat_id: string
-  available: boolean
-  status?: string
-}
+// Todas las funciones reciben el cliente: en admin, el de la petición (con la sesión
+// del usuario, necesario para las políticas RLS de escritura).
 
 // Obtener todas las habitaciones con info de piso
-export async function getAllRooms() {
-  return await supabase
-    .from("rooms")
-    .select("*, flats(title, street, available)")
+export async function getAllRooms(db: SupabaseClient) {
+	return await db
+		.from("rooms")
+		.select("*, flats(title, street, available)")
+		.order("id", { ascending: true })
 }
 
 // Obtener habitación por ID con detalles de piso
-export async function getRoomById(id: number) {
-  return await supabase
-    .from("rooms")
-    .select("*, flats(title, street, mapImage)")
-    .eq("id", id)
-    .single()
+export async function getRoomById(db: SupabaseClient, id: number) {
+	return await db.from("rooms").select("*, flats(title, street, mapImage)").eq("id", id).single()
 }
 
 // Obtener habitación por SLUG con detalles de piso
-export async function getRoomBySlug(id: string) {
-	return await supabase
-  .from("rooms")
-  .select("*, flats(title, street)")
-  .eq("slug", id)
-  .single()
+export async function getRoomBySlug(db: SupabaseClient, slug: string) {
+	return await db.from("rooms").select("*, flats(title, street)").eq("slug", slug).single()
 }
-// Crear nueva habitación
-export async function createRoom(roomData: {
-	name: string;
-	slug: string;
-	flat_id: string;
-	available: boolean;
-	status: string;
-	imageSrc?: string | null;
-	imageAlt?: string | null;
-  }): Promise<{ data: Room | null, error: any }> {
-	try {
-	  // Generar ID incremental (como en tu solución anterior)
-	  const { data: maxIdData } = await supabase
-		.from('rooms')
-		.select('id')
-		.order('id', { ascending: false })
-		.limit(1)
-		.single();
-  
-	  const newId = maxIdData?.id ? maxIdData.id + 1 : 1;
-  
-	  
-	  // Insertar la nueva habitación
-	  const { data, error } = await supabase
-		.from('rooms')
-		.insert({
-		  id: newId,
-		  ...roomData
-		})
-		.select()
-		.single();
-  
-	  if (error) throw error;
-	  
-	  return { data: data as Room, error: null };
-	} catch (error) {
-	  console.error('Error creating room:', error);
-	  return { data: null, error };
-	}
-  }
+
+// Crear nueva habitación (el id lo asigna Postgres)
+export async function createRoom(
+	db: SupabaseClient,
+	roomData: RoomInput
+): Promise<{ data: Room | null; error: any }> {
+	const { data, error } = await db.from("rooms").insert(roomData).select().single()
+	if (error) console.error("Error creating room:", error)
+	return { data: (data as Room) ?? null, error }
+}
 
 // Actualizar habitación existente
 export async function updateRoom(
+	db: SupabaseClient,
 	id: number,
 	updates: Partial<Room>
-  ): Promise<{ error: any }> {
-	try {  
-	  const { error } = await supabase
-		.from('rooms')
-		.update(updates)
-		.eq('id', id);
-  
-	  if (error) {
-		console.error('Error de Supabase:', {
-		  message: error.message,
-		  details: error.details,
-		  hint: error.hint,
-		  code: error.code
-		});
-		return { error };
-	  }
-  	  return { error: null };
-	} catch (err) {
-	  console.error('Error inesperado:', err);
-	  return { error: err };
-	}
-  }
+): Promise<{ error: any }> {
+	const { error } = await db.from("rooms").update(updates).eq("id", id)
+	if (error) console.error("Error updating room:", error)
+	return { error }
+}
+
 // Estadísticas para dashboard
-export async function getRoomsStats() {
-  const { count: total } = await supabase
-    .from("rooms")
-    .select("*", { count: "exact", head: true })
-
-  const { count: available } = await supabase
-    .from("rooms")
-    .select("*", { count: "exact", head: true })
-    .eq("available", true)
-
-  const { count: activeFlats } = await supabase
-    .from("flats")
-    .select("*", { count: "exact", head: true })
-    .eq("available", true)
-
-  return { 
-    totalRooms: total, 
-    availableRooms: available,
-    activeFlats
-  }
+export async function getRoomsStats(db: SupabaseClient) {
+	const count = (table: string, onlyAvailable = false) => {
+		const q = db.from(table).select("*", { count: "exact", head: true })
+		return onlyAvailable ? q.eq("available", true) : q
+	}
+	const [rooms, availableRooms, flats, availableFlats] = await Promise.all([
+		count("rooms"),
+		count("rooms", true),
+		count("flats"),
+		count("flats", true),
+	])
+	return {
+		roomsCount: rooms.count,
+		availableRoomsCount: availableRooms.count,
+		flatsCount: flats.count,
+		availableFlatsCount: availableFlats.count,
+	}
 }
 
-// Últimas habitaciones añadidas
-export async function getRecentRooms(limit = 5) {
-  return await supabase
-    .from("rooms")
-    .select("id, name, available, flat_id, flats(title)")
-    .limit(limit)
-}
-
-// Obtener pisos disponibles para selects
-export async function getAvailableFlats() {
-  return await supabase
-    .from("flats")
-    .select("flat_id, title")
-    .eq("available", true)
-    .order("title", { ascending: true })
+// Pisos disponibles para selects
+export async function getAvailableFlats(db: SupabaseClient) {
+	return await db
+		.from("flats")
+		.select("flat_id, title")
+		.eq("available", true)
+		.order("title", { ascending: true })
 }

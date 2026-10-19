@@ -9,7 +9,7 @@ if (!user) {
 }
 
 // Obtener todas las habitaciones con información del piso
-const { data: rooms, error } = await getAllRooms()
+const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
 ---
 
 <LayoutAdmin title="RentRoomBcn - Habitaciones">

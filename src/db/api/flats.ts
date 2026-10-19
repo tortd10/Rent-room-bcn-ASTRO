@@ -1,8 +1,6 @@
-import { supabase } from "@/db/supabase"
+import type { SupabaseClient } from "@supabase/supabase-js"
 
 // Obtener todos los pisos
-export async function getAllFlats() {
-  return await supabase
-    .from("flats")
-    .select("*")
+export async function getAllFlats(db: SupabaseClient) {
+	return await db.from("flats").select("*").order("flat_id", { ascending: true })
 }

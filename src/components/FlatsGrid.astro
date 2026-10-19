@@ -1,6 +1,6 @@
 ---
 import i18next from "@/i18n/config.js"
-import { supabase } from "@/db/supabase"
+import { getFlats, getRooms } from "@/db/public"
 interface FlatsProps {
 	name: string
 	imageSrc: string
@@ -9,15 +9,8 @@ interface FlatsProps {
 
 const { name, imageSrc, flat_id } = Astro.props as FlatsProps
 
-// Obtener flats y rooms desde Supabase
-const [{ data: flats, error: flatsError }, { data: rooms, error: roomsError }] = await Promise.all([
-	supabase.from("flats").select("*"),
-	supabase.from("rooms").select("*"),
-])
-
-if (flatsError || roomsError) {
-	console.error("Error al obtener datos desde Supabase:", flatsError || roomsError)
-}
+// Pisos y habitaciones (con respaldo local si Supabase falla)
+const [flats, rooms] = await Promise.all([getFlats(), getRooms()])
 
 // Función para obtener cuartos disponibles por flat
 function getAvailableRoomsByFlat() {
