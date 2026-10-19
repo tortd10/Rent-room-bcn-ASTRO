@@ -5,6 +5,9 @@ export const FLATS = [
 		title: "Ferrocarrils Catalans",
 		street: "Carrer dels Ferrocarrils Catalans",
 		flat_id: "FFCC71",
+		neighborhood: "Zona Franca, Sants-Montjuïc",
+		city: "Barcelona",
+		postalCode: "08038",
 	},
 	{
 		mapImage:
@@ -12,6 +15,9 @@ export const FLATS = [
 		title: "Riera Blanca",
 		street: "Carrer de la Riera Blanca",
 		flat_id: "RB219",
+		neighborhood: "Sants-Montjuïc",
+		city: "Barcelona",
+		postalCode: "08902",
 	},
 	{
 		mapImage:
@@ -19,5 +25,8 @@ export const FLATS = [
 		title: "Alts Forns",
 		street: "Carrer dels Alts Forns",
 		flat_id: "AAFF33",
+		neighborhood: "Zona Franca, Sants-Montjuïc",
+		city: "Barcelona",
+		postalCode: "08038",
 	},
 ]
