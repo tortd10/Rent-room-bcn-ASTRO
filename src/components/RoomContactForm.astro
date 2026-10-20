@@ -1,5 +1,6 @@
 ---
-import { ROOMS } from "@/data/rooms"
+import { getRooms } from "@/db/public"
+import type { Room } from "@/types"
 import i18next from "i18next"
 
 // Obtener el idioma de la URL
@@ -7,26 +8,23 @@ const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 const roomContactForm = translations.RoomContactForm
 
-// Obtener el slug de la URL actual
-const { pathname } = Astro.url
-const slug = pathname.replace(/^\/|\/$/g, "") // Remueve los slashes iniciales y finales
-
-// Eliminar el prefijo del idioma (cualquier idioma de 2 letras)
-const cleanSlug = slug.replace(/^[a-z]{2}\//, "")
-
-// Buscar los datos de la habitación en ROOMS usando el slug limpio
-const roomData = ROOMS.find((room) => room.slug.toLowerCase() === cleanSlug.toLowerCase())
-
-const selectedRoom = roomData || ROOMS[0]
+// Habitación recibida por props; en páginas sin habitación (About) se usa la primera
+const { roomData } = Astro.props as { roomData?: Room }
+const selectedRoom = roomData ?? (await getRooms())[0]
 ---
 
 <div class="sticky top-32 rounded-lg border border-gray-300 bg-[#C8D6B0] p-6 shadow-md">
 	<form id="contact-form" class="space-y-6" method="POST">
+		<!-- Honeypot anti-spam: invisible para personas -->
+		<div class="absolute -left-[9999px]" aria-hidden="true">
+			<input type="text" name="website" tabindex="-1" autocomplete="off" />
+		</div>
+		<input type="hidden" name="room_slug" value={selectedRoom.slug} />
 		<!-- Título y descripción -->
 		<h2 class="text-xl font-semibold text-primary">{roomContactForm.title} {selectedRoom.name}</h2>
 		<p class="text-sm text-primary">
 			{roomContactForm.description}
-			{selectedRoom.roomFlat || ""}
+			{selectedRoom.flat_id || ""}
 		</p>
 
 		<!-- Desplegable con la habitación seleccionada por defecto -->
@@ -187,13 +185,11 @@ const selectedRoom = roomData || ROOMS[0]
 	</form>
 
 	<script>
+		import { handleSubmit } from "@/lib/formHandler"
+
 		// Selecciona el formulario y agrega el event listener
 		const form = document.getElementById("contact-form") as HTMLFormElement
-		form.addEventListener("submit", (e) => {
-			e.preventDefault()
-			console.log("Formulario enviado")
-			// Aquí puedes implementar tu lógica de envío.
-		})
+		form.addEventListener("submit", handleSubmit)
 
 		const inputs = form.querySelectorAll("input, textarea, select")
 		const submitButton = document.getElementById("submit-button") as HTMLButtonElement

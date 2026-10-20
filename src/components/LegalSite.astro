@@ -1,9 +1,9 @@
 ---
-import i18next from "@/i18n/config.js"
 import Cookies from "@/components/Cookies.astro"
 import LegalNotice from "@/components/LegalNotice.astro"
 import Privacy from "@/components/Privacy.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
+import i18next from "@/i18n/config.js"
 
 interface LegalOption {
 	label: string
@@ -73,7 +73,7 @@ const legal: Legal = translations.Legal
 </style>
 
 <head>
-	<script src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
+	<script is:inline src="https://cdn.jsdelivr.net/npm/alpinejs@2.8.2/dist/alpine.js" defer></script>
 </head>
 
 <SectionContainer class="bg-light-gray px-4">

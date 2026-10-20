@@ -230,6 +230,7 @@
   },
   "pdpRoom": {
     "backButton": "Volver atrás",
+    "videosTitle": "Vídeos",
     "FFCC71": {
       "roomCharacteristics": {
         "houseFeaturesTitle": "Características de la vivienda:",
@@ -708,6 +709,8 @@
         "Espacios abiertos alrededor, ideales para caminar y desconectar."
       ]
     },
-    "RoomsAvailable": "Habitaciones disponibles"
+    "RoomsAvailable": "Habitaciones disponibles",
+    "ComingSoon": "Habitaciones próximamente",
+	"soldOut": "Habitaciones NO disponibles"
   }
 }

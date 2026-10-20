@@ -2,9 +2,10 @@
 import ContactForm from "@/components/ContactForm.astro"
 import KnowUs from "@/components/KnowUs.astro"
 import OurBeliefs from "@/components/OurBeliefs.astro"
-import OurTeam from "@/components/OurTeam.astro"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
+
+export const prerender = true;
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
@@ -31,6 +32,5 @@ export async function getStaticPaths() {
 <Layout title={`RentRoomBcn - ${findRoom.find_room}`}>
 	<KnowUs />
 	<OurBeliefs />
-	<!-- <OurTeam /> -->
 	<ContactForm />
 </Layout>

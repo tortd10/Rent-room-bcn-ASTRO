@@ -1,0 +1,276 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import { getRoomBySlug } from "@/db/api/rooms"
+import { publicImageUrl } from "@/lib/images"
+
+const { user, supabase } = Astro.locals
+if (!user) return Astro.redirect("/admin")
+
+const { id } = Astro.params
+
+const { data: room } = id ? await getRoomBySlug(supabase, id) : { data: null }
+
+// Medios, habitaciones del piso y consultas de esta habitación
+const [media, siblings, leads, newLeads] = room
+  ? await Promise.all([
+      supabase
+        .from("room_images")
+        .select("path, kind, room_id")
+        .eq("flat_id", room.flat_id)
+        .or(`room_id.eq.${room.id},room_id.is.null`)
+        .order("position", { ascending: true }),
+      supabase.from("rooms").select("id, slug, name, available").eq("flat_id", room.flat_id).order("id"),
+      supabase
+        .from("leads")
+        .select("id, created_at, name, email, status, message")
+        .eq("room_slug", room.slug)
+        .order("created_at", { ascending: false })
+        .limit(5),
+      supabase
+        .from("leads")
+        .select("*", { count: "exact", head: true })
+        .eq("room_slug", room.slug)
+        .eq("status", "new"),
+    ])
+  : [null, null, null, null]
+
+const rows = media?.data ?? []
+const own = (kind: string) => rows.filter((r) => r.kind === kind && r.room_id !== null)
+const common = (kind: string) => rows.filter((r) => r.kind === kind && r.room_id === null)
+const images = own("image")
+const videos = own("video")
+const flat = room?.flats
+
+const STATUS_LABEL: Record<string, string> = {
+  available: "Activa",
+  soon: "Próximamente",
+}
+const LEAD_STATUS: Record<string, { label: string; badge: string }> = {
+  new: { label: "Nueva", badge: "bg-purple-100 text-purple-800" },
+  contacted: { label: "Contactada", badge: "bg-blue-100 text-blue-800" },
+  closed: { label: "Cerrada", badge: "bg-gray-100 text-gray-700" },
+}
+const fmt = new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: "short" })
+
+// Qué falta por completar en la ficha
+const missing = room
+  ? [
+      !images.length && "Sin fotos en Supabase (la web usa las de /public)",
+      !room.metaTitle && "Falta el meta título (ES)",
+      !room.metaDescription && "Falta la meta descripción (ES)",
+      !room.metaTitle_en && "Falta el meta título (EN)",
+      !room.metaDescription_en && "Falta la meta descripción (EN)",
+      !room.imageAlt && "Falta el texto alternativo de la imagen (ES)",
+      !room.imageAlt_en && "Falta el texto alternativo de la imagen (EN)",
+    ].filter(Boolean)
+  : []
+---
+
+<LayoutAdmin title={room?.name || "Detalle Habitación"}>
+  <SectionContainer>
+    {!room ? (
+      <div class="p-6 space-y-4">
+        <p class="rounded-md bg-red-50 p-4 text-sm text-red-800">Habitación no encontrada</p>
+        <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
+      </div>
+    ) : (
+      <div class="p-6 space-y-6">
+        <!-- Cabecera -->
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div class="space-y-2">
+            <h1 class="text-2xl font-bold text-gray-800">{room.name}</h1>
+            <div class="flex flex-wrap items-center gap-2 text-sm">
+              <span class="rounded bg-gray-100 px-2 py-0.5 font-mono text-gray-700">{room.slug}</span>
+              <span class={`badge ${room.available ? "badge-success" : "badge-error"}`}>
+                {room.available ? "Disponible" : "Ocupada"}
+              </span>
+              <span class={`badge ${room.status === "soon" ? "bg-yellow-100 text-yellow-800" : "bg-blue-100 text-blue-800"}`}>
+                {STATUS_LABEL[room.status] ?? room.status}
+              </span>
+              {(newLeads?.count ?? 0) > 0 && (
+                <a href="/admin/bookings?status=new" class="badge bg-purple-100 text-purple-800">
+                  {newLeads?.count} consulta{newLeads?.count === 1 ? "" : "s"} nueva{newLeads?.count === 1 ? "" : "s"}
+                </a>
+              )}
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-3">
+            <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
+            <a href={`/es/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (ES)</a>
+            <a href={`/en/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (EN)</a>
+            <a href={`/admin/rooms/edit/${room.id}`} class="btn-primary">Editar</a>
+          </div>
+        </div>
+
+        {missing.length > 0 && (
+          <div class="rounded-md border border-yellow-200 bg-yellow-50 p-4">
+            <p class="text-sm font-medium text-yellow-800">Pendiente de completar</p>
+            <ul class="mt-2 list-disc pl-5 text-sm text-yellow-800">
+              {missing.map((m) => <li>{m}</li>)}
+            </ul>
+          </div>
+        )}
+
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          <div class="space-y-6 lg:col-span-2">
+            <!-- Imágenes -->
+            <div class="card p-6">
+              <h2 class="mb-4 text-lg font-semibold">Imágenes ({images.length})</h2>
+              {images.length > 0 ? (
+                <div class="space-y-3">
+                  <img src={publicImageUrl(images[0].path)} alt={room.imageAlt || room.name} class="w-full max-h-96 rounded object-cover" />
+                  {images.length > 1 && (
+                    <div class="grid grid-cols-4 gap-2 sm:grid-cols-6">
+                      {images.slice(1).map((img) => (
+                        <img src={publicImageUrl(img.path)} alt="" class="h-20 w-full rounded object-cover" loading="lazy" />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : room.imageSrc ? (
+                <img src={room.imageSrc} alt={room.imageAlt || room.name} class="w-full max-h-96 rounded object-cover" />
+              ) : (
+                <div class="flex h-48 items-center justify-center rounded bg-gray-100 text-gray-400">Sin imagen</div>
+              )}
+            </div>
+
+            <!-- Vídeos -->
+            <div class="card p-6">
+              <h2 class="mb-4 text-lg font-semibold">Vídeos ({videos.length})</h2>
+              {videos.length > 0 ? (
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {videos.map((v) => (
+                    <video src={publicImageUrl(v.path)} controls preload="metadata" class="w-full rounded bg-black" />
+                  ))}
+                </div>
+              ) : (
+                <p class="text-sm text-gray-500">Sin vídeos propios.</p>
+              )}
+            </div>
+
+            <!-- SEO -->
+            <div class="card p-6">
+              <h2 class="mb-4 text-lg font-semibold">SEO y textos</h2>
+              <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                {[
+                  { tag: "ES", title: room.metaTitle, desc: room.metaDescription, alt: room.imageAlt },
+                  { tag: "EN", title: room.metaTitle_en, desc: room.metaDescription_en, alt: room.imageAlt_en },
+                ].map((t) => (
+                  <div class="space-y-3 text-sm">
+                    <span class="badge bg-gray-100 text-gray-700">{t.tag}</span>
+                    <div>
+                      <h3 class="text-xs uppercase text-gray-500">Meta título</h3>
+                      <p class={t.title ? "" : "text-red-600"}>{t.title || "Sin definir"}</p>
+                      {t.title && <p class="text-xs text-gray-400">{t.title.length} caracteres</p>}
+                    </div>
+                    <div>
+                      <h3 class="text-xs uppercase text-gray-500">Meta descripción</h3>
+                      <p class={t.desc ? "" : "text-red-600"}>{t.desc || "Sin definir"}</p>
+                      {t.desc && <p class="text-xs text-gray-400">{t.desc.length} caracteres</p>}
+                    </div>
+                    <div>
+                      <h3 class="text-xs uppercase text-gray-500">Texto alternativo de la imagen</h3>
+                      <p class={t.alt ? "" : "text-red-600"}>{t.alt || "Sin definir"}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-6">
+            <!-- Datos -->
+            <div class="card p-6">
+              <h2 class="mb-4 text-lg font-semibold">Datos</h2>
+              <dl class="space-y-3 text-sm">
+                <div class="flex justify-between"><dt class="text-gray-500">ID</dt><dd class="font-mono">{room.slug}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">Nº interno</dt><dd>{room.id}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">Piso</dt><dd>{flat?.title ?? room.flat_id}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">Disponibilidad</dt><dd>{room.available ? "Disponible" : "Ocupada"}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">Estado</dt><dd>{STATUS_LABEL[room.status] ?? room.status}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">URL (ES)</dt><dd class="font-mono text-xs">/es/{room.slug}</dd></div>
+                <div class="flex justify-between"><dt class="text-gray-500">URL (EN)</dt><dd class="font-mono text-xs">/en/{room.slug}</dd></div>
+              </dl>
+            </div>
+
+            <!-- Piso -->
+            <div class="card p-6">
+              <h2 class="mb-4 text-lg font-semibold">Piso: {flat?.title ?? room.flat_id}</h2>
+              <dl class="space-y-3 text-sm">
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Dirección</dt><dd class="text-right">{flat?.street ?? "—"}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Barrio</dt><dd class="text-right">{flat?.neighborhood ?? "—"}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Ciudad</dt><dd class="text-right">{flat?.postalCode ?? ""} {flat?.city ?? "—"}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Zonas comunes</dt><dd>{common("image").length} fotos · {common("video").length} vídeos</dd></div>
+              </dl>
+              {flat?.mapImage && (
+                <iframe src={flat.mapImage} title="Mapa del piso" class="mt-4 h-48 w-full rounded" loading="lazy"></iframe>
+              )}
+              {siblings?.data && siblings.data.length > 0 && (
+                <div class="mt-4">
+                  <h3 class="mb-2 text-xs uppercase text-gray-500">
+                    Habitaciones del piso ({siblings.data.filter((s) => s.available).length} de {siblings.data.length} disponibles)
+                  </h3>
+                  <ul class="space-y-1 text-sm">
+                    {siblings.data.map((s) => (
+                      <li class="flex items-center justify-between">
+                        <a href={`/admin/rooms/view/${s.slug}`} class={`hover:underline ${s.id === room.id ? "font-semibold" : "text-indigo-600"}`}>{s.name}</a>
+                        <span class={`h-2 w-2 rounded-full ${s.available ? "bg-green-500" : "bg-red-500"}`} title={s.available ? "Disponible" : "Ocupada"}></span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+
+            <!-- Consultas -->
+            <div class="card p-6">
+              <div class="mb-4 flex items-center justify-between">
+                <h2 class="text-lg font-semibold">Últimas consultas</h2>
+                <a href="/admin/bookings" class="text-sm text-indigo-600 hover:underline">Ver todas</a>
+              </div>
+              {leads?.data && leads.data.length > 0 ? (
+                <ul class="space-y-3 text-sm">
+                  {leads.data.map((l) => (
+                    <li class="space-y-1 border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                      <div class="flex items-center justify-between gap-2">
+                        <span class="font-medium">{l.name}</span>
+                        <span class={`badge ${LEAD_STATUS[l.status].badge}`}>{LEAD_STATUS[l.status].label}</span>
+                      </div>
+                      <p class="text-xs text-gray-500">{fmt.format(new Date(l.created_at))} ·
+                        <a href={`mailto:${l.email}`} class="hover:underline">{l.email}</a></p>
+                      <p class="line-clamp-2 text-gray-600">{l.message}</p>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p class="text-sm text-gray-500">Aún no hay consultas para esta habitación.</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </SectionContainer>
+</LayoutAdmin>
+
+<style>
+  .badge {
+    @apply px-2 py-1 text-xs rounded-full;
+  }
+  .badge-success {
+    @apply bg-green-100 text-green-800;
+  }
+  .badge-error {
+    @apply bg-red-100 text-red-800;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow;
+  }
+  .btn-primary {
+    @apply inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors;
+  }
+</style>

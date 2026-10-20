@@ -232,6 +232,7 @@
   },
   "pdpRoom": {
     "backButton": "Go back",
+    "videosTitle": "Videos",
     "FFCC71": {
       "roomCharacteristics": {
         "houseFeaturesTitle": "House features:",
@@ -710,6 +711,8 @@
         "Open spaces around, ideal for walking and unwinding."
       ]
     },
-    "RoomsAvailable": "Available Rooms"
+    "RoomsAvailable": "Available Rooms",
+    "ComingSoon": "Rooms coming soon",
+    "soldOut": "Rooms NOT available"
   }
 }

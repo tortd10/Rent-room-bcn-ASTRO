@@ -2,7 +2,7 @@
 import CookieBanner from "@/components/CookieBanner.astro"
 import Footer from "@/components/Footer.astro"
 import Header from "@/components/Header.astro"
-import Analytics from "@vercel/analytics/astro"
+import Analytics from '@vercel/analytics/astro'
 import SpeedInsights from "@vercel/speed-insights/astro"
 
 interface Props {
@@ -32,13 +32,21 @@ const metaDescription = description ?? findRoom.find_room
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={metaDescription} />
 		<meta property="og:url" content={Astro.url.href} />
+		<link rel="preconnect" href={import.meta.env.PUBLIC_SUPABASE_URL} crossorigin />
 		<slot name="head" />
+		<!-- Recuerda la última página visitada: la usa la página 404 para devolver al usuario -->
+		<script is:inline>
+			try {
+				sessionStorage.setItem("lastPage", location.pathname + location.search)
+			} catch (e) {}
+		</script>
 		<!-- Google tag (gtag.js) -->
 		<script
 			type="text/partytown"
 			async
+			is:inline
 			src="https://www.googletagmanager.com/gtag/js?id=G-L6RW5H70E1"></script>
-		<script type="text/partytown">
+		<script is:inline type="text/partytown">
 			window.dataLayer = window.dataLayer || []
 			function gtag() {
 				dataLayer.push(arguments)

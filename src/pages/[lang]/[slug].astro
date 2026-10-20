@@ -1,44 +1,37 @@
 ---
 import PDPRoom from "@/components/PDPRoom.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
-import { FLATS } from "@/data/flats"
-import { ROOMS } from "@/data/rooms"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
+import { getFlats, getRoomBySlug } from "@/db/public"
+import { absoluteUrl } from "@/lib/images"
+import { localizeRoom } from "@/lib/localize"
 
-export async function getStaticPaths() {
-	// Generate paths for both 'es' and 'en' languages for each room
-	const paths = ROOMS.flatMap((room) => [
-		{ params: { lang: "es", slug: room.slug } },
-		{ params: { lang: "en", slug: room.slug } },
-	])
+// Render bajo demanda: los cambios hechos en el admin se ven sin redeploy.
+export const prerender = false
 
-	// Return the array of paths directly, without wrapping it in an object
-	return paths
-}
+const { slug, lang: langParam } = Astro.params
 
-// Obtén el slug desde la URL
-const { slug } = Astro.params
+if (langParam !== "es" && langParam !== "en") return Astro.redirect("/404")
 
-// Busca la habitación correspondiente al slug
-const room = ROOMS.find((room) => room.slug === slug)
+const [room, flats] = await Promise.all([getRoomBySlug(slug as string), getFlats()])
+if (!room) return Astro.redirect("/404")
 
-if (!room) {
-	throw new Error(`No se encontró la habitación con el slug: ${slug}`)
-}
+// Caché en el CDN de Vercel: rápido, y se refresca en segundo plano
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
-const findRoom = translations.FindRoom
 
-const flat = FLATS.find((f) => f.flat_id === room.roomFlat)
+const seo = localizeRoom(room, lang)
+const flat = flats.find((f) => f.flat_id === room.flat_id)
 
 const schema = {
 	"@context": "https://schema.org",
 	"@type": "Accommodation",
 	"name": room.name,
-	"description": room.metaDescription,
-	"image": `https://www.rentroombcn.com${room.imageSrc}`,
+	"description": seo.metaDescription,
+	"image": absoluteUrl(room.imageSrc),
 	"url": `https://www.rentroombcn.com/${lang}/${room.slug}`,
 	"address": {
 		"@type": "PostalAddress",
@@ -52,11 +45,11 @@ const schema = {
 }
 ---
 
-<Layout title={room.metaTitle} description={room.metaDescription}>
+<Layout title={seo.metaTitle} description={seo.metaDescription}>
 	<Fragment slot="head">
-		<meta property="og:title" content={room.metaTitle} />
-		<meta property="og:description" content={room.metaDescription} />
-		<meta property="og:image" content={`https://www.rentroombcn.com${room.imageSrc}`} />
+		<meta property="og:title" content={seo.metaTitle} />
+		<meta property="og:description" content={seo.metaDescription} />
+		<meta property="og:image" content={absoluteUrl(room.imageSrc)} />
 		<meta property="og:url" content={`https://www.rentroombcn.com/${lang}/${room.slug}`} />
 		<meta property="og:type" content="website" />
 		<script type="application/ld+json" set:html={JSON.stringify(schema)} />

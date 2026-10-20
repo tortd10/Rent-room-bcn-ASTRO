@@ -1,0 +1,47 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import FlatForm from "@/components/admin/FlatForm.astro"
+import { createFlat } from "@/db/api/flats"
+import { parseFlatForm, validateFlat } from "@/lib/flatForm"
+
+const { user, supabase } = Astro.locals
+if (!user) return Astro.redirect("/admin")
+
+let errors: Record<string, string> = {}
+let flat = {}
+
+if (Astro.request.method === "POST") {
+	const newFlat = parseFlatForm(await Astro.request.formData())
+	flat = newFlat
+	errors = validateFlat(newFlat, { checkId: true })
+
+	if (Object.keys(errors).length === 0) {
+		const { error } = await createFlat(supabase, newFlat)
+		if (!error) {
+			return Astro.redirect(
+				`/admin/flats?success=${encodeURIComponent(`Piso ${newFlat.title} creado correctamente`)}`
+			)
+		}
+		// 23505: ya existe un piso con ese ID
+		errors =
+			error.code === "23505"
+				? { flat_id: "Ya existe un piso con ese ID" }
+				: { general: error.message || "Error al guardar. Inténtalo de nuevo." }
+	}
+}
+---
+
+<LayoutAdmin title="Nuevo Piso">
+	<SectionContainer>
+		<div class="space-y-6 p-6">
+			<div class="flex items-center justify-between">
+				<h1 class="text-2xl font-bold text-gray-800">Nuevo Piso</h1>
+				<a href="/admin/flats" class="text-sm font-medium text-gray-600 hover:underline">← Volver al listado</a>
+			</div>
+			<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow">
+				<FlatForm flat={flat} errors={errors} action="/admin/flats/new" />
+			</div>
+		</div>
+	</SectionContainer>
+</LayoutAdmin>

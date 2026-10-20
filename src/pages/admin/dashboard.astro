@@ -1,0 +1,225 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+
+const { user, supabase } = Astro.locals
+if (!user) {
+  return Astro.redirect("/admin")
+}
+
+// Datos del panel en paralelo
+const [flatsRes, roomsRes, imagesRes, leadsRes, newLeadsRes] = await Promise.all([
+  supabase.from("flats").select("flat_id, title, available").order("flat_id"),
+  supabase
+    .from("rooms")
+    .select("id, slug, name, flat_id, available, status, metaTitle_en, metaDescription_en")
+    .order("id"),
+  supabase.from("room_images").select("room_id").eq("kind", "image").not("room_id", "is", null),
+  supabase
+    .from("leads")
+    .select("id, created_at, name, status, room_slug, message")
+    .order("created_at", { ascending: false })
+    .limit(6),
+  supabase.from("leads").select("*", { count: "exact", head: true }).eq("status", "new"),
+])
+
+const flats = flatsRes.data ?? []
+const rooms = roomsRes.data ?? []
+const roomsWithImages = new Set((imagesRes.data ?? []).map((i) => i.room_id))
+const recentLeads = leadsRes.data ?? []
+const newLeads = newLeadsRes.count ?? 0
+
+const availableRooms = rooms.filter((r) => r.available).length
+const soonRooms = rooms.filter((r) => r.status === "soon").length
+const occupiedRooms = rooms.length - availableRooms
+const occupancy = rooms.length ? Math.round((occupiedRooms / rooms.length) * 100) : 0
+const activeFlats = flats.filter((f) => f.available).length
+
+// Saludo según la hora en Barcelona
+const hour = Number(
+  new Intl.DateTimeFormat("es-ES", { hour: "numeric", hour12: false, timeZone: "Europe/Madrid" }).format(new Date())
+)
+const greeting = hour < 13 ? "Buenos días" : hour < 21 ? "Buenas tardes" : "Buenas noches"
+const today = new Intl.DateTimeFormat("es-ES", {
+  weekday: "long",
+  day: "numeric",
+  month: "long",
+  timeZone: "Europe/Madrid",
+}).format(new Date())
+const userName = (user.email ?? "").split("@")[0]
+
+// Cosas que requieren atención
+const withoutPhotos = rooms.filter((r) => !roomsWithImages.has(r.id))
+const withoutEn = rooms.filter((r) => !r.metaTitle_en || !r.metaDescription_en)
+const flatsWithoutRooms = flats.filter((f) => !rooms.some((r) => r.flat_id === f.flat_id))
+const attention = [
+  newLeads > 0 && {
+    text: `${newLeads} consulta${newLeads === 1 ? "" : "s"} sin atender`,
+    href: "/admin/bookings?status=new",
+    tone: "bg-purple-100 text-purple-800",
+  },
+  withoutPhotos.length > 0 && {
+    text: `${withoutPhotos.length} habitación${withoutPhotos.length === 1 ? "" : "es"} sin fotos en Supabase`,
+    href: `/admin/rooms/view/${withoutPhotos[0].slug}`,
+    tone: "bg-yellow-100 text-yellow-800",
+  },
+  withoutEn.length > 0 && {
+    text: `${withoutEn.length} habitación${withoutEn.length === 1 ? "" : "es"} sin SEO en inglés`,
+    href: `/admin/rooms/view/${withoutEn[0].slug}`,
+    tone: "bg-yellow-100 text-yellow-800",
+  },
+  flatsWithoutRooms.length > 0 && {
+    text: `${flatsWithoutRooms.length} piso${flatsWithoutRooms.length === 1 ? "" : "s"} sin habitaciones`,
+    href: `/admin/flats/view/${flatsWithoutRooms[0].flat_id}`,
+    tone: "bg-yellow-100 text-yellow-800",
+  },
+].filter(Boolean) as { text: string; href: string; tone: string }[]
+
+const LEAD_STATUS: Record<string, { label: string; badge: string }> = {
+  new: { label: "Nueva", badge: "bg-purple-100 text-purple-800" },
+  contacted: { label: "Contactada", badge: "bg-blue-100 text-blue-800" },
+  closed: { label: "Cerrada", badge: "bg-gray-100 text-gray-700" },
+}
+const fmt = new Intl.DateTimeFormat("es-ES", {
+  day: "numeric",
+  month: "short",
+  hour: "2-digit",
+  minute: "2-digit",
+  timeZone: "Europe/Madrid",
+})
+---
+
+<LayoutAdmin title="RentRoomBcn - Admin">
+  <SectionContainer>
+    <div class="space-y-8 p-6">
+      <!-- Cabecera -->
+      <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-primary p-6 text-white shadow">
+        <div>
+          <p class="text-sm capitalize text-headerBg">{today}</p>
+          <h1 class="text-2xl font-bold md:text-3xl">{greeting}, {userName}</h1>
+          <p class="mt-1 text-sm text-white/70">Resumen de RentRoomBcn</p>
+        </div>
+        <div class="flex flex-wrap gap-3">
+          <a href="/admin/rooms/new" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-headerBg transition-colors">+ Habitación</a>
+          <a href="/admin/flats/new" class="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20 transition-colors">+ Piso</a>
+          <a href="/es" target="_blank" rel="noopener" class="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20 transition-colors">Ver la web ↗</a>
+        </div>
+      </div>
+
+      <!-- Indicadores -->
+      <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <a href="/admin/rooms" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+          <p class="text-sm text-gray-500">Habitaciones disponibles</p>
+          <p class="mt-2 text-3xl font-bold text-primary">{availableRooms}<span class="text-lg font-medium text-gray-400"> / {rooms.length}</span></p>
+          <div class="mt-3 h-2 overflow-hidden rounded-full bg-gray-100" role="img" aria-label={`Ocupación ${occupancy}%`}>
+            <div class="h-full rounded-full bg-secondary" style={`width: ${100 - occupancy}%`}></div>
+          </div>
+          <p class="mt-1 text-xs text-gray-500">{occupancy}% ocupadas{soonRooms > 0 ? ` · ${soonRooms} próximamente` : ""}</p>
+        </a>
+
+        <a href="/admin/flats" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+          <p class="text-sm text-gray-500">Pisos activos</p>
+          <p class="mt-2 text-3xl font-bold text-primary">{activeFlats}<span class="text-lg font-medium text-gray-400"> / {flats.length}</span></p>
+          <p class="mt-3 text-xs text-gray-500">{rooms.length} habitaciones en total</p>
+        </a>
+
+        <a href="/admin/bookings?status=new" class={`rounded-xl p-5 shadow transition-shadow hover:shadow-md ${newLeads > 0 ? "bg-purple-600 text-white" : "bg-white"}`}>
+          <p class={`text-sm ${newLeads > 0 ? "text-purple-100" : "text-gray-500"}`}>Consultas nuevas</p>
+          <p class={`mt-2 text-3xl font-bold ${newLeads > 0 ? "text-white" : "text-primary"}`}>{newLeads}</p>
+          <p class={`mt-3 text-xs ${newLeads > 0 ? "text-purple-100" : "text-gray-500"}`}>{newLeads > 0 ? "Pendientes de responder" : "Todo al día"}</p>
+        </a>
+
+        <a href="/admin/rooms" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+          <p class="text-sm text-gray-500">Ocupadas</p>
+          <p class="mt-2 text-3xl font-bold text-primary">{occupiedRooms}</p>
+          <p class="mt-3 text-xs text-gray-500">de {rooms.length} habitaciones</p>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+        <!-- Consultas recientes -->
+        <div class="rounded-xl bg-white p-6 shadow lg:col-span-2">
+          <div class="mb-4 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-primary">Consultas recientes</h2>
+            <a href="/admin/bookings" class="text-sm font-medium text-secondary hover:underline">Ver todas →</a>
+          </div>
+          {
+            recentLeads.length > 0 ? (
+              <ul class="divide-y divide-gray-100">
+                {recentLeads.map((l) => (
+                  <li class="flex items-start justify-between gap-4 py-3">
+                    <div class="min-w-0">
+                      <p class="font-medium text-gray-900">{l.name}</p>
+                      <p class="truncate text-sm text-gray-500">{l.message}</p>
+                      <p class="mt-1 text-xs text-gray-400">
+                        {fmt.format(new Date(l.created_at))}
+                        {l.room_slug && <> · <a href={`/admin/rooms/view/${l.room_slug}`} class="hover:underline">{l.room_slug}</a></>}
+                      </p>
+                    </div>
+                    <span class={`shrink-0 rounded-full px-2 py-1 text-xs ${LEAD_STATUS[l.status].badge}`}>{LEAD_STATUS[l.status].label}</span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="rounded-lg bg-gray-50 p-6 text-center text-sm text-gray-500">Aún no hay consultas.</p>
+            )
+          }
+        </div>
+
+        <!-- Atención -->
+        <div class="rounded-xl bg-white p-6 shadow">
+          <h2 class="mb-4 text-lg font-semibold text-primary">Requiere atención</h2>
+          {
+            attention.length > 0 ? (
+              <ul class="space-y-3">
+                {attention.map((a) => (
+                  <li>
+                    <a href={a.href} class={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-opacity hover:opacity-80 ${a.tone}`}>
+                      <span>{a.text}</span>
+                      <span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p class="rounded-lg bg-green-50 p-4 text-sm text-green-800">Todo en orden. No hay nada pendiente.</p>
+            )
+          }
+        </div>
+      </div>
+
+      <!-- Pisos -->
+      <div class="rounded-xl bg-white p-6 shadow">
+        <div class="mb-4 flex items-center justify-between">
+          <h2 class="text-lg font-semibold text-primary">Pisos</h2>
+          <a href="/admin/flats" class="text-sm font-medium text-secondary hover:underline">Gestionar →</a>
+        </div>
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+          {
+            flats.map((f) => {
+              const inFlat = rooms.filter((r) => r.flat_id === f.flat_id)
+              const free = inFlat.filter((r) => r.available).length
+              const pct = inFlat.length ? Math.round((free / inFlat.length) * 100) : 0
+              return (
+                <a href={`/admin/flats/view/${f.flat_id}`} class="rounded-lg border border-gray-200 p-4 transition-colors hover:border-secondary">
+                  <div class="flex items-center justify-between">
+                    <p class="font-semibold text-gray-900">{f.title}</p>
+                    <span class={`rounded-full px-2 py-0.5 text-xs ${f.available ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                      {f.available ? "Activo" : "Inactivo"}
+                    </span>
+                  </div>
+                  <p class="font-mono text-xs text-gray-400">{f.flat_id}</p>
+                  <div class="mt-3 h-2 overflow-hidden rounded-full bg-gray-100">
+                    <div class="h-full rounded-full bg-secondary" style={`width: ${pct}%`}></div>
+                  </div>
+                  <p class="mt-1 text-xs text-gray-500">{free} de {inFlat.length} habitaciones disponibles</p>
+                </a>
+              )
+            })
+          }
+          {flats.length === 0 && <p class="text-sm text-gray-500">Aún no hay pisos.</p>}
+        </div>
+      </div>
+    </div>
+  </SectionContainer>
+</LayoutAdmin>

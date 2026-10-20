@@ -6,6 +6,8 @@ interface Props {
 }
 
 // Destructura las props que se reciben en el componente
+import { optimizedImage } from "@/lib/images"
+
 const { imagePaths, initialAlt } = Astro.props as Props
 ---
 
@@ -14,8 +16,10 @@ const { imagePaths, initialAlt } = Astro.props as Props
 	<div class="relative h-[570px] w-full max-w-[30rem]">
 		<img
 			id="main-image"
-			src={imagePaths[0]}
+			src={optimizedImage(imagePaths[0], 1200)}
 			alt={initialAlt || "Imagen principal"}
+			fetchpriority="high"
+			decoding="async"
 			class="relative h-full w-full cursor-pointer snap-center rounded-[16px] bg-black bg-[length:100%] bg-center transition-[background-size] hover:bg-[length:105%]"
 		/>
 		<!-- Área izquierda para imagen anterior -->
@@ -44,12 +48,12 @@ const { imagePaths, initialAlt } = Astro.props as Props
 			{
 				imagePaths.map((image, index) => (
 					<img
-						src={image}
+						src={optimizedImage(image, 224)}
 						alt={`Miniatura ${index + 1}`}
 						class={`h-28 w-28 cursor-pointer rounded-md border-2 ${
 							index === 0 ? "border-primary" : "border-transparent"
 						} object-cover hover:border-primary`}
-						data-image={image}
+						data-image={optimizedImage(image, 1200)}
 						data-alt={`Miniatura ${index + 1}`}
 						role="button"
 						tabindex="0"

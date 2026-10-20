@@ -1,0 +1,280 @@
+---
+import { publicImageUrl } from "@/lib/images"
+
+interface Props {
+	roomId: number
+	flatId: string
+	roomSlug: string
+}
+
+const { roomId, flatId, roomSlug } = Astro.props as Props
+
+// Todo lo de esta habitación + lo común del piso (room_id nulo)
+const { data: rows } = await Astro.locals.supabase
+	.from("room_images")
+	.select("id, path, kind, room_id, position")
+	.eq("flat_id", flatId)
+	.or(`room_id.eq.${roomId},room_id.is.null`)
+	.order("position", { ascending: true })
+
+const sections = [
+	{
+		scope: "room",
+		kind: "image",
+		title: "Imágenes de la habitación",
+		help: "La primera es la portada. Se redimensionan a 1600 px antes de subirse.",
+	},
+	{
+		scope: "room",
+		kind: "video",
+		title: "Vídeos de la habitación",
+		help: "MP4, máximo 50 MB cada uno.",
+	},
+	{
+		scope: "flat",
+		kind: "image",
+		title: "Zonas comunes del piso: fotos",
+		help: "Cocina, baños, salón… Se muestran en TODAS las habitaciones del piso.",
+	},
+	{
+		scope: "flat",
+		kind: "video",
+		title: "Zonas comunes del piso: vídeos",
+		help: "Se muestran en TODAS las habitaciones del piso. MP4, máximo 50 MB cada uno.",
+	},
+] as const
+
+const itemsOf = (scope: string, kind: string) =>
+	(rows ?? []).filter(
+		(r) => r.kind === kind && (scope === "room" ? r.room_id === roomId : r.room_id === null)
+	)
+---
+
+<div
+	id="room-media"
+	class="space-y-6"
+	data-room-id={roomId}
+	data-flat-id={flatId}
+	data-room-slug={roomSlug}
+>
+	<p id="media-status" class="hidden rounded-md bg-blue-50 p-3 text-sm text-blue-800" role="status"></p>
+
+	{
+		sections.map((sec) => {
+			const items = itemsOf(sec.scope, sec.kind)
+			const accept = sec.kind === "image" ? "image/*" : "video/mp4,video/*"
+			return (
+				<section
+					class="space-y-4 rounded-lg border border-gray-200 bg-white p-6 shadow"
+					data-scope={sec.scope}
+					data-kind={sec.kind}
+				>
+					<div class="flex items-center justify-between gap-4">
+						<div>
+							<h2 class="text-lg font-semibold text-gray-800">{sec.title}</h2>
+							<p class="text-sm text-gray-500">{sec.help}</p>
+						</div>
+						<label class="inline-flex shrink-0 cursor-pointer items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700">
+							Subir
+							<input type="file" accept={accept} multiple class="media-input hidden" />
+						</label>
+					</div>
+
+					{items.length === 0 ? (
+						<p class="rounded-md bg-gray-50 p-4 text-sm text-gray-500">
+							{sec.scope === "room" && sec.kind === "image"
+								? "Sin imágenes en Supabase: la ficha usa las de /public/Flats."
+								: "Nada subido todavía."}
+						</p>
+					) : (
+						<ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+							{items.map((item, i) => (
+								<li class="space-y-2" data-id={item.id} data-path={item.path}>
+									{sec.kind === "image" ? (
+										<img
+											src={publicImageUrl(item.path)}
+											alt=""
+											class="h-32 w-full rounded-md object-cover"
+											loading="lazy"
+										/>
+									) : (
+										<video
+											src={publicImageUrl(item.path)}
+											class="h-32 w-full rounded-md bg-black object-cover"
+											controls
+											preload="metadata"
+										/>
+									)}
+									<div class="flex items-center justify-between text-xs">
+										{sec.scope === "room" && sec.kind === "image" && i === 0 ? (
+											<span class="rounded bg-green-100 px-2 py-0.5 font-medium text-green-800">
+												Portada
+											</span>
+										) : sec.scope === "room" && sec.kind === "image" ? (
+											<button type="button" data-action="cover" class="text-indigo-600 hover:underline">
+												Hacer portada
+											</button>
+										) : (
+											<span />
+										)}
+										<button type="button" data-action="delete" class="text-red-600 hover:underline">
+											Eliminar
+										</button>
+									</div>
+								</li>
+							))}
+						</ul>
+					)}
+				</section>
+			)
+		})
+	}
+</div>
+
+<script>
+	import { createBrowserClient } from "@supabase/ssr"
+	import type { Database } from "@/db/database.types"
+	import { IMAGES_BUCKET, publicImageUrl } from "@/lib/images"
+
+	const MAX_SIDE = 1600
+	const MAX_VIDEO_BYTES = 50 * 1024 * 1024 // límite de Supabase Storage (plan gratuito)
+
+	const root = document.getElementById("room-media") as HTMLElement
+	const status = document.getElementById("media-status") as HTMLElement
+	const roomId = Number(root.dataset.roomId)
+	const flatId = root.dataset.flatId as string
+	const roomSlug = root.dataset.roomSlug as string
+	const roomPart = roomSlug.slice(roomSlug.indexOf("-") + 1) // "FFCC71-HAB1" -> "HAB1"
+
+	const supabase = createBrowserClient<Database>(
+		import.meta.env.PUBLIC_SUPABASE_URL,
+		import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+	)
+
+	type Scope = "room" | "flat"
+	type Kind = "image" | "video"
+
+	function say(msg: string) {
+		status.textContent = msg
+		status.classList.remove("hidden")
+	}
+
+	// Redimensiona en el navegador: las fotos originales pesan varios MB
+	async function resize(file: File): Promise<Blob> {
+		const bitmap = await createImageBitmap(file, { imageOrientation: "from-image" })
+		const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height))
+		const canvas = document.createElement("canvas")
+		canvas.width = Math.round(bitmap.width * scale)
+		canvas.height = Math.round(bitmap.height * scale)
+		canvas.getContext("2d")!.drawImage(bitmap, 0, 0, canvas.width, canvas.height)
+		return await new Promise((resolve, reject) =>
+			canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("No se pudo procesar"))), "image/jpeg", 0.82)
+		)
+	}
+
+	// Filas de una sección (habitación o piso, imagen o vídeo)
+	function sectionRows(scope: Scope, kind: Kind) {
+		const q = supabase.from("room_images").select("id, path, position").eq("kind", kind)
+		return scope === "room" ? q.eq("room_id", roomId) : q.eq("flat_id", flatId).is("room_id", null)
+	}
+
+	// La portada (rooms.imageSrc) es siempre la primera imagen de la habitación por posición
+	async function syncCover() {
+		const { data } = await sectionRows("room", "image").order("position", { ascending: true }).limit(1)
+		const { error } = await supabase
+			.from("rooms")
+			.update({ imageSrc: data?.[0] ? publicImageUrl(data[0].path) : null })
+			.eq("id", roomId)
+		if (error) throw error
+	}
+
+	async function run(task: () => Promise<void>) {
+		try {
+			await task()
+			location.reload()
+		} catch (err) {
+			console.error(err)
+			say(`Error: ${err instanceof Error ? err.message : "no se pudo completar la operación"}`)
+		}
+	}
+
+	async function uploadFiles(scope: Scope, kind: Kind, files: File[]) {
+		const { data: last } = await sectionRows(scope, kind).order("position", { ascending: false }).limit(1)
+		let position = (last?.[0]?.position ?? -1) + 1
+		// Ruta: fotos de habitación -> PISO/HABn/, zonas comunes -> PISO/EXTRA/, vídeos -> PISO/Videos/
+		const folder =
+			kind === "video" ? `${flatId}/Videos` : scope === "room" ? `${flatId}/${roomPart}` : `${flatId}/EXTRA`
+		const prefix = kind === "video" && scope === "room" ? `${roomPart}-` : ""
+
+		for (const [i, file] of files.entries()) {
+			say(`Subiendo ${i + 1} de ${files.length}…`)
+			let body: Blob = file
+			let ext = "jpg"
+			let contentType = "image/jpeg"
+			if (kind === "image") {
+				body = await resize(file)
+			} else {
+				if (file.size > MAX_VIDEO_BYTES) throw new Error(`${file.name} supera los 50 MB`)
+				ext = (file.name.split(".").pop() || "mp4").toLowerCase()
+				contentType = file.type || "video/mp4"
+			}
+			const path = `${folder}/${prefix}${Date.now()}-${i}.${ext}`
+			const up = await supabase.storage
+				.from(IMAGES_BUCKET)
+				.upload(path, body, { contentType, cacheControl: "31536000" })
+			if (up.error) throw up.error
+			const ins = await supabase.from("room_images").insert({
+				kind,
+				path,
+				position: position++,
+				flat_id: flatId, // el trigger lo corrige con el piso de la habitación
+				room_id: scope === "room" ? roomId : null,
+			})
+			if (ins.error) throw ins.error
+		}
+		if (scope === "room" && kind === "image") await syncCover()
+	}
+
+	root.addEventListener("change", (e) => {
+		const input = e.target as HTMLInputElement
+		if (!input.classList.contains("media-input")) return
+		const sec = input.closest<HTMLElement>("section[data-scope]")!
+		const files = Array.from(input.files ?? [])
+		if (!files.length) return
+		run(() => uploadFiles(sec.dataset.scope as Scope, sec.dataset.kind as Kind, files))
+	})
+
+	root.addEventListener("click", (e) => {
+		const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-action]")
+		const li = btn?.closest<HTMLElement>("li[data-id]")
+		const sec = btn?.closest<HTMLElement>("section[data-scope]")
+		if (!btn || !li || !sec) return
+		const scope = sec.dataset.scope as Scope
+		const kind = sec.dataset.kind as Kind
+		const id = Number(li.dataset.id)
+		const path = li.dataset.path as string
+
+		if (btn.dataset.action === "delete") {
+			const shared = scope === "flat" ? " Se quitará de todas las habitaciones del piso." : ""
+			if (!confirm(`¿Eliminar este archivo?${shared}`)) return
+			run(async () => {
+				const del = await supabase.from("room_images").delete().eq("id", id)
+				if (del.error) throw del.error
+				await supabase.storage.from(IMAGES_BUCKET).remove([path])
+				if (scope === "room" && kind === "image") await syncCover()
+			})
+		} else {
+			run(async () => {
+				const { data: first } = await sectionRows("room", "image")
+					.order("position", { ascending: true })
+					.limit(1)
+				const { error } = await supabase
+					.from("room_images")
+					.update({ position: (first?.[0]?.position ?? 0) - 1 })
+					.eq("id", id)
+				if (error) throw error
+				await syncCover()
+			})
+		}
+	})
+</script>

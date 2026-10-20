@@ -1,0 +1,140 @@
+---
+// Vídeos de la ficha de habitación: reproductor principal con vista previa (primer fotograma)
+// y, si hay más de uno, tira de miniaturas con flechas, como la galería de fotos.
+interface Props {
+	videos: string[]
+	title?: string
+}
+
+const { videos, title = "Vídeos" } = Astro.props as Props
+
+// "#t=0.1" hace que el navegador muestre un fotograma como vista previa sin descargar el vídeo entero
+const preview = (src: string) => `${src}#t=0.1`
+const multiple = videos.length > 1
+---
+
+{
+	videos.length > 0 && (
+		<section id="room-videos" class="mx-auto mt-8 w-full max-w-[30rem] space-y-4" aria-label={title}>
+			<h3 class="text-center text-xl font-semibold text-gray-900">{title}</h3>
+
+			<!-- El vídeo ocupa exactamente su tamaño (sin franjas): se adapta a su proporción, vertical u horizontal -->
+			<video
+				id="video-main"
+				src={preview(videos[0])}
+				controls
+				controlslist="nodownload noremoteplayback"
+				disablepictureinpicture
+				muted
+				playsinline
+				preload="metadata"
+				style="aspect-ratio: 9 / 16;"
+				class="mx-auto block h-auto max-h-[570px] w-auto max-w-full rounded-[16px]"
+			/>
+
+			{multiple && (
+				<div class="relative">
+					<div
+						id="video-thumbs"
+						class="custom-scrollbar flex snap-x snap-mandatory gap-x-4 overflow-x-auto px-4 pb-2"
+						style="max-width: calc(5 * 7rem);"
+					>
+						{videos.map((src, index) => (
+							<button
+								type="button"
+								class={`h-28 w-28 shrink-0 snap-start overflow-hidden rounded-md border-2 transition-opacity ${
+									index === 0 ? "border-primary opacity-100" : "border-transparent opacity-60"
+								} hover:opacity-100`}
+								data-video={preview(src)}
+								aria-label={`Vídeo ${index + 1}`}
+								aria-selected={index === 0 ? "true" : "false"}
+							>
+								<video
+									src={preview(src)}
+									muted
+									playsinline
+									preload="metadata"
+									tabindex="-1"
+									class="pointer-events-none h-full w-full object-cover"
+								/>
+							</button>
+						))}
+					</div>
+					<button
+						type="button"
+						id="video-prev"
+						class="absolute left-[-2.5rem] top-1/2 -translate-y-1/2 rounded-full bg-gray-200 p-2 opacity-50 transition hover:opacity-100"
+						aria-label="Vídeos anteriores"
+					>
+						<svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+						</svg>
+					</button>
+					<button
+						type="button"
+						id="video-next"
+						class="absolute right-[-2.5rem] top-1/2 -translate-y-1/2 rounded-full bg-gray-200 p-2 opacity-50 transition hover:opacity-100"
+						aria-label="Vídeos siguientes"
+					>
+						<svg class="h-6 w-6 text-gray-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+						</svg>
+					</button>
+				</div>
+			)}
+		</section>
+	)
+}
+
+<style is:global>
+	/* Vídeos sin sonido: se ocultan los controles de volumen (Chrome, Edge, Safari) */
+	#video-main::-webkit-media-controls-mute-button,
+	#video-main::-webkit-media-controls-volume-slider,
+	#video-main::-webkit-media-controls-volume-control-container {
+		display: none;
+	}
+</style>
+
+<script>
+	const main = document.getElementById("video-main") as HTMLVideoElement | null
+	const thumbsBox = document.getElementById("video-thumbs")
+
+	if (main) {
+		// Ajusta el contenedor a la proporción real del vídeo para que no haya franjas
+		const fit = () => {
+			if (main.videoWidth && main.videoHeight) {
+				main.style.aspectRatio = `${main.videoWidth} / ${main.videoHeight}`
+			}
+		}
+		main.addEventListener("loadedmetadata", fit)
+		fit()
+
+		if (thumbsBox) {
+			const thumbs = Array.from(thumbsBox.querySelectorAll<HTMLButtonElement>("button[data-video]"))
+
+			// Solo la miniatura del vídeo que se está viendo queda marcada
+			const select = (index: number) => {
+				main.pause()
+				main.src = thumbs[index].dataset.video as string
+				main.load()
+				main.play().catch(() => {})
+
+				thumbs.forEach((t, i) => {
+					const active = i === index
+					t.setAttribute("aria-selected", active ? "true" : "false")
+					t.classList.toggle("border-primary", active)
+					t.classList.toggle("opacity-100", active)
+					t.classList.toggle("border-transparent", !active)
+					t.classList.toggle("opacity-60", !active)
+				})
+			}
+
+			thumbs.forEach((thumb, i) => thumb.addEventListener("click", () => select(i)))
+
+			// Flechas: desplazan la tira de miniaturas
+			const step = 7 * 16 * 2
+			document.getElementById("video-prev")?.addEventListener("click", () => thumbsBox.scrollBy({ left: -step, behavior: "smooth" }))
+			document.getElementById("video-next")?.addEventListener("click", () => thumbsBox.scrollBy({ left: step, behavior: "smooth" }))
+		}
+	}
+</script>

@@ -9,7 +9,11 @@ const contactForm = translations.contactForm
 
 <SectionContainer>
 	<!-- Formulario -->
-	<form id="contact-form" class="rounded-lg bg-[#C8D6B0] p-6 shadow-md" method="POST">
+	<form id="contact-form" class="relative rounded-lg bg-[#C8D6B0] p-6 shadow-md" method="POST">
+		<!-- Honeypot anti-spam: invisible para personas -->
+		<div class="absolute -left-[9999px]" aria-hidden="true">
+			<input type="text" name="website" tabindex="-1" autocomplete="off" />
+		</div>
 		<!-- Campos del formulario -->
 		<div class="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
 			<div class="sm:col-span-1">
