@@ -4,8 +4,8 @@ import RoomDetails from "@/components/RoomDetails.astro"
 import RoomGallery from "@/components/RoomGallery.astro"
 import RoomVideos from "@/components/RoomVideos.astro"
 import i18next from "@/i18n/config.js"
-import { getRoomMedia } from "@/db/public"
 import { localizeRoom } from "@/lib/localize"
+import type { RoomMedia } from "@/db/public"
 import type { Room } from "@/types"
 
 const { slug } = Astro.params
@@ -16,7 +16,7 @@ const translations = i18next.getResourceBundle(lang, "translation")
 const pdpRoom = translations.pdpRoom
 
 // La habitación ya viene cargada desde la página ([slug].astro)
-const { room: roomData } = Astro.props as { room: Room }
+const { room: roomData, media } = Astro.props as { room: Room; media: RoomMedia }
 
 const allImages = import.meta.glob("/public/Flats/**/*.{jpg,jpeg,png,webp,JPEG}")
 
@@ -42,7 +42,7 @@ const extraImages = Object.keys(allImages)
 
   // Combinar las imágenes (primero las de la habitación y luego las de EXTRA)
 // Fotos en Supabase Storage; si aún no hay, las de /public
-const { images: storageImages, videos } = await getRoomMedia(roomData)
+const { images: storageImages, videos } = media
 const imagePaths = storageImages.length ? storageImages : [...roomImages, ...extraImages]
 
 ---

@@ -61,46 +61,61 @@ export function getRooms({ availableOnly = false } = {}): Promise<RoomListItem[]
 	)
 }
 
-// Devuelve null si la habitación no existe (no es un error de la BD).
-export async function getRoomBySlug(slug: string): Promise<Room | null> {
-	try {
-		const { data, error } = await supabase.from("rooms").select("*").eq("slug", slug).maybeSingle()
-		if (error) throw error
-		return data as Room | null
-	} catch (err) {
-		console.error("[supabase] room falló, usando datos locales:", err)
-		return fallbackRooms().find((r) => r.slug === slug) ?? null
-	}
-}
+export type RoomMedia = { images: string[]; videos: string[] }
+export type RoomPageData = { room: Room; flat: Flat | undefined; media: RoomMedia }
 
-// Medios de la ficha desde Supabase Storage:
-//  · images: las de la habitación y luego las de zonas comunes del piso (room_id nulo)
-//  · videos: los de la habitación y luego los del piso
-// Si la habitación aún no tiene fotos subidas, images es [] y la ficha usa /public.
-export async function getRoomMedia(
-	room: Pick<Room, "id" | "flat_id">
-): Promise<{ images: string[]; videos: string[] }> {
-	const empty = { images: [], videos: [] }
-	try {
-		const { data, error } = await supabase
-			.from("room_images")
-			.select("path, kind, room_id, position")
-			.eq("flat_id", room.flat_id)
-			.or(`room_id.eq.${room.id},room_id.is.null`)
-			.order("position", { ascending: true })
-		if (error) throw error
+type MediaRow = { path: string; kind: "image" | "video" }
 
-		const urls = (kind: "image" | "video") => {
-			const rows = data.filter((r) => r.kind === kind)
-			// Primero las de la habitación, luego las comunes del piso
-			return [...rows.filter((r) => r.room_id !== null), ...rows.filter((r) => r.room_id === null)].map(
-				(r) => publicImageUrl(r.path)
-			)
+// Todo lo que necesita la ficha de una habitación en UNA sola ronda de consultas (en paralelo):
+//  · la habitación con sus fotos y vídeos propios
+//  · los pisos con sus fotos y vídeos de zonas comunes (room_id nulo)
+// Antes eran tres consultas encadenadas y cada una cuesta un viaje a la base de datos.
+// Si Supabase falla, se usa la copia local (sin medios de Storage: la ficha usa /public).
+// Devuelve null si la habitación no existe.
+export async function getRoomPage(slug: string): Promise<RoomPageData | null> {
+	try {
+		const [roomRes, flatsRes] = await Promise.all([
+			supabase
+				.from("rooms")
+				.select("*, room_images(path, kind, position)")
+				.eq("slug", slug)
+				.order("position", { referencedTable: "room_images", ascending: true })
+				.maybeSingle(),
+			supabase
+				.from("flats")
+				.select("*, room_images(path, kind, position)")
+				.is("room_images.room_id", null)
+				.order("position", { referencedTable: "room_images", ascending: true }),
+		])
+		if (roomRes.error) throw roomRes.error
+		if (flatsRes.error) throw flatsRes.error
+		if (!roomRes.data) return null
+
+		const { room_images: ownMedia, ...room } = roomRes.data
+		const flatRow = flatsRes.data.find((f) => f.flat_id === room.flat_id)
+		const { room_images: commonMedia = [], ...flat } = flatRow ?? ({} as never)
+
+		const urls = (rows: MediaRow[], kind: MediaRow["kind"]) =>
+			rows.filter((r) => r.kind === kind).map((r) => publicImageUrl(r.path))
+
+		// Sin fotos propias subidas, la galería no usa Storage y la ficha cae a las de /public
+		const hasOwnImages = ownMedia.some((m) => m.kind === "image")
+		return {
+			room: room as Room,
+			flat: flatRow ? (flat as Flat) : undefined,
+			media: {
+				images: hasOwnImages ? [...urls(ownMedia, "image"), ...urls(commonMedia, "image")] : [],
+				videos: [...urls(ownMedia, "video"), ...urls(commonMedia, "video")],
+			},
 		}
-		const ownImages = data.some((r) => r.kind === "image" && r.room_id !== null)
-		return { images: ownImages ? urls("image") : [], videos: urls("video") }
 	} catch (err) {
-		console.error("[supabase] room_images falló, usando medios locales:", err)
-		return empty
+		console.error("[supabase] ficha de habitación falló, usando datos locales:", err)
+		const room = fallbackRooms().find((r) => r.slug === slug)
+		if (!room) return null
+		return {
+			room,
+			flat: fallbackFlats().find((f) => f.flat_id === room.flat_id),
+			media: { images: [], videos: [] },
+		}
 	}
 }

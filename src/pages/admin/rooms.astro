@@ -13,14 +13,17 @@ if (Astro.request.method === "POST") {
   const form = await Astro.request.formData()
   const id = Number(form.get("delete_id"))
   const name = form.get("delete_name")?.toString() ?? ""
-  if (!Number.isInteger(id)) return Astro.redirect("/admin/rooms?error=" + encodeURIComponent("Habitación no válida"))
 
-  const { error: deleteError } = await deleteRoom(Astro.locals.supabase, id)
-  return Astro.redirect(
-    deleteError
-      ? "/admin/rooms?error=" + encodeURIComponent("No se pudo eliminar la habitación")
-      : "/admin/rooms?success=" + encodeURIComponent(`Habitación ${name} eliminada`)
-  )
+  let query: string
+  if (!Number.isInteger(id)) {
+    query = "error=" + encodeURIComponent("Habitación no válida")
+  } else {
+    const { error: deleteError } = await deleteRoom(Astro.locals.supabase, id)
+    query = deleteError
+      ? "error=" + encodeURIComponent("No se pudo eliminar la habitación")
+      : "success=" + encodeURIComponent(`Habitación ${name} eliminada`)
+  }
+  return Astro.redirect(`/admin/rooms?${query}`)
 }
 
 const success = Astro.url.searchParams.get("success")

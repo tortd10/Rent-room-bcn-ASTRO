@@ -3,7 +3,8 @@
 declare namespace App {
 	interface Locals {
 		supabase: import("@/db/supabase").Db
-		user: import("@supabase/supabase-js").User | null
+		// Datos mínimos del admin, sacados del JWT verificado (ver middleware.ts)
+		user: { id: string; email: string | null } | null
 	}
 }
 

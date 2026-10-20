@@ -95,7 +95,22 @@ export type Database = {
 				Row: RoomImageRow
 				Insert: Partial<Omit<RoomImageRow, "id" | "created_at">> & Pick<RoomImageRow, "path">
 				Update: Partial<Omit<RoomImageRow, "id" | "created_at">>
-				Relationships: []
+				Relationships: [
+					{
+						foreignKeyName: "room_images_room_id_fkey"
+						columns: ["room_id"]
+						isOneToOne: false
+						referencedRelation: "rooms"
+						referencedColumns: ["id"]
+					},
+					{
+						foreignKeyName: "room_images_flat_id_fkey"
+						columns: ["flat_id"]
+						isOneToOne: false
+						referencedRelation: "flats"
+						referencedColumns: ["flat_id"]
+					},
+				]
 			}
 		}
 		Views: { [_ in never]: never }

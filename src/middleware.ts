@@ -14,16 +14,18 @@ export const onRequest = defineMiddleware(async (context, next) => {
 	}
 
 	const supabase = createSupabaseServer(context.request, context.cookies)
-	// getUser() valida el JWT contra Supabase Auth (getSession() solo lee la cookie).
-	const {
-		data: { user },
-	} = await supabase.auth.getUser()
+	// getClaims() verifica la firma del JWT en local con las claves públicas del proyecto (JWKS,
+	// que se cachean), sin llamar a Supabase Auth en cada petición como hacía getUser(). Renueva
+	// la sesión si el token ha caducado. Si el proyecto usara claves simétricas, hace de respaldo
+	// una llamada a Auth.
+	const { data } = await supabase.auth.getClaims()
+	const claims = data?.claims
 
 	context.locals.supabase = supabase
-	context.locals.user = user
+	context.locals.user = claims ? { id: claims.sub, email: claims.email ?? null } : null
 
 	// Todo /admin/* exige sesión; /admin (login) es público.
-	if (pathname.startsWith("/admin/") && !user) {
+	if (pathname.startsWith("/admin/") && !context.locals.user) {
 		return context.redirect(LOGIN_PATH)
 	}
 

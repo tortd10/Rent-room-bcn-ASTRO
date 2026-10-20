@@ -1,9 +1,8 @@
 ---
 import PDPRoom from "@/components/PDPRoom.astro"
 import SectionContainer from "@/components/SectionContainer.astro"
-import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
-import { getFlats, getRoomBySlug } from "@/db/public"
+import { getRoomPage } from "@/db/public"
 import { absoluteUrl } from "@/lib/images"
 import { localizeRoom } from "@/lib/localize"
 
@@ -14,17 +13,16 @@ const { slug, lang: langParam } = Astro.params
 
 if (langParam !== "es" && langParam !== "en") return Astro.redirect("/404")
 
-const [room, flats] = await Promise.all([getRoomBySlug(slug as string), getFlats()])
-if (!room) return Astro.redirect("/404")
+const page = await getRoomPage(slug as string)
+if (!page) return Astro.redirect("/404")
+const { room, flat, media } = page
 
 // Caché en el CDN de Vercel: rápido, y se refresca en segundo plano
 Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
-const translations = i18next.getResourceBundle(lang, "translation")
 
 const seo = localizeRoom(room, lang)
-const flat = flats.find((f) => f.flat_id === room.flat_id)
 
 const schema = {
 	"@context": "https://schema.org",
@@ -57,7 +55,7 @@ const schema = {
 
 	<SectionContainer class="px-0">
 		<div class="mx-auto max-w-7xl px-6 lg:px-8">
-			<PDPRoom room={room} />
+			<PDPRoom room={room} media={media} />
 		</div>
 	</SectionContainer>
 </Layout>
