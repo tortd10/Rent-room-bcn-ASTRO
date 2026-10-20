@@ -14,7 +14,7 @@ const { slug, lang: langParam } = Astro.params
 
 if (langParam !== "es" && langParam !== "en") return Astro.redirect("/404")
 
-const room = await getRoomBySlug(slug as string)
+const [room, flats] = await Promise.all([getRoomBySlug(slug as string), getFlats()])
 if (!room) return Astro.redirect("/404")
 
 // Caché en el CDN de Vercel: rápido, y se refresca en segundo plano
@@ -24,7 +24,7 @@ const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
 
 const seo = localizeRoom(room, lang)
-const flat = (await getFlats()).find((f) => f.flat_id === room.flat_id)
+const flat = flats.find((f) => f.flat_id === room.flat_id)
 
 const schema = {
 	"@context": "https://schema.org",

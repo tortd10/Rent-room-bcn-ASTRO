@@ -232,6 +232,7 @@
   },
   "pdpRoom": {
     "backButton": "Go back",
+    "videosTitle": "Videos",
     "FFCC71": {
       "roomCharacteristics": {
         "houseFeaturesTitle": "House features:",

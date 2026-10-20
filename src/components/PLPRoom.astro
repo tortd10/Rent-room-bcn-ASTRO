@@ -69,7 +69,7 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.flat_id))]
 			<div class="w-full flex-1">
 				<div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
 					{
-						availableRooms.map((room) => (
+						availableRooms.map((room, index) => (
 							<div
 								class={`room-card ${room.status === "soon" ? "cursor-not-allowed opacity-50" : ""} flex h-full flex-col`}
 								x-show={`selectedFlats.length === 0 || selectedFlats.includes('${room.flat_id}')`}
@@ -80,6 +80,7 @@ const uniqueFlats = [...new Set(availableRooms.map((room) => room.flat_id))]
 										room.status === "soon" ? plpRoom.soon : plpRoom.RoomCard[room.flat_id]
 									}
 									imageSrc={room.status === "soon" ? "/Flats/soon-available.jpeg" : room.imageSrc}
+									priority={index < 3}
 									imageAlt={room.imageAlt}
 									href={room.status === "soon" ? null : `/${lang}/${room.slug}`}
 									class={room.status === "soon" ? "pointer-events-none" : ""}

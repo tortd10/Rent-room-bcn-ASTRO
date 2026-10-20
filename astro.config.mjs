@@ -34,6 +34,21 @@ export default defineConfig({
 	output: "server",
 	adapter: vercel({
 		skewProtection: true,
+		// Optimizador de imágenes de Vercel para las fotos de Supabase Storage (ver optimizedImage)
+		imageService: true,
+		imagesConfig: {
+			sizes: [224, 640, 800, 1200],
+			domains: [],
+			formats: ["image/avif", "image/webp"],
+			minimumCacheTTL: 31536000,
+			remotePatterns: [
+				{
+					protocol: "https",
+					hostname: "*.supabase.co",
+					pathname: "/storage/v1/object/public/room-images/**",
+				},
+			],
+		},
 	  }),
 	vite: {
 		ssr: {

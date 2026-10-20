@@ -5,9 +5,12 @@ interface RoomProps {
 	imageSrc: string
 	imageAlt: string
 	href: string // Será `/habitaciones/{slug}`
+	priority?: boolean // Las primeras tarjetas cargan sin diferir
 }
 
-const { name, description, imageSrc, imageAlt, href } = Astro.props as RoomProps
+import { optimizedImage } from "@/lib/images"
+
+const { name, description, imageSrc, imageAlt, href, priority = false } = Astro.props as RoomProps
 ---
 
 <a
@@ -15,7 +18,14 @@ const { name, description, imageSrc, imageAlt, href } = Astro.props as RoomProps
 	class="room-card group block overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm"
 >
 	<div class="aspect-w-4 aspect-h-3">
-		<img src={imageSrc} alt={imageAlt} class="h-full w-full object-cover group-hover:opacity-90" />
+		<img
+			src={optimizedImage(imageSrc, 640)}
+			alt={imageAlt}
+			loading={priority ? "eager" : "lazy"}
+			fetchpriority={priority ? "high" : "auto"}
+			decoding="async"
+			class="h-full w-full object-cover group-hover:opacity-90"
+		/>
 	</div>
 	<div class="p-4">
 		<h2 class="text-lg font-medium text-gray-900">{name}</h2>

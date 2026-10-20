@@ -32,6 +32,7 @@ const metaDescription = description ?? findRoom.find_room
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={metaDescription} />
 		<meta property="og:url" content={Astro.url.href} />
+		<link rel="preconnect" href={import.meta.env.PUBLIC_SUPABASE_URL} crossorigin />
 		<slot name="head" />
 		<!-- Recuerda la última página visitada: la usa la página 404 para devolver al usuario -->
 		<script is:inline>

@@ -6,26 +6,21 @@ import OurRoom from "@/components/OurRoom.astro"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
 
-export const SUPPORTED_LANGS = ['es', 'en'] as const;
+export const SUPPORTED_LANGS = ["es", "en"] as const
 
-// 2. LUEGO exporta getStaticPaths
-export async function getStaticPaths() {
-  return SUPPORTED_LANGS.map(lang => ({
-    params: { lang }
-  }));
-}
-
-// 3. FINALMENTE usa el código de la página
 const lang = Astro.params.lang || "es";
 
-if (!SUPPORTED_LANGS.includes(lang)) {
-  return Astro.redirect('/404');
+// Render bajo demanda: los cambios del admin se ven sin redeploy (caché en el CDN de Vercel)
+export const prerender = false
+
+if (!(SUPPORTED_LANGS as readonly string[]).includes(lang)) {
+  return Astro.redirect("/404")
 }
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
 
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
 
-export const prerender = true
 ---
 
 <Layout title={`RentRoomBcn - ${findRoom.find_room}`}>

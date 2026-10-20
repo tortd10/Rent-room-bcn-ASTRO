@@ -1,88 +1,25 @@
 ---
-import ContactForm from "@/components/ContactForm.astro"
-import FindRoom from "@/components/FindRoom.astro"
-import OurFlats from "@/components/OurFlats.astro"
-import OurRoom from "@/components/OurRoom.astro"
-import PLPRoom from "@/components/PLPRoom.astro"
-import Layout from "@/layouts/Layout.astro"
-
-import Faqs from "@/components/Faqs.astro"
-import KnowUs from "@/components/KnowUs.astro"
+// Única página que resuelve esta ruta: /es/Legal y /en/Legal (con mayúscula, como la enlazan
+// el banner de cookies y el footer). El resto de páginas tienen su propio fichero en [lang]/.
+// Es estática y no usa datos de Supabase; además, al ser estática no choca con la ruta
+// dinámica de [slug].astro (fichas de habitación).
 import LegalSite from "@/components/LegalSite.astro"
-import OurBeliefs from "@/components/OurBeliefs.astro"
-import OurTeam from "@/components/OurTeam.astro"
-import PLPFlats from "@/components/PLPFlats.astro"
-import RoomContactForm from "@/components/RoomContactForm.astro"
 import i18next from "@/i18n/config.js"
-
-
-const lang = Astro.params.lang || "es" // Idioma por defecto
-const page = Astro.params.page || "index" // Página por defecto
-
-// Cargar traducciones
-const translations = i18next.getResourceBundle(lang, "translation")
-const findRoom = translations.FindRoom
-
-// Validar páginas permitidas
-const validPages = ["Rooms", "About", "Faq", "index", "Legal", "Flats", "admin"] // Lista de páginas válidas
-
-if (!validPages.includes(page)) {
-	throw new Error("Página no encontrada") // Opcional: Manejo de rutas inválidas
-}
+import Layout from "@/layouts/Layout.astro"
 
 export const prerender = true
 
-export async function getStaticPaths() {
+export function getStaticPaths() {
 	return [
-		{ params: { lang: "es", page: "Rooms" } },
-		{ params: { lang: "en", page: "Rooms" } },
-		{ params: { lang: "es", page: "About" } },
-		{ params: { lang: "en", page: "About" } },
-		{ params: { lang: "es", page: "Faq" } },
-		{ params: { lang: "en", page: "Faq" } },
-		{ params: { lang: "es", page: "index" } },
-		{ params: { lang: "en", page: "index" } },
 		{ params: { lang: "es", page: "Legal" } },
 		{ params: { lang: "en", page: "Legal" } },
-		{ params: { lang: "es", page: "Flats" } },
-		{ params: { lang: "en", page: "Flats" } },
 	]
 }
 
+const { lang } = Astro.params
+const findRoom = i18next.getResourceBundle(lang as string, "translation").FindRoom
 ---
 
-{
-	page === "Rooms" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
-			<PLPRoom />
-		</Layout>
-	) : page === "About" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
-			<KnowUs />
-			<OurBeliefs />
-			<OurTeam />
-			<RoomContactForm />
-		</Layout>
-	) : page === "Faq" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
-			<Faqs />
-		</Layout>
-	) : page === "Legal" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
-			<LegalSite />
-		</Layout>
-	) : page === "Flats" ? (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
-			<PLPFlats />
-		</Layout>
-	) : (
-		<Layout title={`RentRoomBcn - ${findRoom.find_room || "Inicio"}`}>
-			<FindRoom />
-			{/* <AboutRooms /> */}
-			<OurRoom />
-			<OurFlats />
-			{/* <CustomerReview /> */}
-			<ContactForm />
-		</Layout>
-	)
-}
+<Layout title={`RentRoomBcn - ${findRoom.find_room || "Rooms"}`}>
+	<LegalSite />
+</Layout>

@@ -2,6 +2,7 @@
 import RoomContactForm from "@/components//RoomContactForm.astro"
 import RoomDetails from "@/components/RoomDetails.astro"
 import RoomGallery from "@/components/RoomGallery.astro"
+import RoomVideos from "@/components/RoomVideos.astro"
 import i18next from "@/i18n/config.js"
 import { getRoomMedia } from "@/db/public"
 import { localizeRoom } from "@/lib/localize"
@@ -75,15 +76,7 @@ const imagePaths = storageImages.length ? storageImages : [...roomImages, ...ext
 				imagePaths={imagePaths}
 				initialAlt={localizeRoom(roomData, lang).imageAlt}
 			/>
-			{
-				videos.length > 0 && (
-					<div class="mx-auto mt-8 grid max-w-lg gap-4">
-						{videos.map((src) => (
-							<video src={src} controls playsinline preload="none" class="w-full rounded-lg bg-black" />
-						))}
-					</div>
-				)
-			}
+			<RoomVideos videos={videos} title={pdpRoom.videosTitle} />
 			<RoomDetails roomData={roomData} />
 		</div>
 		<div class="space-y-6 lg:col-span-1">

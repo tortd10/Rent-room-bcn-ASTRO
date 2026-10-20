@@ -4,27 +4,15 @@ import Layout from "@/layouts/Layout.astro"
 import i18next from "@/i18n/config.js"
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
+if (lang !== "es" && lang !== "en") return Astro.redirect("/404")
 const translations = i18next.getResourceBundle(lang, "translation")
 const findRoom = translations.FindRoom
 
-export const prerender = true;
 
-export async function getStaticPaths() {
-	return [
-		{ params: { lang: "es", page: "Rooms" } },
-		{ params: { lang: "en", page: "Rooms" } },
-		{ params: { lang: "es", page: "About" } },
-		{ params: { lang: "en", page: "About" } },
-		{ params: { lang: "es", page: "Faq" } },
-		{ params: { lang: "en", page: "Faq" } },
-		{ params: { lang: "es", page: "index" } },
-		{ params: { lang: "en", page: "index" } },
-		{ params: { lang: "es", page: "Legal" } },
-		{ params: { lang: "en", page: "Legal" } },
-		{ params: { lang: "es", page: "Flats" } },
-		{ params: { lang: "en", page: "Flats" } },
-	]
-}
+// Render bajo demanda: los cambios del admin se ven sin redeploy (caché en el CDN de Vercel)
+export const prerender = false
+
+Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-revalidate=86400")
 ---
 
 <Layout title={`RentRoomBcn - ${findRoom.find_room}`}>
