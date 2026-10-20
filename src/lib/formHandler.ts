@@ -1,4 +1,5 @@
 import emailjs from "emailjs-com"
+import { saveLead } from "./leads"
 
 // Inicializa EmailJS
 emailjs.init("kMxl9GUIW4TrqNfQ6")
@@ -32,12 +33,23 @@ export const handleSubmit = async (event: SubmitEvent): Promise<void> => {
 
 	try {
 		const form = event.target as HTMLFormElement
-		await emailjs.sendForm(serviceID, templateID, form)
+		// Se guarda la consulta y se envía el email por separado: basta con que uno funcione
+		const [saved, emailed] = await Promise.all([
+			saveLead(form),
+			emailjs.sendForm(serviceID, templateID, form).then(
+				() => true,
+				(error) => {
+					console.error("Error al enviar el correo:", error)
+					return false
+				}
+			),
+		])
+		if (!saved && !emailed) throw new Error("No se pudo guardar ni enviar la consulta")
 		lastSubmissionTime = currentTime
 		alert("¡Mensaje enviado con éxito!")
 		form.reset() // Limpia el formulario después de enviarlo
 	} catch (error) {
-		console.error("Error al enviar el correo:", error)
+		console.error("Error al enviar el mensaje:", error)
 		alert("Hubo un problema al enviar el mensaje. Por favor, inténtalo de nuevo.")
 	} finally {
 		if (submitButton) {

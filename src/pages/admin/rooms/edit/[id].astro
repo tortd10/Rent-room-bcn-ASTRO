@@ -3,7 +3,9 @@ import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 import RoomForm from "@/components/admin/RoomForm.astro"
 import { getRoomById, getAvailableFlats, updateRoom } from "@/db/api/rooms"
-import type { FlatOption, Room } from "@/types"
+import { parseRoomForm } from "@/lib/roomForm"
+import RoomImagesManager from "@/components/admin/RoomImagesManager.astro"
+import type { FlatOption } from "@/types"
 
 const { user } = Astro.locals
 if (!user) return Astro.redirect("/admin")
@@ -19,17 +21,8 @@ const flats: FlatOption[] = flatsData || []
 
 // Procesar formulario
 if (Astro.request.method === "POST") {
-  const formData = await Astro.request.formData()
-  const formValues = Object.fromEntries(formData.entries())
-  
-  const updateData: Partial<Room> = {
-    name: formValues.name.toString(),
-    flat_id: formValues.flat_id.toString(),
-    available: formValues.available === "on",
-    status: formValues.status?.toString() as Room['status'] || "available",
-    imageSrc: formValues.imageSrc?.toString(),
-    imageAlt: formValues.imageAlt?.toString()
-  }
+  // El slug no se cambia al editar: es la URL pública de la habitación
+  const { slug: _slug, ...updateData } = parseRoomForm(await Astro.request.formData())
 
   // Validación
   if (!updateData.name) errors.name = "El nombre es requerido"
@@ -93,6 +86,8 @@ if (Astro.request.method === "POST") {
               method="POST"
             />
           </div>
+
+          <RoomImagesManager roomId={room.id} flatId={room.flat_id} roomSlug={room.slug} />
         </>
       )}
     </div>

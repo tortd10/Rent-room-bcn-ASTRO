@@ -3,6 +3,8 @@ import RoomContactForm from "@/components//RoomContactForm.astro"
 import RoomDetails from "@/components/RoomDetails.astro"
 import RoomGallery from "@/components/RoomGallery.astro"
 import i18next from "@/i18n/config.js"
+import { getRoomMedia } from "@/db/public"
+import { localizeRoom } from "@/lib/localize"
 import type { Room } from "@/types"
 
 const { slug } = Astro.params
@@ -38,7 +40,9 @@ const extraImages = Object.keys(allImages)
   .map((path) => path.replace("/public", ""))
 
   // Combinar las imágenes (primero las de la habitación y luego las de EXTRA)
-const imagePaths = [...roomImages, ...extraImages]
+// Fotos en Supabase Storage; si aún no hay, las de /public
+const { images: storageImages, videos } = await getRoomMedia(roomData)
+const imagePaths = storageImages.length ? storageImages : [...roomImages, ...extraImages]
 
 ---
 
@@ -69,8 +73,17 @@ const imagePaths = [...roomImages, ...extraImages]
 			<h2 class="mb-2 text-center text-2xl font-semibold text-gray-900">{roomData.name}</h2>
 			<RoomGallery
 				imagePaths={imagePaths}
-				initialAlt={roomData?.imageAlt || "Imagen de la habitación"}
+				initialAlt={localizeRoom(roomData, lang).imageAlt}
 			/>
+			{
+				videos.length > 0 && (
+					<div class="mx-auto mt-8 grid max-w-lg gap-4">
+						{videos.map((src) => (
+							<video src={src} controls playsinline preload="none" class="w-full rounded-lg bg-black" />
+						))}
+					</div>
+				)
+			}
 			<RoomDetails roomData={roomData} />
 		</div>
 		<div class="space-y-6 lg:col-span-1">

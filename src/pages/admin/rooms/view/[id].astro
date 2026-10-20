@@ -35,7 +35,7 @@ const { data: room } = id ? await getRoomBySlug(Astro.locals.supabase, id) : { d
               <div class="space-y-4">
                 <div>
                   <h3 class="text-sm text-gray-500">Descripción</h3>
-                  <p>{room.description || 'No hay descripción'}</p>
+                  <p>{room.metaDescription || 'No hay descripción'}</p>
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">

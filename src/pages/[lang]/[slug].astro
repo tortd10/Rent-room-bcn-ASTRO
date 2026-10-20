@@ -4,6 +4,8 @@ import SectionContainer from "@/components/SectionContainer.astro"
 import i18next from "@/i18n/config.js"
 import Layout from "@/layouts/Layout.astro"
 import { getFlats, getRoomBySlug } from "@/db/public"
+import { absoluteUrl } from "@/lib/images"
+import { localizeRoom } from "@/lib/localize"
 
 // Render bajo demanda: los cambios hechos en el admin se ven sin redeploy.
 export const prerender = false
@@ -20,16 +22,16 @@ Astro.response.headers.set("Cache-Control", "public, s-maxage=300, stale-while-r
 
 const lang = Astro.url.pathname.split("/")[1] || "es"
 const translations = i18next.getResourceBundle(lang, "translation")
-const findRoom = translations.FindRoom
 
+const seo = localizeRoom(room, lang)
 const flat = (await getFlats()).find((f) => f.flat_id === room.flat_id)
 
 const schema = {
 	"@context": "https://schema.org",
 	"@type": "Accommodation",
 	"name": room.name,
-	"description": room.metaDescription,
-	"image": `https://www.rentroombcn.com${room.imageSrc}`,
+	"description": seo.metaDescription,
+	"image": absoluteUrl(room.imageSrc),
 	"url": `https://www.rentroombcn.com/${lang}/${room.slug}`,
 	"address": {
 		"@type": "PostalAddress",
@@ -43,11 +45,11 @@ const schema = {
 }
 ---
 
-<Layout title={room.metaTitle ?? room.name} description={room.metaDescription ?? undefined}>
+<Layout title={seo.metaTitle} description={seo.metaDescription}>
 	<Fragment slot="head">
-		<meta property="og:title" content={room.metaTitle} />
-		<meta property="og:description" content={room.metaDescription} />
-		<meta property="og:image" content={`https://www.rentroombcn.com${room.imageSrc}`} />
+		<meta property="og:title" content={seo.metaTitle} />
+		<meta property="og:description" content={seo.metaDescription} />
+		<meta property="og:image" content={absoluteUrl(room.imageSrc)} />
 		<meta property="og:url" content={`https://www.rentroombcn.com/${lang}/${room.slug}`} />
 		<meta property="og:type" content="website" />
 		<script type="application/ld+json" set:html={JSON.stringify(schema)} />

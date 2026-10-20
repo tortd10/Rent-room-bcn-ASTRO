@@ -50,7 +50,7 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
           <tbody class="bg-white divide-y divide-gray-200">
             {rooms && rooms.length > 0 ? (
               rooms.map((room) => (
-                <tr id={room.id} class="hover:bg-gray-50 transition-colors">
+                <tr id={`room-${room.id}`} class="hover:bg-gray-50 transition-colors">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       {room.imageSrc && (

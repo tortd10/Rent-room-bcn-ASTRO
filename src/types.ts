@@ -1,27 +1,16 @@
-export type Flat = {
-	flat_id: string
-	title: string
-	street?: string | null
-	mapImage?: string | null
-	neighborhood?: string | null
-	city?: string | null
-	postalCode?: string | null
-	available: boolean
-}
+import type { Database } from "@/db/database.types"
 
-export type Room = {
-	id: number
-	slug: string
-	name: string
-	flat_id: string
-	available: boolean
-	status: "available" | "soon"
-	imageSrc?: string | null
-	imageAlt?: string | null
-	metaTitle?: string | null
-	metaDescription?: string | null
-}
+export type Flat = Database["public"]["Tables"]["flats"]["Row"]
+export type Room = Database["public"]["Tables"]["rooms"]["Row"]
+export type Lead = Database["public"]["Tables"]["leads"]["Row"]
+export type LeadStatus = Lead["status"]
+export type RoomImage = Database["public"]["Tables"]["room_images"]["Row"]
 
-export type RoomInput = Omit<Room, "id" | "metaTitle" | "metaDescription">
+// Listados: sin los textos SEO, que solo hacen falta en la ficha
+export type RoomListItem = Omit<
+	Room,
+	"metaTitle" | "metaDescription" | "metaTitle_en" | "metaDescription_en" | "imageAlt_en"
+>
 
+export type RoomInput = Omit<Room, "id">
 export type FlatOption = Pick<Flat, "flat_id" | "title">

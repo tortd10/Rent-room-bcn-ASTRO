@@ -1,6 +1,7 @@
-import { createClient } from "@supabase/supabase-js"
+import { createClient, type SupabaseClient } from "@supabase/supabase-js"
 import { createServerClient, parseCookieHeader } from "@supabase/ssr"
 import type { AstroCookies } from "astro"
+import type { Database } from "./database.types"
 
 const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL
 const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY
@@ -10,7 +11,7 @@ if (!supabaseUrl || !supabaseKey) {
 }
 
 // Cliente anónimo y sin sesión: solo para lecturas públicas (RLS: select público).
-export const supabase = createClient(supabaseUrl, supabaseKey, {
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey, {
 	auth: {
 		persistSession: false,
 		autoRefreshToken: false,
@@ -19,8 +20,10 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
 })
 
 // Cliente por petición: la sesión vive en cookies, nunca en memoria del servidor.
+export type Db = SupabaseClient<Database>
+
 export function createSupabaseServer(request: Request, cookies: AstroCookies) {
-	return createServerClient(supabaseUrl, supabaseKey, {
+	return createServerClient<Database>(supabaseUrl, supabaseKey, {
 		cookies: {
 			getAll() {
 				return parseCookieHeader(request.headers.get("Cookie") ?? "").map(

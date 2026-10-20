@@ -3,6 +3,7 @@ import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 import RoomForm from "@/components/admin/RoomForm.astro"
 import { getAvailableFlats, createRoom } from "@/db/api/rooms"
+import { parseRoomForm } from "@/lib/roomForm"
 import type { FlatOption } from "@/types"
 
 const { user } = Astro.locals
@@ -21,25 +22,12 @@ if (flatsError) {
 
 // Procesar formulario
 if (Astro.request.method === "POST") {
-  const formData = await Astro.request.formData()
-  
-  // Convertir FormData a objeto
-  const formValues = Object.fromEntries(formData.entries())
-  
-  // Preparar datos para creación
-  const newRoom = {
-    name: formValues.name.toString().trim(),
-    slug: formValues.slug.toString().trim(),
-    flat_id: formValues.flat_id.toString(),
-    available: formValues.available === "on",
-    status: "available" as const,
-    imageSrc: formValues.imageSrc?.toString().trim() || null,
-    imageAlt: formValues.imageAlt?.toString().trim() || null,
-  }
+  const newRoom = parseRoomForm(await Astro.request.formData())
 
   // Validación
   if (!newRoom.name) errors.name = "El nombre es requerido"
-  if (!newRoom.slug) errors.general = "El slug es requerido"
+  if (!/^[A-Za-z0-9]+-[A-Za-z0-9]+$/.test(newRoom.slug))
+    errors.general = "El slug debe tener el formato PISO-HABITACION (ej. FFCC71-HAB6)"
   if (!newRoom.flat_id) errors.flat_id = "Debe seleccionar un piso"
 
   if (Object.keys(errors).length === 0) {

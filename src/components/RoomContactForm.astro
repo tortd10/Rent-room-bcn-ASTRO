@@ -15,6 +15,11 @@ const selectedRoom = roomData ?? (await getRooms())[0]
 
 <div class="sticky top-32 rounded-lg border border-gray-300 bg-[#C8D6B0] p-6 shadow-md">
 	<form id="contact-form" class="space-y-6" method="POST">
+		<!-- Honeypot anti-spam: invisible para personas -->
+		<div class="absolute -left-[9999px]" aria-hidden="true">
+			<input type="text" name="website" tabindex="-1" autocomplete="off" />
+		</div>
+		<input type="hidden" name="room_slug" value={selectedRoom.slug} />
 		<!-- Título y descripción -->
 		<h2 class="text-xl font-semibold text-primary">{roomContactForm.title} {selectedRoom.name}</h2>
 		<p class="text-sm text-primary">
@@ -180,13 +185,11 @@ const selectedRoom = roomData ?? (await getRooms())[0]
 	</form>
 
 	<script>
+		import { handleSubmit } from "@/lib/formHandler"
+
 		// Selecciona el formulario y agrega el event listener
 		const form = document.getElementById("contact-form") as HTMLFormElement
-		form.addEventListener("submit", (e) => {
-			e.preventDefault()
-			console.log("Formulario enviado")
-			// Aquí puedes implementar tu lógica de envío.
-		})
+		form.addEventListener("submit", handleSubmit)
 
 		const inputs = form.querySelectorAll("input, textarea, select")
 		const submitButton = document.getElementById("submit-button") as HTMLButtonElement
