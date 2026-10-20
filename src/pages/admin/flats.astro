@@ -1,15 +1,36 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import { getAllFlats } from "@/db/api/flats"
-
+import { deleteFlat, getAllFlats } from "@/db/api/flats"
 
 const { user } = Astro.locals
 if (!user) {
   return Astro.redirect("/admin")
 }
 
+// Eliminar un piso (el navegador pide confirmación antes de enviar el formulario)
+if (Astro.request.method === "POST") {
+  const form = await Astro.request.formData()
+  const flatId = form.get("delete_id")?.toString() ?? ""
+  const name = form.get("delete_name")?.toString() ?? flatId
+
+  const result = flatId ? await deleteFlat(Astro.locals.supabase, flatId) : { error: "id" }
+  const message = result.blockedByRooms
+    ? `error=${encodeURIComponent(`No se puede eliminar "${name}": tiene ${result.blockedByRooms} habitación(es). Elimínalas o muévelas antes.`)}`
+    : result.error
+      ? `error=${encodeURIComponent("No se pudo eliminar el piso")}`
+      : `success=${encodeURIComponent(`Piso ${name} eliminado`)}`
+  return Astro.redirect(`/admin/flats?${message}`)
+}
+
+const success = Astro.url.searchParams.get("success")
+const failure = Astro.url.searchParams.get("error")
+
 const { data: flats } = await getAllFlats(Astro.locals.supabase)
+const { data: roomRows } = await Astro.locals.supabase.from("rooms").select("flat_id, available")
+const roomCount = (flatId: string) => (roomRows ?? []).filter((r) => r.flat_id === flatId).length
+const availableCount = (flatId: string) =>
+  (roomRows ?? []).filter((r) => r.flat_id === flatId && r.available).length
 ---
 
 <LayoutAdmin title="RentRoomBcn - Pisos">
@@ -31,35 +52,45 @@ const { data: flats } = await getAllFlats(Astro.locals.supabase)
 		  </div>
       </div>
 
+      {success && <p class="rounded-md bg-green-50 p-4 text-sm font-medium text-green-800" role="status">{success}</p>}
+      {failure && <p class="rounded-md bg-red-50 p-4 text-sm font-medium text-red-800" role="alert">{failure}</p>}
+
       <div class="bg-white shadow rounded-lg overflow-hidden">
         <table class="min-w-full divide-y divide-gray-200">
           <thead class="bg-gray-50">
             <tr>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dirección</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Disponible</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Habitaciones</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
               <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
             {flats?.map((flat) => (
               <tr id={flat.flat_id}>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{flat.title}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{flat.title}<div class="font-mono text-xs font-normal text-gray-500">ID: {flat.flat_id}</div></td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{flat.street}</td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{availableCount(flat.flat_id)} de {roomCount(flat.flat_id)} disponibles</td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm">
                   {flat.available ? (
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                      Disponible
+                      Activo
                     </span>
                   ) : (
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                      Ocupado
+                      Inactivo
                     </span>
                   )}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <a href={`/admin/flats/edit/${flat.flat_id}`} class="text-blue-600 hover:text-blue-900 mr-3">Editar</a>
-                  <a href={`/admin/flats/view/${flat.flat_id}`} class="text-green-600 hover:text-green-900">Ver</a>
+                  <a href={`/admin/flats/view/${flat.flat_id}`} class="text-green-600 hover:text-green-900 mr-3">Ver</a>
+                  <form method="POST" class="delete-flat-form inline" data-name={flat.title} data-rooms={roomCount(flat.flat_id)}>
+                    <input type="hidden" name="delete_id" value={flat.flat_id} />
+                    <input type="hidden" name="delete_name" value={flat.title} />
+                    <button type="submit" class="text-red-600 hover:text-red-900">Eliminar</button>
+                  </form>
                 </td>
               </tr>
             ))}
@@ -69,6 +100,25 @@ const { data: flats } = await getAllFlats(Astro.locals.supabase)
     </div>
   </SectionContainer>
 </LayoutAdmin>
+
+<script>
+  // Confirmación antes de eliminar: la acción es irreversible
+  document.querySelectorAll<HTMLFormElement>("form.delete-flat-form").forEach((form) => {
+    form.addEventListener("submit", (e) => {
+      const name = form.dataset.name ?? "este piso"
+      const rooms = Number(form.dataset.rooms ?? 0)
+      if (rooms > 0) {
+        alert(`No se puede eliminar "${name}": tiene ${rooms} habitación(es). Elimínalas o muévelas a otro piso antes.`)
+        e.preventDefault()
+        return
+      }
+      const ok = confirm(
+        `¿Eliminar el piso "${name}"?\n\nSe borrarán también sus fotos y vídeos de zonas comunes. Esta acción no se puede deshacer.`
+      )
+      if (!ok) e.preventDefault()
+    })
+  })
+</script>
 
 <style is:global>
 	.btn-primary {

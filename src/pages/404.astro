@@ -1,8 +1,8 @@
 ---
 // src/pages/404.astro
-import LayoutAdmin from '@/layouts/LayoutAdmin.astro';
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 
-export const prerender = false; // Importante para evitar problemas
+export const prerender = false // Importante para evitar problemas
 ---
 
 <LayoutAdmin title="Página no encontrada">
@@ -11,3 +11,17 @@ export const prerender = false; // Importante para evitar problemas
 	</div>
 </LayoutAdmin>
 
+<script is:inline>
+	// En vez de quedarse en el 404, vuelve a la última página visitada (o al inicio si no hay).
+	// Sin JavaScript (p. ej. buscadores) se sigue viendo el 404 con su código de estado.
+	;(function () {
+		var target = "/"
+		try {
+			var last = sessionStorage.getItem("lastPage")
+			if (last && last.charAt(0) === "/" && last !== location.pathname + location.search) {
+				target = last
+			}
+		} catch (e) {}
+		location.replace(target)
+	})()
+</script>

@@ -27,7 +27,7 @@ if (Astro.request.method === "POST") {
   // Validación
   if (!newRoom.name) errors.name = "El nombre es requerido"
   if (!/^[A-Za-z0-9]+-[A-Za-z0-9]+$/.test(newRoom.slug))
-    errors.general = "El slug debe tener el formato PISO-HABITACION (ej. FFCC71-HAB6)"
+    errors.general = "El ID debe tener el formato PISO-HABITACION (ej. FFCC71-HAB6)"
   if (!newRoom.flat_id) errors.flat_id = "Debe seleccionar un piso"
 
   if (Object.keys(errors).length === 0) {

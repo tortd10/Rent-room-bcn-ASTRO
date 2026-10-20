@@ -14,11 +14,3 @@ export async function getLeads(db: Db, status?: LeadStatus) {
 export async function updateLeadStatus(db: Db, id: number, status: LeadStatus) {
 	return await db.from("leads").update({ status }).eq("id", id)
 }
-
-export async function countNewLeads(db: Db) {
-	const { count } = await db
-		.from("leads")
-		.select("*", { count: "exact", head: true })
-		.eq("status", "new")
-	return count ?? 0
-}

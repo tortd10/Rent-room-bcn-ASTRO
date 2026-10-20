@@ -1,0 +1,57 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import FlatForm from "@/components/admin/FlatForm.astro"
+import { getFlatById, updateFlat } from "@/db/api/flats"
+import { parseFlatForm, validateFlat } from "@/lib/flatForm"
+
+const { user, supabase } = Astro.locals
+if (!user) return Astro.redirect("/admin")
+
+const { id } = Astro.params
+const { data: current } = id ? await getFlatById(supabase, id) : { data: null }
+
+let errors: Record<string, string> = {}
+let flat = current
+
+if (current && Astro.request.method === "POST") {
+	// El ID no se cambia al editar
+	const { flat_id: _id, ...updates } = parseFlatForm(await Astro.request.formData())
+	flat = { ...current, ...updates }
+	errors = validateFlat({ ...current, ...updates }, { checkId: false })
+
+	if (Object.keys(errors).length === 0) {
+		const { error } = await updateFlat(supabase, current.flat_id, updates)
+		if (!error) {
+			return Astro.redirect(
+				`/admin/flats?success=${encodeURIComponent(`Piso ${updates.title} actualizado`)}`
+			)
+		}
+		errors = { general: error.message || "Error al guardar. Inténtalo de nuevo." }
+	}
+}
+---
+
+<LayoutAdmin title={`Editar ${current?.title ?? "Piso"}`}>
+	<SectionContainer>
+		<div class="space-y-6 p-6">
+			<div class="flex items-center justify-between">
+				<div>
+					<h1 class="text-2xl font-bold text-gray-800">{current ? "Editar Piso" : "Piso no encontrado"}</h1>
+					{current && <p class="text-sm text-gray-500">ID: {current.flat_id}</p>}
+				</div>
+				<a href="/admin/flats" class="text-sm font-medium text-gray-600 hover:underline">← Volver al listado</a>
+			</div>
+
+			{
+				current ? (
+					<div class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow">
+						<FlatForm flat={flat ?? current} errors={errors} action={`/admin/flats/edit/${current.flat_id}`} isEditing />
+					</div>
+				) : (
+					<p class="rounded-md bg-red-50 p-4 text-sm text-red-800">No se encontró el piso {id}.</p>
+				)
+			}
+		</div>
+	</SectionContainer>
+</LayoutAdmin>

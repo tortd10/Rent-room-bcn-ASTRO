@@ -33,6 +33,12 @@ const metaDescription = description ?? findRoom.find_room
 		<meta property="og:description" content={metaDescription} />
 		<meta property="og:url" content={Astro.url.href} />
 		<slot name="head" />
+		<!-- Recuerda la última página visitada: la usa la página 404 para devolver al usuario -->
+		<script is:inline>
+			try {
+				sessionStorage.setItem("lastPage", location.pathname + location.search)
+			} catch (e) {}
+		</script>
 		<!-- Google tag (gtag.js) -->
 		<script
 			type="text/partytown"

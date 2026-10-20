@@ -21,7 +21,7 @@ const flats: FlatOption[] = flatsData || []
 
 // Procesar formulario
 if (Astro.request.method === "POST") {
-  // El slug no se cambia al editar: es la URL pública de la habitación
+  // El ID (slug) no se cambia al editar: es la URL pública de la habitación y la carpeta de sus fotos
   const { slug: _slug, ...updateData } = parseRoomForm(await Astro.request.formData())
 
   // Validación
@@ -35,7 +35,7 @@ if (Astro.request.method === "POST") {
       console.error("Error al actualizar:", error)
       errors.general = "Error al guardar. Contacte al administrador."
     } else {
-      return Astro.redirect("/admin/rooms?success=true")
+      return Astro.redirect(`/admin/rooms?success=${encodeURIComponent(`Habitación ${updateData.name} actualizada`)}`)
     }
   }
 }
