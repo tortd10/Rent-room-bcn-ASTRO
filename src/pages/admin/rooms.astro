@@ -35,16 +35,16 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
 
 <LayoutAdmin title="RentRoomBcn - Habitaciones">
   <SectionContainer>
-    <div class="p-6 space-y-6">
+    <div class="p-4 sm:p-6 space-y-6">
       <!-- Encabezado con botón de acción -->
-	  <div class="flex justify-between items-center">
+	  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 		<div>
 		  <h1 class="text-2xl font-bold text-gray-800">Gestión de Habitaciones</h1>
 		  <p class="text-sm text-gray-500">
 			{rooms?.length || 0} habitaciones registradas
 		  </p>
 		</div>
-		<div class="flex space-x-3">
+		<div class="flex flex-wrap gap-2">
 		  <a href="/admin/dashboard" class="btn-secondary">
 			Dashboard
 		  </a>
@@ -61,21 +61,21 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
       {failure && <p class="rounded-md bg-red-50 p-4 text-sm font-medium text-red-800" role="alert">{failure}</p>}
 
       <!-- Tabla de habitaciones -->
-      <div class="bg-white shadow rounded-lg overflow-hidden border border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+      <div class="md:bg-white md:shadow md:rounded-lg md:overflow-x-auto md:border md:border-gray-200">
+        <table class="block md:table min-w-full divide-y divide-gray-200">
+          <thead class="hidden md:table-header-group bg-gray-50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Piso</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+              <th class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Piso</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="block md:table-row-group space-y-3 md:space-y-0 md:bg-white md:divide-y md:divide-gray-200">
             {rooms && rooms.length > 0 ? (
               rooms.map((room) => (
-                <tr id={`room-${room.id}`} class="hover:bg-gray-50 transition-colors">
-                  <td class="px-6 py-4 whitespace-nowrap">
+                <tr id={`room-${room.id}`} class="block md:table-row bg-white rounded-lg border border-gray-200 shadow-sm p-4 space-y-3 md:space-y-0 md:p-0 md:rounded-none md:border-0 md:shadow-none hover:bg-gray-50 transition-colors">
+                  <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap">
                     <div class="flex items-center">
                       {room.imageSrc && (
                         <div class="flex-shrink-0 h-10 w-10 mr-3">
@@ -85,16 +85,17 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
                       <div>
                         <div class="text-sm font-medium text-gray-900">{room.name}</div>
                         <div class="text-sm text-gray-500">ID: {room.slug}</div>
+                        <div class="text-xs text-gray-500 md:hidden">{room.flats?.title || "Sin piso"}</div>
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4 whitespace-nowrap">
+                  <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap">
                     <div class="text-sm text-gray-900 font-medium">{room.flats?.title || 'Sin piso'}</div>
                     {room.flats?.street && (
                       <div class="text-xs text-gray-500">{room.flats.street}</div>
                     )}
                   </td>
-				  <td class="px-6 py-4 whitespace-nowrap">
+				  <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap">
 					<span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
 						room.available 
 						? (room.status === 'soon' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800')
@@ -108,8 +109,8 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
 						</span>
 					)}
 				</td>
-                  <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <div class="flex space-x-3">
+                  <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap text-sm text-gray-500 border-t border-gray-100 pt-3 md:border-0 md:pt-4">
+                    <div class="flex flex-wrap gap-x-5 gap-y-3">
                       <a 
                         href={`/admin/rooms/edit/${room.id}`} 
                         class="text-indigo-600 hover:text-indigo-900 flex items-center"
@@ -147,7 +148,7 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
               ))
             ) : (
               <tr>
-                <td colspan="4" class="px-6 py-4 text-center text-gray-500">
+                <td colspan="4" class="block md:table-cell px-6 py-4 text-center text-gray-500">
                   No hay habitaciones registradas
                   {error && (
                     <div class="text-red-500 text-sm mt-2">

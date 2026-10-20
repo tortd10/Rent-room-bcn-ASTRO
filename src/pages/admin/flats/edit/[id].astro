@@ -34,8 +34,8 @@ if (current && Astro.request.method === "POST") {
 
 <LayoutAdmin title={`Editar ${current?.title ?? "Piso"}`}>
 	<SectionContainer>
-		<div class="space-y-6 p-6">
-			<div class="flex items-center justify-between">
+		<div class="space-y-6 p-4 sm:p-6">
+			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<div>
 					<h1 class="text-2xl font-bold text-gray-800">{current ? "Editar Piso" : "Piso no encontrado"}</h1>
 					{current && <p class="text-sm text-gray-500">ID: {current.flat_id}</p>}

@@ -43,8 +43,8 @@ if (Astro.request.method === "POST") {
 
 <LayoutAdmin title={`Editar ${room?.name || 'Habitación'}`}>
   <SectionContainer>
-    <div class="p-6 space-y-6">
-      <div class="flex justify-between items-center">
+    <div class="p-4 sm:p-6 space-y-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 class="text-2xl font-bold text-gray-800">
             {room ? 'Editar Habitación' : 'Habitación no encontrada'}

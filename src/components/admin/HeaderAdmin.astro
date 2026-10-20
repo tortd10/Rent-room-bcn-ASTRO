@@ -24,7 +24,13 @@ const isLoggedIn = !!user
 	}
 
 	img {
-		width: 15rem; /* El logo siempre ocupa el 20% del ancho del contenedor */
+		width: 10rem;
+	}
+
+	@media (min-width: 640px) {
+		img {
+			width: 15rem;
+		}
 	}
 
 	@media (min-width: 768px) {
@@ -39,7 +45,7 @@ const isLoggedIn = !!user
 </style>
 
 <header
-	class="sticky top-0 z-50 flex w-full items-center justify-between bg-headerBg px-9 py-4 backdrop-blur-xl"
+	class="sticky top-0 z-50 flex w-full items-center justify-between bg-headerBg px-4 py-3 backdrop-blur-xl sm:px-9 sm:py-4"
 >
 	<div class="flex w-full items-center justify-between md:mx-auto md:max-w-[1400px]">
 		<!-- Logo -->
@@ -64,7 +70,13 @@ const isLoggedIn = !!user
 		{
 			isLoggedIn && (
 				<form method="POST" action="/api/auth/logout" class="md:hidden">
-					<button id="menu-button" class="flex items-center p-2 md:hidden">
+					<button
+							id="menu-button"
+							type="submit"
+							aria-label="Cerrar sesión"
+							title="Cerrar sesión"
+							class="flex h-11 w-11 items-center justify-center md:hidden"
+						>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"

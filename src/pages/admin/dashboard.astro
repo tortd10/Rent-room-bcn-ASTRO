@@ -91,54 +91,54 @@ const fmt = new Intl.DateTimeFormat("es-ES", {
 
 <LayoutAdmin title="RentRoomBcn - Admin">
   <SectionContainer>
-    <div class="space-y-8 p-6">
+    <div class="space-y-6 p-4 sm:space-y-8 sm:p-6">
       <!-- Cabecera -->
-      <div class="flex flex-wrap items-center justify-between gap-4 rounded-2xl bg-primary p-6 text-white shadow">
+      <div class="flex flex-col gap-4 rounded-2xl bg-primary p-5 text-white shadow sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:p-6">
         <div>
           <p class="text-sm capitalize text-headerBg">{today}</p>
           <h1 class="text-2xl font-bold md:text-3xl">{greeting}, {userName}</h1>
           <p class="mt-1 text-sm text-white/70">Resumen de RentRoomBcn</p>
         </div>
-        <div class="flex flex-wrap gap-3">
-          <a href="/admin/rooms/new" class="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-primary hover:bg-headerBg transition-colors">+ Habitación</a>
-          <a href="/admin/flats/new" class="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20 transition-colors">+ Piso</a>
-          <a href="/es" target="_blank" rel="noopener" class="rounded-lg bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20 transition-colors">Ver la web ↗</a>
+        <div class="flex flex-wrap gap-2 sm:gap-3">
+          <a href="/admin/rooms/new" class="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-primary hover:bg-headerBg transition-colors">+ Habitación</a>
+          <a href="/admin/flats/new" class="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">+ Piso</a>
+          <a href="/es" target="_blank" rel="noopener" class="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">Ver la web ↗</a>
         </div>
       </div>
 
       <!-- Indicadores -->
-      <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        <a href="/admin/rooms" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+      <div class="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+        <a href="/admin/rooms" class="rounded-xl bg-white p-4 shadow transition-shadow sm:p-5 hover:shadow-md">
           <p class="text-sm text-gray-500">Habitaciones disponibles</p>
-          <p class="mt-2 text-3xl font-bold text-primary">{availableRooms}<span class="text-lg font-medium text-gray-400"> / {rooms.length}</span></p>
+          <p class="mt-2 text-2xl font-bold sm:text-3xl text-primary">{availableRooms}<span class="text-lg font-medium text-gray-400"> / {rooms.length}</span></p>
           <div class="mt-3 h-2 overflow-hidden rounded-full bg-gray-100" role="img" aria-label={`Ocupación ${occupancy}%`}>
             <div class="h-full rounded-full bg-secondary" style={`width: ${100 - occupancy}%`}></div>
           </div>
           <p class="mt-1 text-xs text-gray-500">{occupancy}% ocupadas{soonRooms > 0 ? ` · ${soonRooms} próximamente` : ""}</p>
         </a>
 
-        <a href="/admin/flats" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+        <a href="/admin/flats" class="rounded-xl bg-white p-4 shadow transition-shadow sm:p-5 hover:shadow-md">
           <p class="text-sm text-gray-500">Pisos activos</p>
-          <p class="mt-2 text-3xl font-bold text-primary">{activeFlats}<span class="text-lg font-medium text-gray-400"> / {flats.length}</span></p>
+          <p class="mt-2 text-2xl font-bold sm:text-3xl text-primary">{activeFlats}<span class="text-lg font-medium text-gray-400"> / {flats.length}</span></p>
           <p class="mt-3 text-xs text-gray-500">{rooms.length} habitaciones en total</p>
         </a>
 
-        <a href="/admin/bookings?status=new" class={`rounded-xl p-5 shadow transition-shadow hover:shadow-md ${newLeads > 0 ? "bg-purple-600 text-white" : "bg-white"}`}>
+        <a href="/admin/bookings?status=new" class={`rounded-xl p-4 shadow transition-shadow sm:p-5 hover:shadow-md ${newLeads > 0 ? "bg-purple-600 text-white" : "bg-white"}`}>
           <p class={`text-sm ${newLeads > 0 ? "text-purple-100" : "text-gray-500"}`}>Consultas nuevas</p>
-          <p class={`mt-2 text-3xl font-bold ${newLeads > 0 ? "text-white" : "text-primary"}`}>{newLeads}</p>
+          <p class={`mt-2 text-2xl font-bold sm:text-3xl ${newLeads > 0 ? "text-white" : "text-primary"}`}>{newLeads}</p>
           <p class={`mt-3 text-xs ${newLeads > 0 ? "text-purple-100" : "text-gray-500"}`}>{newLeads > 0 ? "Pendientes de responder" : "Todo al día"}</p>
         </a>
 
-        <a href="/admin/rooms" class="rounded-xl bg-white p-5 shadow transition-shadow hover:shadow-md">
+        <a href="/admin/rooms" class="rounded-xl bg-white p-4 shadow transition-shadow sm:p-5 hover:shadow-md">
           <p class="text-sm text-gray-500">Ocupadas</p>
-          <p class="mt-2 text-3xl font-bold text-primary">{occupiedRooms}</p>
+          <p class="mt-2 text-2xl font-bold sm:text-3xl text-primary">{occupiedRooms}</p>
           <p class="mt-3 text-xs text-gray-500">de {rooms.length} habitaciones</p>
         </a>
       </div>
 
       <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
         <!-- Consultas recientes -->
-        <div class="rounded-xl bg-white p-6 shadow lg:col-span-2">
+        <div class="rounded-xl bg-white p-4 shadow sm:p-6 lg:col-span-2">
           <div class="mb-4 flex items-center justify-between">
             <h2 class="text-lg font-semibold text-primary">Consultas recientes</h2>
             <a href="/admin/bookings" class="text-sm font-medium text-secondary hover:underline">Ver todas →</a>
@@ -147,7 +147,7 @@ const fmt = new Intl.DateTimeFormat("es-ES", {
             recentLeads.length > 0 ? (
               <ul class="divide-y divide-gray-100">
                 {recentLeads.map((l) => (
-                  <li class="flex items-start justify-between gap-4 py-3">
+                  <li class="flex items-start justify-between gap-3 py-3 sm:gap-4">
                     <div class="min-w-0">
                       <p class="font-medium text-gray-900">{l.name}</p>
                       <p class="truncate text-sm text-gray-500">{l.message}</p>
@@ -167,7 +167,7 @@ const fmt = new Intl.DateTimeFormat("es-ES", {
         </div>
 
         <!-- Atención -->
-        <div class="rounded-xl bg-white p-6 shadow">
+        <div class="rounded-xl bg-white p-4 shadow sm:p-6">
           <h2 class="mb-4 text-lg font-semibold text-primary">Requiere atención</h2>
           {
             attention.length > 0 ? (
@@ -189,7 +189,7 @@ const fmt = new Intl.DateTimeFormat("es-ES", {
       </div>
 
       <!-- Pisos -->
-      <div class="rounded-xl bg-white p-6 shadow">
+      <div class="rounded-xl bg-white p-4 shadow sm:p-6">
         <div class="mb-4 flex items-center justify-between">
           <h2 class="text-lg font-semibold text-primary">Pisos</h2>
           <a href="/admin/flats" class="text-sm font-medium text-secondary hover:underline">Gestionar →</a>
@@ -202,9 +202,9 @@ const fmt = new Intl.DateTimeFormat("es-ES", {
               const pct = inFlat.length ? Math.round((free / inFlat.length) * 100) : 0
               return (
                 <a href={`/admin/flats/view/${f.flat_id}`} class="rounded-lg border border-gray-200 p-4 transition-colors hover:border-secondary">
-                  <div class="flex items-center justify-between">
-                    <p class="font-semibold text-gray-900">{f.title}</p>
-                    <span class={`rounded-full px-2 py-0.5 text-xs ${f.available ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
+                  <div class="flex items-center justify-between gap-2">
+                    <p class="min-w-0 break-words font-semibold text-gray-900">{f.title}</p>
+                    <span class={`shrink-0 rounded-full px-2 py-0.5 text-xs ${f.available ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}`}>
                       {f.available ? "Activo" : "Inactivo"}
                     </span>
                   </div>

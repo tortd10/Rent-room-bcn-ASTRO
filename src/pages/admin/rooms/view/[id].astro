@@ -70,14 +70,14 @@ const missing = room
 <LayoutAdmin title={room?.name || "Detalle Habitación"}>
   <SectionContainer>
     {!room ? (
-      <div class="p-6 space-y-4">
+      <div class="p-4 sm:p-6 space-y-4">
         <p class="rounded-md bg-red-50 p-4 text-sm text-red-800">Habitación no encontrada</p>
         <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
       </div>
     ) : (
-      <div class="p-6 space-y-6">
+      <div class="p-4 sm:p-6 space-y-6">
         <!-- Cabecera -->
-        <div class="flex flex-wrap items-start justify-between gap-4">
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div class="space-y-2">
             <h1 class="text-2xl font-bold text-gray-800">{room.name}</h1>
             <div class="flex flex-wrap items-center gap-2 text-sm">
@@ -95,7 +95,7 @@ const missing = room
               )}
             </div>
           </div>
-          <div class="flex flex-wrap gap-3">
+          <div class="flex flex-wrap gap-2 md:gap-3">
             <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
             <a href={`/es/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (ES)</a>
             <a href={`/en/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (EN)</a>
@@ -115,7 +115,7 @@ const missing = room
         <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
           <div class="space-y-6 lg:col-span-2">
             <!-- Imágenes -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <h2 class="mb-4 text-lg font-semibold">Imágenes ({images.length})</h2>
               {images.length > 0 ? (
                 <div class="space-y-3">
@@ -136,7 +136,7 @@ const missing = room
             </div>
 
             <!-- Vídeos -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <h2 class="mb-4 text-lg font-semibold">Vídeos ({videos.length})</h2>
               {videos.length > 0 ? (
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -150,7 +150,7 @@ const missing = room
             </div>
 
             <!-- SEO -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <h2 class="mb-4 text-lg font-semibold">SEO y textos</h2>
               <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
                 {[
@@ -181,21 +181,21 @@ const missing = room
 
           <div class="space-y-6">
             <!-- Datos -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <h2 class="mb-4 text-lg font-semibold">Datos</h2>
               <dl class="space-y-3 text-sm">
-                <div class="flex justify-between"><dt class="text-gray-500">ID</dt><dd class="font-mono">{room.slug}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">Nº interno</dt><dd>{room.id}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">Piso</dt><dd>{flat?.title ?? room.flat_id}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">Disponibilidad</dt><dd>{room.available ? "Disponible" : "Ocupada"}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">Estado</dt><dd>{STATUS_LABEL[room.status] ?? room.status}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">URL (ES)</dt><dd class="font-mono text-xs">/es/{room.slug}</dd></div>
-                <div class="flex justify-between"><dt class="text-gray-500">URL (EN)</dt><dd class="font-mono text-xs">/en/{room.slug}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">ID</dt><dd class="min-w-0 break-all text-right font-mono">{room.slug}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Nº interno</dt><dd>{room.id}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Piso</dt><dd>{flat?.title ?? room.flat_id}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Disponibilidad</dt><dd>{room.available ? "Disponible" : "Ocupada"}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">Estado</dt><dd>{STATUS_LABEL[room.status] ?? room.status}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">URL (ES)</dt><dd class="min-w-0 break-all text-right font-mono text-xs">/es/{room.slug}</dd></div>
+                <div class="flex justify-between gap-4"><dt class="text-gray-500">URL (EN)</dt><dd class="min-w-0 break-all text-right font-mono text-xs">/en/{room.slug}</dd></div>
               </dl>
             </div>
 
             <!-- Piso -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <h2 class="mb-4 text-lg font-semibold">Piso: {flat?.title ?? room.flat_id}</h2>
               <dl class="space-y-3 text-sm">
                 <div class="flex justify-between gap-4"><dt class="text-gray-500">Dirección</dt><dd class="text-right">{flat?.street ?? "—"}</dd></div>
@@ -224,7 +224,7 @@ const missing = room
             </div>
 
             <!-- Consultas -->
-            <div class="card p-6">
+            <div class="card p-4 sm:p-6">
               <div class="mb-4 flex items-center justify-between">
                 <h2 class="text-lg font-semibold">Últimas consultas</h2>
                 <a href="/admin/bookings" class="text-sm text-indigo-600 hover:underline">Ver todas</a>

@@ -35,11 +35,11 @@ const availableCount = (flatId: string) =>
 
 <LayoutAdmin title="RentRoomBcn - Pisos">
   <SectionContainer>
-    <div class="p-6 space-y-6">
-      <div class="flex justify-between items-center">
+    <div class="p-4 sm:p-6 space-y-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Gestión de Pisos</h1>
         
-		<div class="flex space-x-3">
+		<div class="flex flex-wrap gap-2">
 			<a href="/admin/dashboard" class="btn-secondary">
 			  Dashboard
 			</a>
@@ -55,24 +55,24 @@ const availableCount = (flatId: string) =>
       {success && <p class="rounded-md bg-green-50 p-4 text-sm font-medium text-green-800" role="status">{success}</p>}
       {failure && <p class="rounded-md bg-red-50 p-4 text-sm font-medium text-red-800" role="alert">{failure}</p>}
 
-      <div class="bg-white shadow rounded-lg overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+      <div class="md:bg-white md:shadow md:rounded-lg md:overflow-x-auto">
+        <table class="block md:table min-w-full divide-y divide-gray-200">
+          <thead class="hidden md:table-header-group bg-gray-50">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dirección</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Habitaciones</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Título</th>
+              <th class="hidden md:table-cell px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Dirección</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Habitaciones</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+              <th class="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="block md:table-row-group space-y-3 md:space-y-0 md:bg-white md:divide-y md:divide-gray-200">
             {flats?.map((flat) => (
-              <tr id={flat.flat_id}>
-                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{flat.title}<div class="font-mono text-xs font-normal text-gray-500">ID: {flat.flat_id}</div></td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{flat.street}</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{availableCount(flat.flat_id)} de {roomCount(flat.flat_id)} disponibles</td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm">
+              <tr id={flat.flat_id} class="block md:table-row bg-white rounded-lg border border-gray-200 shadow-sm p-4 space-y-2 md:space-y-0 md:p-0 md:rounded-none md:border-0 md:shadow-none">
+                <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap text-sm font-medium text-gray-900">{flat.title}<div class="font-mono text-xs font-normal text-gray-500">ID: {flat.flat_id}</div>{flat.street && <div class="text-xs font-normal text-gray-500 md:hidden">{flat.street}</div>}</td>
+                <td class="hidden md:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">{flat.street}</td>
+                <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap text-sm text-gray-500">{availableCount(flat.flat_id)} de {roomCount(flat.flat_id)} disponibles</td>
+                <td class="block md:table-cell md:px-6 md:py-4 md:whitespace-nowrap text-sm">
                   {flat.available ? (
                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                       Activo
@@ -83,9 +83,9 @@ const availableCount = (flatId: string) =>
                     </span>
                   )}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  <a href={`/admin/flats/edit/${flat.flat_id}`} class="text-blue-600 hover:text-blue-900 mr-3">Editar</a>
-                  <a href={`/admin/flats/view/${flat.flat_id}`} class="text-green-600 hover:text-green-900 mr-3">Ver</a>
+                <td class="flex flex-wrap items-center gap-x-5 gap-y-2 md:table-cell md:px-6 md:py-4 md:whitespace-nowrap text-sm text-gray-500 border-t border-gray-100 pt-3 md:border-0 md:pt-4">
+                  <a href={`/admin/flats/edit/${flat.flat_id}`} class="text-blue-600 hover:text-blue-900 md:mr-3 py-1">Editar</a>
+                  <a href={`/admin/flats/view/${flat.flat_id}`} class="text-green-600 hover:text-green-900 md:mr-3 py-1">Ver</a>
                   <form method="POST" class="delete-flat-form inline" data-name={flat.title} data-rooms={roomCount(flat.flat_id)}>
                     <input type="hidden" name="delete_id" value={flat.flat_id} />
                     <input type="hidden" name="delete_name" value={flat.title} />
