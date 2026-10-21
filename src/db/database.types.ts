@@ -11,6 +11,7 @@ type FlatRow = {
 	city: string | null
 	postalCode: string | null
 	available: boolean
+	approved: boolean // false = pendiente de aprobación, no se publica
 }
 
 type LeadRow = {
@@ -23,7 +24,7 @@ type LeadRow = {
 	delivery_date: string | null
 	message: string
 	lang: string
-	status: "new" | "contacted" | "closed"
+	status: "new" | "open" | "contacted" | "closed"
 	notes: string | null
 }
 
@@ -46,6 +47,7 @@ type RoomRow = {
 	flat_id: string
 	available: boolean
 	status: "available" | "soon"
+	approved: boolean // false = pendiente de aprobación, no se publica
 	metaTitle: string | null
 	metaDescription: string | null
 	imageAlt_en: string | null
@@ -90,6 +92,12 @@ export type Database = {
 						referencedColumns: ["slug"]
 					},
 				]
+			}
+			notification_reads: {
+				Row: { user_id: string; key: string; created_at: string }
+				Insert: { user_id?: string; key: string; created_at?: string }
+				Update: Partial<{ user_id: string; key: string; created_at: string }>
+				Relationships: []
 			}
 			room_images: {
 				Row: RoomImageRow

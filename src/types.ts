@@ -9,8 +9,9 @@ export type RoomImage = Database["public"]["Tables"]["room_images"]["Row"]
 // Listados: sin los textos SEO, que solo hacen falta en la ficha
 export type RoomListItem = Omit<
 	Room,
-	"metaTitle" | "metaDescription" | "metaTitle_en" | "metaDescription_en" | "imageAlt_en"
+	"metaTitle" | "metaDescription" | "metaTitle_en" | "metaDescription_en" | "imageAlt_en" | "approved"
 >
 
-export type RoomInput = Omit<Room, "id">
+export type RoomInput = Omit<Room, "id" | "approved">
+export type FlatInput = Omit<Flat, "approved">
 export type FlatOption = Pick<Flat, "flat_id" | "title">

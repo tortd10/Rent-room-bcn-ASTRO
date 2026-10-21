@@ -1,0 +1,85 @@
+---
+// Mantiene la página al día cuando otra persona del equipo cambia datos: escucha los cambios de las tablas
+// indicadas (Supabase Realtime) y recarga la página. Si hay un panel abierto o se está escribiendo en un campo,
+// espera a que termine para no interrumpir ni perder lo que se está haciendo.
+// No recarga por los cambios que hace esta misma pestaña (ya están pintados).
+interface Props {
+	tables: string[]
+}
+
+const { tables } = Astro.props
+---
+
+<div data-live-tables={tables.join(",")} hidden></div>
+
+<script>
+	import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js"
+	import type { Database } from "@/db/database.types"
+	import { isRecentLocalChange } from "@/lib/liveSync"
+
+	const marker = document.querySelector<HTMLElement>("[data-live-tables]")
+	const tables = marker?.dataset.liveTables?.split(",").filter(Boolean) ?? []
+
+	if (tables.length > 0) {
+		let supabase: SupabaseClient<Database> | undefined
+		let channel: RealtimeChannel | undefined
+		let pending = false
+		let timer: number | undefined
+		let hiddenAt = 0
+
+		const isBusy = () => {
+			const tag = document.activeElement?.tagName
+			return !!document.querySelector("dialog[open]") || tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT"
+		}
+		const refresh = () => {
+			if (isBusy()) pending = true
+			else location.reload()
+		}
+
+		// Varios cambios seguidos (por ejemplo, marcar todas como leídas) se agrupan en una sola recarga
+		const schedule = () => {
+			if (isRecentLocalChange()) return
+			window.clearTimeout(timer)
+			timer = window.setTimeout(refresh, 800)
+		}
+
+		// El cliente de Supabase pesa bastante: se carga cuando el navegador está libre, sin retrasar el primer pintado
+		async function start() {
+			if (channel) return
+			const { createBrowserClient } = await import("@supabase/ssr")
+			supabase ??= createBrowserClient<Database>(
+				import.meta.env.PUBLIC_SUPABASE_URL,
+				import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+			)
+			channel = supabase.channel(`live-${tables.join("-")}`)
+			for (const table of tables) {
+				channel.on("postgres_changes", { event: "*", schema: "public", table }, schedule)
+			}
+			channel.subscribe()
+		}
+		function stop() {
+			if (channel && supabase) supabase.removeChannel(channel)
+			channel = undefined
+		}
+
+		const whenIdle = window.requestIdleCallback ?? ((callback: () => void) => window.setTimeout(callback, 1500))
+		whenIdle(() => void start())
+
+		// Con la conexión abierta el navegador no puede guardar la página para volver atrás al instante (bfcache):
+		// se cierra al salir y, si se vuelve tras un rato, se recarga para no enseñar datos viejos.
+		window.addEventListener("pagehide", () => {
+			hiddenAt = Date.now()
+			stop()
+		})
+		window.addEventListener("pageshow", (event) => {
+			if (!event.persisted) return
+			if (Date.now() - hiddenAt > 30_000) location.reload()
+			else void start()
+		})
+
+		// Si había algo pendiente, se aplica en cuanto se cierra el panel o se sale del campo
+		window.setInterval(() => {
+			if (pending && !isBusy()) location.reload()
+		}, 2000)
+	}
+</script>

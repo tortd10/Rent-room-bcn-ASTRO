@@ -1,0 +1,255 @@
+---
+// Quickview de una consulta: panel con todos sus datos, notas y el botón del siguiente paso del flujo.
+// Se abre desde cualquier elemento con data-lead-open="<id>" (las filas de las listas).
+// Cambia el estado (Nueva → Abierta → Contactada → Cerrada) y guarda notas en `endpoint` sin recargar la página.
+import type { QuickLead } from "@/lib/leadStatus"
+
+interface Props {
+	leads: QuickLead[]
+	endpoint?: string
+	showOpenLink?: boolean
+}
+
+const { leads, endpoint = "/admin/mensajes", showOpenLink = false } = Astro.props
+
+// Se escapa "<" para que ningún texto de una consulta cierre la etiqueta del JSON
+const leadsJson = JSON.stringify(leads).replace(/</g, "\\u003c")
+const canWrite = !Astro.locals.isViewer
+---
+
+<dialog
+	id="lead-quickview"
+	data-endpoint={endpoint}
+	data-can-write={canWrite}
+	class="m-auto w-[calc(100%-2rem)] max-w-lg rounded-xl p-0 shadow-xl backdrop:bg-black/40"
+>
+	<div class="p-4 sm:p-6">
+		<div class="mb-4 flex items-start justify-between gap-3">
+			<div class="min-w-0">
+				<h2 data-lead="name" class="break-words text-lg font-semibold text-primary"></h2>
+				<p data-lead="date" class="text-xs text-gray-500"></p>
+			</div>
+			<button type="button" data-close-lead aria-label="Cerrar" class="shrink-0 rounded-md px-2 py-1 text-gray-500 hover:bg-gray-100">✕</button>
+		</div>
+
+		<div class="flex flex-wrap items-center gap-3">
+			<span data-lead="status" class="inline-flex rounded-full px-2 py-0.5 text-xs font-semibold"></span>
+			<div data-lead-flow class="flex flex-wrap gap-2"></div>
+		</div>
+
+		<dl class="mt-4 space-y-2 text-sm">
+			<div class="flex justify-between gap-4"><dt class="text-gray-500">Email</dt><dd class="min-w-0 break-all text-right"><a data-lead="email" class="text-indigo-600 hover:underline"></a></dd></div>
+			<div data-lead-row="phone" class="flex justify-between gap-4"><dt class="text-gray-500">Teléfono</dt><dd class="text-right"><a data-lead="phone" class="hover:underline"></a></dd></div>
+			<div data-lead-row="room" class="flex justify-between gap-4"><dt class="text-gray-500">Habitación</dt><dd class="min-w-0 break-all text-right"><a data-lead="room" class="hover:underline"></a></dd></div>
+			<div data-lead-row="delivery" class="flex justify-between gap-4"><dt class="text-gray-500">Entrada</dt><dd data-lead="delivery" class="text-right"></dd></div>
+			<div class="flex justify-between gap-4"><dt class="text-gray-500">Idioma</dt><dd data-lead="lang" class="text-right"></dd></div>
+		</dl>
+
+		<p class="mt-4 text-xs font-semibold uppercase text-gray-500">Mensaje</p>
+		<p data-lead="message" class="mt-1 max-h-48 overflow-y-auto whitespace-pre-line break-words rounded-lg bg-gray-50 p-3 text-sm text-gray-800"></p>
+
+		<label for="lead-notes" class="mt-4 block text-xs font-semibold uppercase text-gray-500">Notas internas</label>
+		<textarea
+			id="lead-notes"
+			data-lead-notes
+			rows="3"
+			maxlength="2000"
+			readonly={!canWrite}
+			placeholder={canWrite ? "Añade una nota para el equipo…" : "Sin notas"}
+			class="mt-1 w-full rounded-lg border border-gray-200 bg-yellow-50 p-3 text-sm text-yellow-900 placeholder:text-yellow-700/50"
+		></textarea>
+			<div class="mt-2 flex items-center justify-end gap-3">
+				<span data-lead-notes-status class="text-xs text-green-700" role="status"></span>
+				<button
+					type="button"
+					data-lead-save-notes
+					disabled={!canWrite}
+					title={canWrite ? undefined : "Solo lectura"}
+					class="rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+				>
+					Guardar notas
+				</button>
+			</div>
+
+		<div class="mt-5 flex flex-col-reverse gap-2 border-t border-gray-100 pt-4 sm:flex-row sm:justify-end">
+			{
+				showOpenLink && (
+					<a data-lead="open" class="inline-flex justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+						Abrir en Mensajes
+					</a>
+				)
+			}
+			{
+				canWrite ? (
+					<a data-lead="reply" class="inline-flex justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:opacity-90">Responder por email</a>
+				) : (
+					<span
+						data-lead="reply"
+						role="link"
+						aria-disabled="true"
+						title="Solo lectura"
+						class="inline-flex cursor-not-allowed justify-center rounded-md bg-gray-300 px-4 py-2 text-sm font-medium text-white"
+					>
+						Responder por email
+					</span>
+				)
+			}
+		</div>
+	</div>
+</dialog>
+
+<style is:global>
+	html {
+		scrollbar-gutter: stable;
+	}
+	body:has(dialog[open]) {
+		overflow: hidden;
+	}
+</style>
+
+<script is:inline type="application/json" id="leads-data" set:html={leadsJson} />
+
+<script>
+	import { FLOW_ACTIONS, LEAD_STATUS, type QuickLead } from "@/lib/leadStatus"
+	import { markLocalChange } from "@/lib/liveSync"
+
+	const quickview = document.getElementById("lead-quickview") as HTMLDialogElement | null
+
+	if (quickview) {
+		const endpoint = quickview.dataset.endpoint ?? "/admin/mensajes"
+		const canWrite = quickview.dataset.canWrite === "true"
+		const leads: QuickLead[] = JSON.parse(document.getElementById("leads-data")?.textContent ?? "[]")
+		let current: QuickLead | null = null
+
+		const field = (name: string) => quickview.querySelector<HTMLElement>(`[data-lead="${name}"]`)
+		const row = (name: string, visible: boolean) =>
+			quickview.querySelector(`[data-lead-row="${name}"]`)?.classList.toggle("hidden", !visible)
+		const setText = (name: string, value: string) => {
+			const el = field(name)
+			if (el) el.textContent = value
+		}
+		const setLink = (name: string, text: string, href: string) => {
+			const el = field(name) as HTMLAnchorElement | null
+			if (!el) return
+			el.textContent = text
+			el.href = href
+		}
+		const flowActions = quickview.querySelector<HTMLElement>("[data-lead-flow]")
+		const notes = quickview.querySelector<HTMLTextAreaElement>("[data-lead-notes]")
+		const notesStatus = quickview.querySelector<HTMLElement>("[data-lead-notes-status]")
+		const saveNotes = quickview.querySelector<HTMLButtonElement>("[data-lead-save-notes]")
+
+		async function post(fields: Record<string, string>) {
+			const body = new FormData()
+			for (const [key, value] of Object.entries(fields)) body.set(key, value)
+			markLocalChange()
+			try {
+				const res = await fetch(endpoint, { method: "POST", body, headers: { "X-Requested-With": "fetch" } })
+				return res.ok
+			} catch {
+				return false
+			}
+		}
+
+		// Botones del siguiente paso según el estado: Abierta → Contactada o Cerrada, Contactada → Cerrada, Cerrada → Reabrir
+		const primaryButton = "rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+		const secondaryButton = "rounded-md border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-50"
+
+		function renderFlow(lead: QuickLead) {
+			if (!flowActions) return
+			flowActions.replaceChildren()
+			;(FLOW_ACTIONS[lead.status] ?? []).forEach((action, index) => {
+				const button = document.createElement("button")
+				button.type = "button"
+				button.textContent = action.label
+				button.className = index === 0 ? primaryButton : secondaryButton
+				if (!canWrite) {
+					button.disabled = true
+					button.title = "Solo lectura"
+				}
+				button.addEventListener("click", async () => {
+					flowActions.querySelectorAll("button").forEach((b) => (b.disabled = true))
+					const ok = await post({ id: String(lead.id), status: action.next })
+					if (ok) applyStatus(lead, action.next)
+					else flowActions.querySelectorAll("button").forEach((b) => (b.disabled = false))
+				})
+				flowActions.append(button)
+			})
+		}
+
+		// Pinta el estado de la consulta en el panel y en sus filas de la página
+		function applyStatus(lead: QuickLead, status: QuickLead["status"]) {
+			const previous = LEAD_STATUS[lead.status].badge.split(" ")
+			const next = LEAD_STATUS[status]
+			const changed = lead.status !== status
+			lead.status = status
+
+			document.querySelectorAll<HTMLElement>(`[data-lead-open="${lead.id}"]`).forEach((rowButton) => {
+				rowButton.classList.remove(...previous)
+				rowButton.classList.add(...next.badge.split(" "))
+				rowButton.dataset.leadStatus = status
+				const label = rowButton.querySelector("[data-lead-label]")
+				if (label) label.textContent = next.label
+			})
+
+			const chip = field("status")
+			if (chip) {
+				chip.textContent = next.label
+				chip.className = `inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${next.badge}`
+			}
+			renderFlow(lead)
+			setLink("open", "Abrir en Mensajes", `/admin/mensajes?status=${status}`)
+			document.dispatchEvent(new CustomEvent("lead:status", { detail: { id: lead.id, status, changed } }))
+		}
+
+		async function openLead(lead: QuickLead) {
+			current = lead
+			setText("name", lead.name)
+			setText("date", lead.date)
+			setLink("email", lead.email, `mailto:${lead.email}`)
+			if (canWrite) setLink("reply", "Responder por email", `mailto:${lead.email}`)
+			row("phone", !!lead.phone)
+			if (lead.phone) setLink("phone", lead.phone, `tel:${lead.phone}`)
+			row("room", !!lead.roomSlug)
+			if (lead.roomSlug) setLink("room", lead.roomSlug, `/admin/rooms/view/${lead.roomSlug}`)
+			row("delivery", !!lead.deliveryDate)
+			setText("delivery", lead.deliveryDate ?? "")
+			setText("lang", lead.lang.toUpperCase())
+			setText("message", lead.message)
+			if (notes) notes.value = lead.notes ?? ""
+			if (notesStatus) notesStatus.textContent = ""
+			applyStatus(lead, lead.status)
+			quickview?.showModal()
+
+			// Abrir una consulta nueva la pasa a Abierta (el usuario de solo lectura no puede escribir)
+			if (canWrite && lead.status === "new") {
+				applyStatus(lead, "open")
+				const ok = await post({ id: String(lead.id), status: "open" })
+				if (!ok) applyStatus(lead, "new")
+			}
+		}
+
+		saveNotes?.addEventListener("click", async () => {
+			if (!current || !notes) return
+			saveNotes.disabled = true
+			const ok = await post({ id: String(current.id), notes: notes.value })
+			saveNotes.disabled = false
+			if (ok) current.notes = notes.value.trim() || null
+			if (notesStatus) {
+				notesStatus.textContent = ok ? "Guardado" : "No se pudo guardar"
+				notesStatus.className = `text-xs ${ok ? "text-green-700" : "text-red-700"}`
+			}
+		})
+
+		document.querySelectorAll<HTMLElement>("[data-lead-open]").forEach((button) => {
+			button.addEventListener("click", () => {
+				const lead = leads.find((l) => l.id === Number(button.dataset.leadOpen))
+				if (lead) openLead(lead)
+			})
+		})
+		quickview.querySelector("[data-close-lead]")?.addEventListener("click", () => quickview.close())
+		quickview.addEventListener("click", (e) => {
+			if (e.target === quickview) quickview.close()
+		})
+	}
+</script>

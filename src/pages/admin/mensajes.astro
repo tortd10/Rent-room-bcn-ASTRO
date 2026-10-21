@@ -1,0 +1,264 @@
+---
+import SectionContainer from "@/components/SectionContainer.astro"
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
+import LeadQuickview from "@/components/admin/LeadQuickview.astro"
+import LiveRefresh from "@/components/admin/LiveRefresh.astro"
+import { getLeadStatus, getLeads, getLeadsByIds, updateLeadNotes, updateLeadStatus } from "@/db/api/leads"
+import { LEAD_ORDER, LEAD_STATUS, canMoveTo, toQuickLead } from "@/lib/leadStatus"
+import type { LeadStatus } from "@/types"
+
+const { user, supabase } = Astro.locals
+if (!user) {
+	return Astro.redirect("/admin")
+}
+
+const isLeadStatus = (value: string | null | undefined): value is LeadStatus =>
+	!!value && value in LEAD_STATUS
+
+// Cambios desde el quickview: siguiente paso del flujo o notas. No hay forma de saltarse estados.
+if (Astro.request.method === "POST") {
+	const form = await Astro.request.formData()
+	const id = Number(form.get("id"))
+	let ok = false
+
+	if (Number.isInteger(id)) {
+		if (form.has("notes")) {
+			const notes = form.get("notes")?.toString().trim().slice(0, 2000) || null
+			ok = !(await updateLeadNotes(supabase, id, notes)).error
+		} else {
+			const next = form.get("status")?.toString()
+			const { data: current } = await getLeadStatus(supabase, id)
+			if (current && isLeadStatus(next) && canMoveTo(current.status, next)) {
+				ok = !(await updateLeadStatus(supabase, id, next)).error
+			}
+		}
+	}
+
+	// El quickview manda la petición por fetch y espera JSON; un envío normal vuelve a la lista
+	if (Astro.request.headers.get("x-requested-with") === "fetch") {
+		return new Response(JSON.stringify({ ok }), {
+			status: ok ? 200 : 400,
+			headers: { "Content-Type": "application/json" },
+		})
+	}
+	return Astro.redirect(Astro.url.pathname + Astro.url.search)
+}
+
+// ---------- Filtros ----------
+const params = Astro.url.searchParams
+const statusParam = params.get("status") // un estado o "pending" (nuevas + abiertas)
+const search = params.get("q")?.trim() ?? ""
+const flat = params.get("flat") ?? ""
+const room = params.get("room") ?? ""
+const from = params.get("from") ?? ""
+const to = params.get("to") ?? ""
+const PAGE_SIZE = 10
+
+const statusFilter: LeadStatus | LeadStatus[] | undefined =
+	statusParam === "pending" ? ["new", "open"] : isLeadStatus(statusParam) ? statusParam : undefined
+
+const [roomsRes, flatsRes] = await Promise.all([
+	supabase.from("rooms").select("slug, name, flat_id").order("slug"),
+	supabase.from("flats").select("flat_id, title").order("title"),
+])
+const flats = flatsRes.data ?? []
+// Un piso se filtra por las habitaciones que tiene (las consultas se asocian a habitaciones)
+const flatRoomSlugs = flat ? (roomsRes.data ?? []).filter((r) => r.flat_id === flat).map((r) => r.slug) : undefined
+const leadsRes = await getLeads(supabase, { search, room, roomSlugs: flatRoomSlugs, from, to })
+const error = leadsRes.error
+const rooms = roomsRes.data ?? []
+
+const matching = leadsRes.data ?? []
+const counts = {
+  all: matching.length,
+  pending: matching.filter((l) => l.status === "new" || l.status === "open").length,
+  ...Object.fromEntries((Object.keys(LEAD_STATUS) as LeadStatus[]).map((s) => [s, matching.filter((l) => l.status === s).length])),
+} as Record<string, number>
+const byStatus = matching.filter((l) =>
+  Array.isArray(statusFilter) ? statusFilter.includes(l.status) : statusFilter ? l.status === statusFilter : true
+)
+
+// Nuevas primero, luego abiertas y el resto; dentro de cada grupo, de más reciente a más antigua
+const sorted = [...byStatus].sort((a, b) => LEAD_ORDER[a.status] - LEAD_ORDER[b.status])
+const total = sorted.length
+const pages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+const page = Math.min(pages, Math.max(1, Number(params.get("page")) || 1))
+const pageIds = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE).map((l) => l.id)
+// Solo las consultas de esta página se descargan completas
+const { data: pageRows } = pageIds.length ? await getLeadsByIds(supabase, pageIds) : { data: [] }
+const rowsById = new Map((pageRows ?? []).map((l) => [l.id, l]))
+const visible = pageIds.flatMap((id) => rowsById.get(id) ?? [])
+
+const fmt = new Intl.DateTimeFormat("es-ES", {
+	day: "numeric",
+	month: "short",
+	hour: "2-digit",
+	minute: "2-digit",
+	timeZone: "Europe/Madrid",
+})
+const quickLeads = visible.map((l) => toQuickLead(l, fmt))
+
+// Enlaces que cambian algún parámetro y conservan el resto
+const link = (changes: Record<string, string | null>) => {
+	const next = new URLSearchParams(params)
+	for (const [key, value] of Object.entries(changes)) {
+		if (value === null || value === "") next.delete(key)
+		else next.set(key, value)
+	}
+	const query = next.toString()
+	return query ? `/admin/mensajes?${query}` : "/admin/mensajes"
+}
+
+const chips: { label: string; value: string | null; count: number }[] = [
+	{ label: "Todas", value: null, count: counts.all },
+	{ label: "Sin atender", value: "pending", count: counts.pending },
+	...(Object.keys(LEAD_STATUS) as LeadStatus[]).map((s) => ({ label: LEAD_STATUS[s].label, value: s, count: counts[s] })),
+]
+const hasFilters = !!(statusParam || search || flat || room || from || to)
+// Filtros escondidos en el panel (no cuenta el estado, que está en los botones)
+const activeFilters = [search, flat, room, from, to].filter(Boolean).length
+const input =
+	"w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+const pageButton =
+	"inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+---
+
+<LayoutAdmin title="RentRoomBcn - Mensajes">
+	<SectionContainer>
+		<div class="space-y-6 p-4 sm:p-6">
+			<div class="flex flex-wrap items-start justify-between gap-2">
+				<div class="min-w-0">
+					<h1 class="text-2xl font-bold text-gray-800">Mensajes</h1>
+					<p class="text-sm text-gray-500">{total} mensaje{total === 1 ? "" : "s"}{hasFilters ? " con estos filtros" : ""}</p>
+				</div>
+				<div class="flex flex-wrap items-center gap-3">
+					<ReadOnlyBadge />
+				</div>
+			</div>
+
+			<!-- Estados (siempre visibles) y botón de filtros -->
+			<div class="flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-2">
+				<nav class="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap" aria-label="Estado">
+					{
+						chips.map((c) => (
+							<a
+								href={link({ status: c.value, page: null })}
+								class={`whitespace-nowrap rounded-full px-2 py-2 text-center text-xs sm:px-3 sm:py-1.5 sm:text-sm ${(statusParam ?? null) === c.value ? "bg-gray-800 text-white" : "bg-gray-100"}`}
+							>
+								{c.label} ({c.count})
+							</a>
+						))
+					}
+				</nav>
+				<button
+					type="button"
+					data-toggle-filters
+					aria-expanded="false"
+					aria-controls="filters-panel"
+					class="inline-flex w-full items-center justify-center gap-2 rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 sm:ml-auto sm:w-auto sm:py-1.5"
+				>
+					Filtros
+					{activeFilters > 0 && <span class="rounded-full bg-gray-800 px-1.5 text-xs text-white">{activeFilters}</span>}
+				</button>
+			</div>
+
+			<!-- Filtros (escondidos hasta pulsar el botón) -->
+			<form id="filters-panel" method="GET" action="/admin/mensajes" class="hidden space-y-3 rounded-xl bg-white p-4 shadow-sm">
+				{statusParam && <input type="hidden" name="status" value={statusParam} />}
+				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+					<div class="sm:col-span-2">
+						<label for="q" class="mb-1 block text-xs font-medium text-gray-500">Buscar</label>
+						<input id="q" type="search" name="q" value={search} placeholder="Nombre, email, mensaje o habitación" class={input} />
+					</div>
+					<div>
+						<label for="flat" class="mb-1 block text-xs font-medium text-gray-500">Piso</label>
+						<select id="flat" name="flat" class={input}>
+							<option value="">Todos</option>
+							{flats.map((f) => <option value={f.flat_id} selected={f.flat_id === flat}>{f.title}</option>)}
+						</select>
+					</div>
+					<div>
+						<label for="room" class="mb-1 block text-xs font-medium text-gray-500">Habitación</label>
+						<select id="room" name="room" class={input}>
+							<option value="">Todas</option>
+							{rooms.map((r) => <option value={r.slug} selected={r.slug === room}>{r.name} · {r.slug}</option>)}
+						</select>
+					</div>
+					<div>
+						<label for="from" class="mb-1 block text-xs font-medium text-gray-500">Desde</label>
+						<input id="from" type="date" name="from" value={from} class={input} />
+					</div>
+					<div>
+						<label for="to" class="mb-1 block text-xs font-medium text-gray-500">Hasta</label>
+						<input id="to" type="date" name="to" value={to} class={input} />
+					</div>
+				</div>
+				<div class="flex flex-wrap items-center gap-2">
+					<button type="submit" class="rounded-md bg-gray-800 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700">Filtrar</button>
+					{hasFilters && <a href="/admin/mensajes" class={pageButton}>Limpiar</a>}
+				</div>
+			</form>
+
+			{error && <p class="rounded-md bg-red-50 p-4 text-sm text-red-800">Error al cargar: {error.message}</p>}
+
+			{
+				!error && total === 0 && (
+					<p class="rounded-lg bg-white p-6 text-center text-gray-500 shadow">
+						{hasFilters ? "Ningún mensaje coincide con estos filtros." : "No hay mensajes todavía."}
+					</p>
+				)
+			}
+
+			<ul class="space-y-3">
+				{
+					visible.map((lead) => (
+						<li>
+							<button
+								type="button"
+								data-lead-open={lead.id}
+								data-lead-status={lead.status}
+								class={`flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left text-sm font-medium transition-opacity hover:opacity-80 ${LEAD_STATUS[lead.status].badge}`}
+							>
+								<span class="min-w-0">
+									<span class="block truncate">{lead.name}{lead.room_slug && ` · ID: ${lead.room_slug}`}</span>
+									<span class="block truncate text-xs font-normal">{lead.message}</span>
+									<span class="block text-xs font-normal opacity-75">{fmt.format(new Date(lead.created_at))} · {lead.email}</span>
+								</span>
+								<span data-lead-label class="ml-auto shrink-0 text-xs">{LEAD_STATUS[lead.status].label}</span>
+							</button>
+						</li>
+					))
+				}
+			</ul>
+
+			{
+				pages > 1 && (
+					<nav class="flex flex-col items-center gap-3 text-center sm:flex-row sm:justify-between sm:text-left" aria-label="Paginación">
+						<p class="text-sm text-gray-500">
+							Mostrando {(page - 1) * PAGE_SIZE + 1}–{Math.min(page * PAGE_SIZE, total)} de {total}
+						</p>
+						<div class="flex flex-wrap items-center justify-center gap-2">
+							{page > 1 ? <a href={link({ page: String(page - 1) })} class={pageButton}>Anterior</a> : <span class={`${pageButton} cursor-not-allowed opacity-50`}>Anterior</span>}
+							<span class="px-2 text-sm text-gray-600">Página {page} de {pages}</span>
+							{page < pages ? <a href={link({ page: String(page + 1) })} class={pageButton}>Siguiente</a> : <span class={`${pageButton} cursor-not-allowed opacity-50`}>Siguiente</span>}
+						</div>
+					</nav>
+				)
+			}
+		</div>
+	</SectionContainer>
+
+	<LeadQuickview leads={quickLeads} />
+	<LiveRefresh tables={["leads"]} />
+</LayoutAdmin>
+
+<script>
+	// El panel de filtros se abre y se cierra con el botón "Filtros"
+	const toggle = document.querySelector<HTMLButtonElement>("[data-toggle-filters]")
+	const panel = document.getElementById("filters-panel")
+	toggle?.addEventListener("click", () => {
+		const open = panel?.classList.toggle("hidden") === false
+		toggle.setAttribute("aria-expanded", String(open))
+	})
+</script>

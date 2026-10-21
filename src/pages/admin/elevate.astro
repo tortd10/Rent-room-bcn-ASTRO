@@ -1,0 +1,100 @@
+---
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import { isViewer, safeNext } from "@/lib/roles"
+
+const { supabase, user } = Astro.locals
+if (!user) {
+	return Astro.redirect("/admin")
+}
+
+const next = safeNext(Astro.url.searchParams.get("next"))
+
+// Un administrador no tiene nada que confirmar
+if (!Astro.locals.isViewer) {
+	return Astro.redirect(next)
+}
+
+let errorMessage: string | null = null
+
+if (Astro.request.method === "POST") {
+	const formData = await Astro.request.formData()
+	const email = formData.get("email")?.toString() || ""
+	const password = formData.get("password")?.toString() || ""
+
+	// Si las credenciales fallan, la sesión del visor no se toca
+	const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+
+	if (error) {
+		errorMessage = "Credenciales incorrectas"
+	} else if (isViewer(data.user)) {
+		errorMessage = "Esa cuenta también es de solo lectura. Usa una cuenta de administrador."
+	} else {
+		return Astro.redirect(next)
+	}
+}
+---
+
+<LayoutAdmin title="RentRoomBcn - Permiso de administrador">
+	<main class="flex flex-grow items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
+		<div class="w-full max-w-md space-y-8 rounded-lg bg-white p-8 shadow-md">
+			<div class="text-center">
+				<h2 class="mt-6 text-2xl font-extrabold text-primary">Se necesita un administrador</h2>
+				<p class="mt-2 text-sm text-secondary">
+					Tu usuario es de solo lectura. Para editar, crear o eliminar datos, identifícate con una
+					cuenta de administrador.
+				</p>
+			</div>
+
+			<form class="mt-8 space-y-6" method="POST">
+				<div class="space-y-4 rounded-md shadow-sm">
+					<div>
+						<label for="email" class="block text-sm font-medium text-primary">Email</label>
+						<input
+							id="email"
+							name="email"
+							type="email"
+							autocomplete="off"
+							required
+							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+							placeholder="Email del administrador"
+						/>
+					</div>
+					<div>
+						<label for="password" class="block text-sm font-medium text-primary">Contraseña</label>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							autocomplete="off"
+							required
+							class="block w-full rounded-md border-0 px-3 py-2 text-primary placeholder-headerBg shadow-sm ring-1 ring-inset ring-secondary focus:ring-2 focus:ring-inset focus:ring-primary sm:text-sm"
+							placeholder="••••••••"
+						/>
+					</div>
+					{
+						errorMessage && (
+							<div class="rounded-md bg-red-50 p-4" role="alert">
+								<p class="text-sm text-red-800">{errorMessage}</p>
+							</div>
+						)
+					}
+				</div>
+
+				<div class="flex gap-3">
+					<a
+						href="/admin/dashboard"
+						class="flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm"
+					>
+						Cancelar
+					</a>
+					<button
+						type="submit"
+						class="hover:bg-primaryDark flex w-full justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-white shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+					>
+						Continuar
+					</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</LayoutAdmin>

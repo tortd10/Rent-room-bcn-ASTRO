@@ -2,20 +2,25 @@
 import { publicImageUrl } from "@/lib/images"
 
 interface Props {
-	roomId: number
-	flatId: string
-	roomSlug: string
+	roomId?: number
+	flatId?: string
+	roomSlug?: string
+	// Al crear una habitación aún no hay dónde guardar archivos: se muestra desactivado
+	preview?: boolean
 }
 
-const { roomId, flatId, roomSlug } = Astro.props as Props
+const { roomId, flatId, roomSlug, preview = false } = Astro.props as Props
+const readOnly = Astro.locals.isViewer || preview
 
 // Todo lo de esta habitación + lo común del piso (room_id nulo)
-const { data: rows } = await Astro.locals.supabase
-	.from("room_images")
-	.select("id, path, kind, room_id, position")
-	.eq("flat_id", flatId)
-	.or(`room_id.eq.${roomId},room_id.is.null`)
-	.order("position", { ascending: true })
+const { data: rows } = preview
+	? { data: null }
+	: await Astro.locals.supabase
+			.from("room_images")
+			.select("id, path, kind, room_id, position")
+			.eq("flat_id", flatId as string)
+			.or(`room_id.eq.${roomId},room_id.is.null`)
+			.order("position", { ascending: true })
 
 const sections = [
 	{
@@ -55,8 +60,16 @@ const itemsOf = (scope: string, kind: string) =>
 	class="space-y-6"
 	data-room-id={roomId}
 	data-flat-id={flatId}
-	data-room-slug={roomSlug}
+	data-room-slug={roomSlug ?? ""}
+	data-readonly={readOnly ? "" : undefined}
 >
+	{
+		preview && (
+			<p class="rounded-md bg-blue-50 p-3 text-sm text-blue-800" role="note">
+				Guarda la habitación para poder subir fotos y vídeos.
+			</p>
+		)
+	}
 	<p id="media-status" class="hidden rounded-md bg-blue-50 p-3 text-sm text-blue-800" role="status"></p>
 
 	{
@@ -74,15 +87,21 @@ const itemsOf = (scope: string, kind: string) =>
 							<h2 class="text-lg font-semibold text-gray-800">{sec.title}</h2>
 							<p class="text-sm text-gray-500">{sec.help}</p>
 						</div>
-						<label class="inline-flex shrink-0 cursor-pointer items-center justify-center rounded-md bg-indigo-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-indigo-700">
+						<label
+							class:list={[
+								"inline-flex shrink-0 items-center justify-center rounded-md px-4 py-2.5 text-sm font-medium text-white",
+								readOnly ? "cursor-not-allowed bg-gray-300" : "cursor-pointer bg-green-600 hover:bg-green-700",
+							]}
+							title={readOnly ? "Solo lectura" : undefined}
+						>
 							Subir
-							<input type="file" accept={accept} multiple class="media-input hidden" />
+							<input type="file" accept={accept} multiple disabled={readOnly} class="media-input hidden" />
 						</label>
 					</div>
 
 					{items.length === 0 ? (
 						<p class="rounded-md bg-gray-50 p-4 text-sm text-gray-500">
-							{sec.scope === "room" && sec.kind === "image"
+							{sec.scope === "room" && sec.kind === "image" && !preview
 								? "Sin imágenes en Supabase: la ficha usa las de /public/Flats."
 								: "Nada subido todavía."}
 						</p>
@@ -111,13 +130,13 @@ const itemsOf = (scope: string, kind: string) =>
 												Portada
 											</span>
 										) : sec.scope === "room" && sec.kind === "image" ? (
-											<button type="button" data-action="cover" class="text-indigo-600 hover:underline">
+											<button type="button" data-action="cover" disabled={readOnly} class="text-indigo-600 hover:underline">
 												Hacer portada
 											</button>
 										) : (
 											<span />
 										)}
-										<button type="button" data-action="delete" class="text-red-600 hover:underline">
+										<button type="button" data-action="delete" disabled={readOnly} class="text-red-600 hover:underline">
 											Eliminar
 										</button>
 									</div>
@@ -236,6 +255,7 @@ const itemsOf = (scope: string, kind: string) =>
 	}
 
 	root.addEventListener("change", (e) => {
+		if (root.hasAttribute("data-readonly")) return
 		const input = e.target as HTMLInputElement
 		if (!input.classList.contains("media-input")) return
 		const sec = input.closest<HTMLElement>("section[data-scope]")!
@@ -245,6 +265,7 @@ const itemsOf = (scope: string, kind: string) =>
 	})
 
 	root.addEventListener("click", (e) => {
+		if (root.hasAttribute("data-readonly")) return
 		const btn = (e.target as HTMLElement).closest<HTMLButtonElement>("button[data-action]")
 		const li = btn?.closest<HTMLElement>("li[data-id]")
 		const sec = btn?.closest<HTMLElement>("section[data-scope]")
@@ -278,3 +299,11 @@ const itemsOf = (scope: string, kind: string) =>
 		}
 	})
 </script>
+
+<style>
+	#room-media[data-readonly] button[data-action] {
+		opacity: 0.4;
+		cursor: not-allowed;
+		text-decoration: none;
+	}
+</style>

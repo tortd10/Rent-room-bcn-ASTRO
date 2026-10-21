@@ -1,6 +1,9 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
+import PendingBadge from "@/components/admin/PendingBadge.astro"
+import ApproveButton from "@/components/admin/ApproveButton.astro"
 import { getRoomBySlug } from "@/db/api/rooms"
 import { publicImageUrl } from "@/lib/images"
 
@@ -31,7 +34,7 @@ const [media, siblings, leads, newLeads] = room
         .from("leads")
         .select("*", { count: "exact", head: true })
         .eq("room_slug", room.slug)
-        .eq("status", "new"),
+        .in("status", ["new", "open"]),
     ])
   : [null, null, null, null]
 
@@ -47,9 +50,10 @@ const STATUS_LABEL: Record<string, string> = {
   soon: "Próximamente",
 }
 const LEAD_STATUS: Record<string, { label: string; badge: string }> = {
-  new: { label: "Nueva", badge: "bg-purple-100 text-purple-800" },
-  contacted: { label: "Contactada", badge: "bg-blue-100 text-blue-800" },
-  closed: { label: "Cerrada", badge: "bg-gray-100 text-gray-700" },
+  new: { label: "Nuevo", badge: "bg-purple-100 text-purple-800" },
+  open: { label: "Abierto", badge: "bg-teal-100 text-teal-800" },
+  contacted: { label: "Contactado", badge: "bg-blue-100 text-blue-800" },
+  closed: { label: "Cerrado", badge: "bg-gray-100 text-gray-700" },
 }
 const fmt = new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: "short" })
 
@@ -72,7 +76,7 @@ const missing = room
     {!room ? (
       <div class="p-4 sm:p-6 space-y-4">
         <p class="rounded-md bg-red-50 p-4 text-sm text-red-800">Habitación no encontrada</p>
-        <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
+        <a href="/admin/rooms" class="btn-secondary">Listado de habitaciones</a>
       </div>
     ) : (
       <div class="p-4 sm:p-6 space-y-6">
@@ -82,6 +86,7 @@ const missing = room
             <h1 class="text-2xl font-bold text-gray-800">{room.name}</h1>
             <div class="flex flex-wrap items-center gap-2 text-sm">
               <span class="rounded bg-gray-100 px-2 py-0.5 font-mono text-gray-700">{room.slug}</span>
+              <PendingBadge approved={room.approved} />
               <span class={`badge ${room.available ? "badge-success" : "badge-error"}`}>
                 {room.available ? "Disponible" : "Ocupada"}
               </span>
@@ -89,14 +94,16 @@ const missing = room
                 {STATUS_LABEL[room.status] ?? room.status}
               </span>
               {(newLeads?.count ?? 0) > 0 && (
-                <a href="/admin/bookings?status=new" class="badge bg-purple-100 text-purple-800">
-                  {newLeads?.count} consulta{newLeads?.count === 1 ? "" : "s"} nueva{newLeads?.count === 1 ? "" : "s"}
+                <a href="/admin/mensajes?status=pending" class="badge bg-purple-100 text-purple-800">
+                  {newLeads?.count} mensaje{newLeads?.count === 1 ? "" : "s"} nuevo{newLeads?.count === 1 ? "" : "s"}
                 </a>
               )}
             </div>
           </div>
-          <div class="flex flex-wrap gap-2 md:gap-3">
-            <a href="/admin/rooms" class="btn-secondary">← Volver al listado</a>
+          <div class="flex flex-wrap items-center gap-2 md:gap-3">
+            <ReadOnlyBadge />
+            <ApproveButton action="/admin/rooms" id={room.id} name={room.name} approved={room.approved} variant="button" />
+            <a href="/admin/rooms" class="btn-secondary">Listado de habitaciones</a>
             <a href={`/es/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (ES)</a>
             <a href={`/en/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (EN)</a>
             <a href={`/admin/rooms/edit/${room.id}`} class="btn-primary">Editar</a>
@@ -223,11 +230,11 @@ const missing = room
               )}
             </div>
 
-            <!-- Consultas -->
+            <!-- Mensajes -->
             <div class="card p-4 sm:p-6">
               <div class="mb-4 flex items-center justify-between">
-                <h2 class="text-lg font-semibold">Últimas consultas</h2>
-                <a href="/admin/bookings" class="text-sm text-indigo-600 hover:underline">Ver todas</a>
+                <h2 class="text-lg font-semibold">Últimos mensajes</h2>
+                <a href="/admin/mensajes" class="text-sm text-indigo-600 hover:underline">Ver todas</a>
               </div>
               {leads?.data && leads.data.length > 0 ? (
                 <ul class="space-y-3 text-sm">
@@ -244,7 +251,7 @@ const missing = room
                   ))}
                 </ul>
               ) : (
-                <p class="text-sm text-gray-500">Aún no hay consultas para esta habitación.</p>
+                <p class="text-sm text-gray-500">Aún no hay mensajes para esta habitación.</p>
               )}
             </div>
           </div>

@@ -1,0 +1,30 @@
+---
+// Botón "Aprobar" de un piso o habitación pendiente. Envía el formulario a la página del listado,
+// que es la que aprueba (y la que el middleware protege si el usuario es de solo lectura).
+interface Props {
+	action: string
+	id: string | number
+	name: string
+	approved?: boolean
+	variant?: "link" | "button" | "pill"
+}
+
+const { action, id, name, approved = true, variant = "link" } = Astro.props
+const classes = {
+	button: "inline-flex items-center rounded-md bg-green-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-green-700",
+	pill: "inline-flex rounded-full bg-green-600 px-2.5 text-xs font-semibold leading-5 text-white hover:bg-green-700",
+	link: "font-medium text-green-700 hover:text-green-900",
+}[variant]
+---
+
+{
+	approved === false && (
+		<form method="POST" action={action} class="inline">
+			<input type="hidden" name="approve_id" value={id} />
+			<input type="hidden" name="approve_name" value={name} />
+			<button type="submit" class={classes}>
+				Aprobar
+			</button>
+		</form>
+	)
+}
