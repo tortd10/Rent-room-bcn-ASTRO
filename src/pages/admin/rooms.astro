@@ -1,7 +1,10 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import { deleteRoom, getAllRooms } from "@/db/api/rooms"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
+import PendingBadge from "@/components/admin/PendingBadge.astro"
+import ApproveButton from "@/components/admin/ApproveButton.astro"
+import { approveRoom, deleteRoom, getAllRooms } from "@/db/api/rooms"
 
 const { user } = Astro.locals
 if (!user) {
@@ -11,6 +14,22 @@ if (!user) {
 // Eliminar una habitación (el navegador pide confirmación antes de enviar el formulario)
 if (Astro.request.method === "POST") {
   const form = await Astro.request.formData()
+
+  // Aprobar una habitación pendiente
+  if (form.has("approve_id")) {
+    const approveId = Number(form.get("approve_id"))
+    const approveName = form.get("approve_name")?.toString() ?? ""
+    const { error: approveError } = Number.isInteger(approveId)
+      ? await approveRoom(Astro.locals.supabase, approveId)
+      : { error: "id" }
+    return Astro.redirect(
+      `/admin/rooms?${
+        approveError
+          ? "error=" + encodeURIComponent("No se pudo aprobar la habitación")
+          : "success=" + encodeURIComponent(`Habitación ${approveName} aprobada y publicada`)
+      }`
+    )
+  }
   const id = Number(form.get("delete_id"))
   const name = form.get("delete_name")?.toString() ?? ""
 
@@ -44,10 +63,8 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
 			{rooms?.length || 0} habitaciones registradas
 		  </p>
 		</div>
-		<div class="flex flex-wrap gap-2">
-		  <a href="/admin/dashboard" class="btn-secondary">
-			Dashboard
-		  </a>
+		<div class="flex flex-wrap items-center gap-2">
+		  <ReadOnlyBadge />
 		  <a href="/admin/rooms/new" class="btn-primary">
 			<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" viewBox="0 0 20 20" fill="currentColor">
 			  <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
@@ -85,6 +102,12 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
                       <div>
                         <div class="text-sm font-medium text-gray-900">{room.name}</div>
                         <div class="text-sm text-gray-500">ID: {room.slug}</div>
+                        {room.approved === false && (
+                          <div class="mt-1 flex flex-wrap items-center gap-2">
+                            <PendingBadge approved={room.approved} />
+                            <ApproveButton action="/admin/rooms" id={room.id} name={room.name} approved={room.approved} variant="pill" />
+                          </div>
+                        )}
                         <div class="text-xs text-gray-500 md:hidden">{room.flats?.title || "Sin piso"}</div>
                       </div>
                     </div>
@@ -132,7 +155,7 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
                         </svg>
                         Ver
                       </a>
-                      <form method="POST" class="delete-room-form" data-name={room.name}>
+                      <form method="POST" class="delete-room-form" data-name={room.name} data-readonly={Astro.locals.isViewer ? "" : undefined}>
                         <input type="hidden" name="delete_id" value={room.id} />
                         <input type="hidden" name="delete_name" value={room.name} />
                         <button type="submit" class="text-red-600 hover:text-red-900 flex items-center" title="Eliminar">
@@ -169,6 +192,7 @@ const { data: rooms, error } = await getAllRooms(Astro.locals.supabase)
   // Confirmación antes de eliminar: la acción es irreversible
   document.querySelectorAll<HTMLFormElement>("form.delete-room-form").forEach((form) => {
     form.addEventListener("submit", (e) => {
+      if (form.hasAttribute("data-readonly")) return
       const name = form.dataset.name ?? "esta habitación"
       const ok = confirm(
         `¿Eliminar la habitación "${name}"?

@@ -1,6 +1,6 @@
 import type { Db } from "@/db/supabase"
 import { IMAGES_BUCKET } from "@/lib/images"
-import type { Flat } from "@/types"
+import type { Flat, FlatInput } from "@/types"
 
 // Obtener todos los pisos
 export async function getAllFlats(db: Db) {
@@ -13,9 +13,17 @@ export async function getFlatById(db: Db, flatId: string) {
 }
 
 // Crear un piso
-export async function createFlat(db: Db, flat: Flat): Promise<{ error: any }> {
-	const { error } = await db.from("flats").insert(flat)
+// Los pisos nuevos nacen pendientes de aprobación: no se publican hasta aprobarlos
+export async function createFlat(db: Db, flat: FlatInput): Promise<{ error: any }> {
+	const { error } = await db.from("flats").insert({ ...flat, approved: false })
 	if (error) console.error("Error creating flat:", error)
+	return { error }
+}
+
+// Aprobar un piso pendiente: a partir de aquí la web pública lo muestra
+export async function approveFlat(db: Db, flatId: string): Promise<{ error: any }> {
+	const { error } = await db.from("flats").update({ approved: true }).eq("flat_id", flatId)
+	if (error) console.error("Error approving flat:", error)
 	return { error }
 }
 

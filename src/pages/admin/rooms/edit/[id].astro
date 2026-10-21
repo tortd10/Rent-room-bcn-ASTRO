@@ -1,6 +1,7 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import RoomForm from "@/components/admin/RoomForm.astro"
 import { getRoomById, getAvailableFlats, updateRoom } from "@/db/api/rooms"
 import { parseRoomForm } from "@/lib/roomForm"
@@ -18,6 +19,10 @@ let successMessage = ""
 const { data: room } = id ? await getRoomById(Astro.locals.supabase, Number(id)) : { data: null }
 const { data: flatsData } = await getAvailableFlats(Astro.locals.supabase)
 const flats: FlatOption[] = flatsData || []
+
+// Si se llega desde la ficha de un piso, se ofrece volver a ella
+const flatParam = Astro.url.searchParams.get("flat") ?? ""
+const fromFlat = /^[A-Za-z0-9]+$/.test(flatParam) ? flatParam : null
 
 // Procesar formulario
 if (Astro.request.method === "POST") {
@@ -51,9 +56,18 @@ if (Astro.request.method === "POST") {
           </h1>
           {room && <p class="text-sm text-gray-500">ID: {id} - {room.name}</p>}
         </div>
-        <a href="/admin/rooms" class="btn-secondary">
-          ← Volver al listado
+        <div class="flex flex-wrap items-center gap-3">
+        	<ReadOnlyBadge />
+          {fromFlat && (
+            <a href={`/admin/flats/view/${fromFlat}`} class="btn-secondary">Piso</a>
+          )}
+          {room && (
+            <a href={`/admin/rooms/view/${room.slug || room.id}`} class="btn-secondary">Habitación</a>
+          )}
+        	<a href="/admin/rooms" class="btn-secondary">
+          Listado de habitaciones
         </a>
+        </div>
       </div>
 
       {!room ? (
@@ -64,7 +78,7 @@ if (Astro.request.method === "POST") {
               <div class="mt-2 text-sm text-red-700">
                 <p>No se encontró la habitación con ID {id}</p>
                 <a href="/admin/rooms" class="mt-2 inline-block text-sm font-medium text-red-600 hover:text-red-800">
-                  Volver al listado
+                  Listado de habitaciones
                 </a>
               </div>
             </div>
@@ -96,6 +110,6 @@ if (Astro.request.method === "POST") {
 
 <style is:global>
   .btn-secondary {
-    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500;
   }
 </style>

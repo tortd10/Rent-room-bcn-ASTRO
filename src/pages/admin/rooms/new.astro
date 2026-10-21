@@ -1,7 +1,9 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import RoomForm from "@/components/admin/RoomForm.astro"
+import RoomImagesManager from "@/components/admin/RoomImagesManager.astro"
 import { getAvailableFlats, createRoom } from "@/db/api/rooms"
 import { parseRoomForm } from "@/lib/roomForm"
 import type { FlatOption } from "@/types"
@@ -19,6 +21,10 @@ if (flatsError) {
   errors.general = "Error al cargar la lista de pisos"
   console.error("Error al obtener pisos:", flatsError)
 }
+
+// Si se llega desde la ficha de un piso, se ofrece volver a ella
+const flatParam = Astro.url.searchParams.get("flat") ?? ""
+const fromFlat = /^[A-Za-z0-9]+$/.test(flatParam) ? flatParam : null
 
 // Procesar formulario
 if (Astro.request.method === "POST") {
@@ -44,7 +50,7 @@ if (Astro.request.method === "POST") {
     } else {
       // Redirección con mensaje de éxito
 	  return Astro.redirect(
-	  `/admin/rooms?success=${encodeURIComponent(`Habitación ${newRoom.name} creada correctamente`)}`
+	  `/admin/rooms?success=${encodeURIComponent(`Habitación ${newRoom.name} creada. Queda pendiente de aprobación`)}`
 	  )
 	}
   }
@@ -56,9 +62,15 @@ if (Astro.request.method === "POST") {
     <div class="p-4 sm:p-6 space-y-6">
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Nueva Habitación</h1>
-        <a href="/admin/rooms" class="btn-secondary">
-          ← Volver al listado
+        <div class="flex flex-wrap items-center gap-3">
+        	<ReadOnlyBadge />
+          {fromFlat && (
+            <a href={`/admin/flats/view/${fromFlat}`} class="btn-secondary">Piso</a>
+          )}
+        	<a href="/admin/rooms" class="btn-secondary">
+          Listado de habitaciones
         </a>
+        </div>
       </div>
 
       {/* Mostrar errores generales */}
@@ -85,12 +97,14 @@ if (Astro.request.method === "POST") {
           method="POST"
         />
       </div>
+
+      <RoomImagesManager preview />
     </div>
   </SectionContainer>
 </LayoutAdmin>
 
 <style is:global>
   .btn-secondary {
-    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500;
+    @apply inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500;
   }
 </style>

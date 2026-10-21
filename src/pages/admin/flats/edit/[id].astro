@@ -1,6 +1,7 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import FlatForm from "@/components/admin/FlatForm.astro"
 import { getFlatById, updateFlat } from "@/db/api/flats"
 import { parseFlatForm, validateFlat } from "@/lib/flatForm"
@@ -10,6 +11,7 @@ if (!user) return Astro.redirect("/admin")
 
 const { id } = Astro.params
 const { data: current } = id ? await getFlatById(supabase, id) : { data: null }
+
 
 let errors: Record<string, string> = {}
 let flat = current
@@ -40,7 +42,18 @@ if (current && Astro.request.method === "POST") {
 					<h1 class="text-2xl font-bold text-gray-800">{current ? "Editar Piso" : "Piso no encontrado"}</h1>
 					{current && <p class="text-sm text-gray-500">ID: {current.flat_id}</p>}
 				</div>
-				<a href="/admin/flats" class="text-sm font-medium text-gray-600 hover:underline">← Volver al listado</a>
+				<div class="flex flex-wrap items-center gap-3">
+					<ReadOnlyBadge />
+					{current && (
+						<a
+							href={`/admin/flats/view/${current.flat_id}`}
+							class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+						>
+							Piso
+						</a>
+					)}
+					<a href="/admin/flats" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Listado de pisos</a>
+				</div>
 			</div>
 
 			{

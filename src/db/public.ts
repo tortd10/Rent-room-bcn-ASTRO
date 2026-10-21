@@ -8,12 +8,13 @@ import type { Flat, Room, RoomListItem } from "@/types"
 // Lecturas públicas con respaldo: si Supabase falla (caída, red, proyecto pausado),
 // se sirve la copia local de src/data para que la web no se quede sin contenido.
 
-const fallbackFlats = (): Flat[] => LOCAL_FLATS.map((f) => ({ ...f, available: true }))
+const fallbackFlats = (): Flat[] => LOCAL_FLATS.map((f) => ({ ...f, available: true, approved: true }))
 
 const fallbackRooms = (): Room[] =>
 	LOCAL_ROOMS.map(({ roomFlat, ...r }, i) => ({
 		...r,
 		id: i + 1,
+		approved: true,
 		flat_id: roomFlat,
 		status: r.status as Room["status"],
 		imageAlt_en: ROOMS_EN[r.slug]?.imageAlt ?? null,

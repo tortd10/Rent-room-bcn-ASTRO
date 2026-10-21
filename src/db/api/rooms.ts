@@ -9,7 +9,7 @@ import type { Room, RoomInput } from "@/types"
 export async function getAllRooms(db: Db) {
 	return await db
 		.from("rooms")
-		.select("id, slug, name, imageSrc, imageAlt, flat_id, available, status, flats(title, street, available)")
+		.select("id, slug, name, imageSrc, imageAlt, flat_id, available, status, approved, flats(title, street, available)")
 		.order("id", { ascending: true })
 }
 
@@ -28,9 +28,21 @@ export async function createRoom(
 	db: Db,
 	roomData: RoomInput
 ): Promise<{ data: Room | null; error: any }> {
-	const { data, error } = await db.from("rooms").insert(roomData).select().single()
+	// Las habitaciones nuevas nacen pendientes de aprobación: no se publican hasta aprobarlas
+	const { data, error } = await db
+		.from("rooms")
+		.insert({ ...roomData, approved: false })
+		.select()
+		.single()
 	if (error) console.error("Error creating room:", error)
 	return { data: (data as Room) ?? null, error }
+}
+
+// Aprobar una habitación pendiente: a partir de aquí la web pública la muestra
+export async function approveRoom(db: Db, id: number): Promise<{ error: any }> {
+	const { error } = await db.from("rooms").update({ approved: true }).eq("id", id)
+	if (error) console.error("Error approving room:", error)
+	return { error }
 }
 
 // Actualizar habitación existente
