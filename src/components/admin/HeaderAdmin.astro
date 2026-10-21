@@ -1,5 +1,6 @@
 ---
 import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
+import NotificationsBell from "@/components/admin/NotificationsBell.astro"
 
 const { user } = Astro.locals
 const isLoggedIn = !!user
@@ -57,38 +58,27 @@ const showDashboardLink = isLoggedIn && Astro.url.pathname !== "/admin/dashboard
 			<img src="/logo.svg" alt="Logo RentRoomBcn" />
 		</a>
 
-		<div class="flex items-center gap-2 sm:gap-6">
+		<div class="flex items-center gap-1.5 sm:gap-4">
 		<ReadOnlyBadge />
+		{isLoggedIn && <NotificationsBell />}
 		{
 			showDashboardLink && (
-				<a href="/admin/dashboard" class="inline-flex items-center rounded-md border border-[#4B6A40] bg-[#587A4B] px-3 py-2 sm:px-4 text-sm font-semibold text-white shadow-sm hover:bg-[#4B6A40] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
+				<a href="/admin/dashboard" class="inline-flex items-center rounded-md border border-[#4B6A40] bg-[#587A4B] px-2 py-1.5 text-xs font-semibold sm:px-4 sm:py-2 sm:text-sm text-white shadow-sm hover:bg-[#4B6A40] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
 					Dashboard
 				</a>
 			)
 		}
 
-		<!-- Botón de logout (solo visible si está logueado) -->
-		<div class="desktop-menu hidden md:flex">
-			{
-				isLoggedIn && (
-					<form method="POST" action="/api/auth/logout">
-						<button type="submit" class="hover:text-primaryDark text-sm font-medium">
-							Cerrar sesión
-						</button>
-					</form>
-				)
-			}
-		</div>
-
-		<!-- Mobile Menu Button -->
+		<!-- Cerrar sesión (solo visible si está logueado) -->
 		{
 			isLoggedIn && (
-				<form method="POST" action="/api/auth/logout" class="md:hidden">
+				<form method="POST" action="/api/auth/logout">
 					<button
 						id="menu-button"
 						type="submit"
 						aria-label="Cerrar sesión"
-						class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 md:hidden"
+						title="Cerrar sesión"
+						class="inline-flex items-center rounded-md border border-gray-300 bg-white px-2 py-1.5 text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:px-4 sm:py-2 sm:text-sm"
 					>
 						Salir
 					</button>
