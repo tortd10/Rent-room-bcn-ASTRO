@@ -185,8 +185,10 @@ const canWrite = !Astro.locals.isViewer
 			lead.status = status
 
 			document.querySelectorAll<HTMLElement>(`[data-lead-open="${lead.id}"]`).forEach((rowButton) => {
-				rowButton.classList.remove(...previous)
-				rowButton.classList.add(...next.badge.split(" "))
+				// En las listas de las fichas solo se pinta la etiqueta; en las demás, toda la fila
+				const colored = rowButton.hasAttribute("data-lead-plain") ? rowButton.querySelector<HTMLElement>("[data-lead-badge]") : rowButton
+				colored?.classList.remove(...previous)
+				colored?.classList.add(...next.badge.split(" "))
 				rowButton.dataset.leadStatus = status
 				const label = rowButton.querySelector("[data-lead-label]")
 				if (label) label.textContent = next.label

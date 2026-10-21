@@ -1,7 +1,6 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import FlatForm from "@/components/admin/FlatForm.astro"
 import { getFlatById, updateFlat } from "@/db/api/flats"
 import { parseFlatForm, validateFlat } from "@/lib/flatForm"
@@ -43,7 +42,6 @@ if (current && Astro.request.method === "POST") {
 					{current && <p class="text-sm text-gray-500">ID: {current.flat_id}</p>}
 				</div>
 				<div class="flex flex-wrap items-center gap-3">
-					<ReadOnlyBadge />
 					{current && (
 						<a
 							href={`/admin/flats/view/${current.flat_id}`}

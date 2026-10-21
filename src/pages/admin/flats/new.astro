@@ -1,7 +1,6 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import FlatForm from "@/components/admin/FlatForm.astro"
 import { createFlat } from "@/db/api/flats"
 import { parseFlatForm, validateFlat } from "@/lib/flatForm"
@@ -39,7 +38,6 @@ if (Astro.request.method === "POST") {
 			<div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
 				<h1 class="text-2xl font-bold text-gray-800">Nuevo Piso</h1>
 				<div class="flex flex-wrap items-center gap-3">
-					<ReadOnlyBadge />
 					<a href="/admin/flats" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">Listado de pisos</a>
 				</div>
 			</div>
