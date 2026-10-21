@@ -118,7 +118,7 @@ const hasFilters = !!(statusParam || search || flat || room || from || to)
 // Filtros escondidos en el panel (no cuenta el estado, que está en los botones)
 const activeFilters = [search, flat, room, from, to].filter(Boolean).length
 const input =
-	"w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
+	"block w-full min-w-0 max-w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-800 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
 const pageButton =
 	"inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
 ---
@@ -165,31 +165,31 @@ const pageButton =
 			<form id="filters-panel" method="GET" action="/admin/mensajes" class="hidden space-y-3 rounded-xl bg-white p-4 shadow-sm">
 				{statusParam && <input type="hidden" name="status" value={statusParam} />}
 				<div class="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-					<div class="sm:col-span-2">
+					<div class="min-w-0 sm:col-span-2">
 						<label for="q" class="mb-1 block text-xs font-medium text-gray-500">Buscar</label>
 						<input id="q" type="search" name="q" value={search} placeholder="Nombre, email, mensaje o habitación" class={input} />
 					</div>
-					<div>
+					<div class="min-w-0">
 						<label for="flat" class="mb-1 block text-xs font-medium text-gray-500">Piso</label>
 						<select id="flat" name="flat" class={input}>
 							<option value="">Todos</option>
 							{flats.map((f) => <option value={f.flat_id} selected={f.flat_id === flat}>{f.title}</option>)}
 						</select>
 					</div>
-					<div>
+					<div class="min-w-0">
 						<label for="room" class="mb-1 block text-xs font-medium text-gray-500">Habitación</label>
 						<select id="room" name="room" class={input}>
 							<option value="">Todas</option>
 							{rooms.map((r) => <option value={r.slug} selected={r.slug === room}>{r.name} · {r.slug}</option>)}
 						</select>
 					</div>
-					<div>
+					<div class="min-w-0">
 						<label for="from" class="mb-1 block text-xs font-medium text-gray-500">Desde</label>
-						<input id="from" type="date" name="from" value={from} class={input} />
+						<input id="from" type="date" name="from" value={from} class={`${input} appearance-none`} />
 					</div>
-					<div>
+					<div class="min-w-0">
 						<label for="to" class="mb-1 block text-xs font-medium text-gray-500">Hasta</label>
-						<input id="to" type="date" name="to" value={to} class={input} />
+						<input id="to" type="date" name="to" value={to} class={`${input} appearance-none`} />
 					</div>
 				</div>
 				<div class="flex flex-wrap items-center gap-2">

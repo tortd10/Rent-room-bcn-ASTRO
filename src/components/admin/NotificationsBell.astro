@@ -1,0 +1,208 @@
+---
+// Campana de notificaciones de la cabecera: visible en todo el panel. Muestra cuántos avisos tienes sin leer y,
+// al pulsarla, abre el panel con todos. Los avisos se piden al servidor con la página ya pintada, y los
+// leídos se guardan por usuario. Cualquier elemento con data-open-avisos (p. ej. "Ver todos" del dashboard)
+// abre también este panel.
+---
+
+<button
+	type="button"
+	data-bell
+	data-open-avisos
+	aria-label="Notificaciones"
+	title="Notificaciones"
+	class="relative inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 sm:h-9 sm:w-9"
+>
+	<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+		<path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+	</svg>
+	<span data-bell-count class="absolute -right-1.5 -top-1.5 hidden h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-bold text-white"></span>
+</button>
+
+<dialog id="avisos" class="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/40">
+	<div class="p-4 sm:p-6">
+		<div class="mb-4 flex items-center justify-between gap-3">
+			<h2 data-bell-title class="text-lg font-semibold text-primary">Notificaciones</h2>
+			<button type="button" data-close-avisos aria-label="Cerrar" class="rounded-md px-2 py-1 text-gray-500 hover:bg-gray-100">✕</button>
+		</div>
+		<p data-bell-status class="rounded-lg bg-gray-50 p-4 text-sm text-gray-600">Cargando…</p>
+		<ul data-bell-list class="hidden max-h-[60vh] space-y-3 overflow-y-auto"></ul>
+		<div data-bell-footer class="mt-4 hidden border-t border-gray-100 pt-4">
+			<button
+				type="button"
+				data-mark-read
+				class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
+			>
+				Marcar todas como leídas
+			</button>
+		</div>
+	</div>
+</dialog>
+
+<script>
+	type Item = { text: string; href: string; tone: string }
+	type Payload = { items: Item[]; readKeys: string[] }
+
+	const CACHE_KEY = "rentroom-notifications"
+	const CACHE_MS = 15_000
+	const CHECK_ICON =
+		'<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>'
+
+	const dialog = document.getElementById("avisos") as HTMLDialogElement | null
+	const countBadge = document.querySelector<HTMLElement>("[data-bell-count]")
+
+	if (dialog && countBadge) {
+		const title = dialog.querySelector<HTMLElement>("[data-bell-title]")!
+		const status = dialog.querySelector<HTMLElement>("[data-bell-status]")!
+		const list = dialog.querySelector<HTMLElement>("[data-bell-list]")!
+		const footer = dialog.querySelector<HTMLElement>("[data-bell-footer]")!
+
+		let items: Item[] = []
+		let read = new Set<string>()
+		let loaded = false
+
+		// Se recuerda unos segundos para no repetir la petición al cambiar de pantalla
+		const saveCache = () => {
+			try {
+				sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), items, readKeys: [...read] }))
+			} catch {
+				// sin almacenamiento: se pedirá de nuevo
+			}
+		}
+		const readCache = (): Payload | null => {
+			try {
+				const cached = JSON.parse(sessionStorage.getItem(CACHE_KEY) ?? "null")
+				return cached && Date.now() - cached.t < CACHE_MS ? cached : null
+			} catch {
+				return null
+			}
+		}
+
+		// Los avisos leídos se guardan por usuario en el servidor
+		function persist(action: "add" | "remove", keys: string[]) {
+			if (keys.length === 0) return
+			fetch("/api/admin/notification-reads", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ action, keys }),
+			}).catch((error) => console.error("No se pudo guardar el aviso leído:", error))
+			saveCache()
+		}
+
+		function render() {
+			const unread = items.filter((item) => !read.has(item.text)).length
+			countBadge!.textContent = String(unread)
+			countBadge!.classList.toggle("hidden", unread === 0)
+			countBadge!.classList.toggle("flex", unread > 0)
+
+			title.textContent = items.length > 0 ? `Notificaciones (${items.length})` : "Notificaciones"
+			status.classList.toggle("hidden", items.length > 0)
+			if (loaded && items.length === 0) status.textContent = "Todo en orden. No hay nada pendiente."
+			list.classList.toggle("hidden", items.length === 0)
+			footer.classList.toggle("hidden", unread === 0)
+
+			list.replaceChildren(
+				...items.map((item) => {
+					const isRead = read.has(item.text)
+					const li = document.createElement("li")
+					li.className = "flex items-center gap-2"
+					li.dataset.key = item.text
+
+					const link = document.createElement("a")
+					link.href = item.href
+					link.className = `flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-opacity hover:opacity-80 ${item.tone}`
+					link.textContent = item.text
+
+					// El botón de cada aviso se pinta en verde cuando está leído y sirve para volver a marcarlo como no leído
+					const button = document.createElement("button")
+					button.type = "button"
+					button.dataset.markOne = ""
+					button.innerHTML = CHECK_ICON
+					button.setAttribute("aria-pressed", String(isRead))
+					const label = isRead ? "Marcar como no leída" : "Marcar como leída"
+					button.setAttribute("aria-label", label)
+					button.title = label
+					button.className = `shrink-0 rounded-full border p-1.5 transition-colors ${
+						isRead
+							? "border-green-300 bg-green-100 text-green-700"
+							: "border-gray-200 text-gray-400 hover:bg-gray-50 hover:text-green-600"
+					}`
+
+					li.append(link, button)
+					return li
+				})
+			)
+		}
+
+		function apply(payload: Payload) {
+			items = payload.items
+			read = new Set(payload.readKeys)
+			loaded = true
+			render()
+		}
+
+		async function load() {
+			const cached = readCache()
+			if (cached) return apply(cached)
+			try {
+				const res = await fetch("/api/admin/notifications", { headers: { Accept: "application/json" } })
+				if (!res.ok) throw new Error(`HTTP ${res.status}`)
+				apply(await res.json())
+				saveCache()
+			} catch (error) {
+				console.error("No se pudieron cargar las notificaciones:", error)
+				status.textContent = "No se pudieron cargar las notificaciones."
+			}
+		}
+
+		const whenIdle = window.requestIdleCallback ?? ((callback: () => void) => window.setTimeout(callback, 800))
+		whenIdle(() => void load())
+
+		// Cualquier elemento con data-open-avisos abre el panel (la campana, "Ver todos" del dashboard…)
+		document.addEventListener("click", (event) => {
+			const target = event.target as HTMLElement
+
+			if (target.closest("[data-open-avisos]")) {
+				if (!loaded) void load()
+				dialog.showModal()
+				return
+			}
+
+			// Abrir un aviso (en el panel o en la tarjeta del dashboard) lo marca como leído
+			const key = target.closest("a")?.closest<HTMLElement>("[data-attention-card], [data-bell-list] li")?.dataset.key
+			if (key && !read.has(key)) {
+				read.add(key)
+				persist("add", [key])
+				render()
+			}
+		})
+
+		// Pulsar el botón de un aviso alterna leído / no leído
+		list.addEventListener("click", (event) => {
+			const button = (event.target as HTMLElement).closest("[data-mark-one]")
+			const key = button?.closest<HTMLElement>("li")?.dataset.key
+			if (!key) return
+			if (read.has(key)) {
+				read.delete(key)
+				persist("remove", [key])
+			} else {
+				read.add(key)
+				persist("add", [key])
+			}
+			render()
+		})
+
+		footer.querySelector("[data-mark-read]")?.addEventListener("click", () => {
+			const pending = items.map((item) => item.text).filter((key) => !read.has(key))
+			read = new Set(items.map((item) => item.text))
+			persist("add", pending)
+			render()
+		})
+
+		dialog.querySelector("[data-close-avisos]")?.addEventListener("click", () => dialog.close())
+		// Clic fuera del panel (sobre el fondo oscuro) lo cierra
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) dialog.close()
+		})
+	}
+</script>

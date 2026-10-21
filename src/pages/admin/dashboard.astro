@@ -4,6 +4,7 @@ import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
 import LeadQuickview from "@/components/admin/LeadQuickview.astro"
 import LiveRefresh from "@/components/admin/LiveRefresh.astro"
 import { LEAD_ORDER, LEAD_STATUS, toQuickLead } from "@/lib/leadStatus"
+import { buildAttention, leadsBreakdown as breakdownText } from "@/lib/attention"
 
 const { user, supabase } = Astro.locals
 if (!user) {
@@ -11,7 +12,7 @@ if (!user) {
 }
 
 // Datos del panel en paralelo
-const [flatsRes, roomsRes, imagesRes, leadsRes, freshCountRes, openCountRes, readRes] = await Promise.all([
+const [flatsRes, roomsRes, imagesRes, leadsRes, freshCountRes, openCountRes] = await Promise.all([
   supabase.from("flats").select("flat_id, title, available, approved").order("flat_id"),
   supabase
     .from("rooms")
@@ -30,8 +31,6 @@ const [flatsRes, roomsRes, imagesRes, leadsRes, freshCountRes, openCountRes, rea
     .limit(20),
   supabase.from("leads").select("*", { count: "exact", head: true }).eq("status", "new"),
   supabase.from("leads").select("*", { count: "exact", head: true }).eq("status", "open"),
-  // Avisos que este usuario ya ha marcado como leídos (si la tabla aún no existe, se ignora)
-  supabase.from("notification_reads").select("key"),
 ])
 
 const allFlats = flatsRes.data ?? []
@@ -47,12 +46,7 @@ const freshLeads = freshCountRes.count ?? 0
 const openLeads = openCountRes.count ?? 0
 // Sin atender = nuevas + abiertas: las abiertas siguen esperando una acción
 const newLeads = freshLeads + openLeads
-const leadsBreakdown = [
-  freshLeads > 0 && `${freshLeads} nuevo${freshLeads === 1 ? "" : "s"}`,
-  openLeads > 0 && `${openLeads} abierto${openLeads === 1 ? "" : "s"}`,
-]
-  .filter(Boolean)
-  .join(" · ")
+const leadsBreakdown = breakdownText(freshLeads, openLeads)
 const MAX_VISIBLE_LEADS = 3
 
 const availableRooms = rooms.filter((r) => r.available).length
@@ -74,49 +68,13 @@ const today = new Intl.DateTimeFormat("es-ES", {
 }).format(new Date())
 const userName = (user.email ?? "").split("@")[0]
 
-// Cosas que requieren atención
+// Pendientes de aprobación (se cuentan aparte en las tarjetas de habitaciones y pisos)
 const pendingRooms = allRooms.filter((r) => !r.approved)
 const pendingFlats = allFlats.filter((f) => !f.approved)
-const withoutPhotos = allRooms.filter((r) => !roomsWithImages.has(r.id))
-const withoutEn = allRooms.filter((r) => !r.metaTitle_en || !r.metaDescription_en)
-const flatsWithoutRooms = allFlats.filter((f) => !allRooms.some((r) => r.flat_id === f.flat_id))
+
+// Cosas que requieren atención: la misma lista que enseña la campana de la cabecera
 const MAX_VISIBLE_ATTENTION = 4
-const readKeys = new Set((readRes.data ?? []).map((r) => r.key))
-const attention = [
-  newLeads > 0 && {
-    text: `${newLeads} mensaje${newLeads === 1 ? "" : "s"} sin atender (${leadsBreakdown})`,
-    href: "/admin/mensajes?status=pending",
-    tone: "bg-purple-100 text-purple-800",
-  },
-  // Un aviso por cada piso o habitación pendiente, con su ID
-  ...pendingFlats.map((f) => ({
-    text: `Piso pendiente de aprobación · ID: ${f.flat_id}`,
-    href: `/admin/flats/view/${f.flat_id}`,
-    tone: "bg-orange-100 text-orange-800",
-  })),
-  ...pendingRooms.map((r) => ({
-    text: `Habitación pendiente de aprobación · ID: ${r.slug}`,
-    href: `/admin/rooms/view/${r.slug}`,
-    tone: "bg-orange-100 text-orange-800",
-  })),
-  // Un aviso por cada elemento al que le faltan datos, con su ID
-  ...withoutPhotos.map((r) => ({
-    text: `Habitación sin fotos en Supabase · ID: ${r.slug}`,
-    href: `/admin/rooms/view/${r.slug}`,
-    tone: "bg-yellow-100 text-yellow-800",
-  })),
-  ...withoutEn.map((r) => ({
-    text: `Habitación sin SEO en inglés · ID: ${r.slug}`,
-    href: `/admin/rooms/view/${r.slug}`,
-    tone: "bg-yellow-100 text-yellow-800",
-  })),
-  ...flatsWithoutRooms.map((f) => ({
-    text: `Piso sin habitaciones · ID: ${f.flat_id}`,
-    href: `/admin/flats/view/${f.flat_id}`,
-    tone: "bg-yellow-100 text-yellow-800",
-  })),
-].filter(Boolean) as { text: string; href: string; tone: string }[]
-const unreadCount = attention.filter((a) => !readKeys.has(a.text)).length
+const attention = buildAttention({ flats: allFlats, rooms: allRooms, roomsWithImages, freshLeads, openLeads })
 
 const fmt = new Intl.DateTimeFormat("es-ES", {
   day: "numeric",
@@ -142,18 +100,6 @@ const quickLeads = recentLeads.slice(0, MAX_VISIBLE_LEADS).map((l) => toQuickLea
           <a href="/admin/rooms/new" class="rounded-lg bg-white px-4 py-2.5 text-sm font-semibold text-primary hover:bg-headerBg transition-colors">+ Habitación</a>
           <a href="/admin/flats/new" class="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">+ Piso</a>
           <a href="/es" target="_blank" rel="noopener" class="rounded-lg bg-white/10 px-4 py-2.5 text-sm font-semibold text-white hover:bg-white/20 transition-colors">Ver la web ↗</a>
-          <button
-            type="button"
-            data-open-avisos
-            class="relative inline-flex items-center rounded-lg bg-white/10 px-3 py-2.5 text-white transition-colors hover:bg-white/20"
-            aria-label="Notificaciones"
-            title="Notificaciones"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
-            </svg>
-            <span data-attention-count class={`absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-500 px-1 text-xs font-bold text-white ${unreadCount === 0 ? "hidden" : ""}`}>{unreadCount}</span>
-          </button>
         </div>
       </div>
 
@@ -294,156 +240,11 @@ const quickLeads = recentLeads.slice(0, MAX_VISIBLE_LEADS).map((l) => toQuickLea
     </div>
   </SectionContainer>
 
-  <dialog id="avisos" class="m-auto w-[calc(100%-2rem)] max-w-md rounded-xl p-0 shadow-xl backdrop:bg-black/40">
-    <div class="p-4 sm:p-6">
-      <div class="mb-4 flex items-center justify-between gap-3">
-        <h2 class="text-lg font-semibold text-primary">Notificaciones{attention.length > 0 && ` (${attention.length})`}</h2>
-        <button type="button" data-close-avisos aria-label="Cerrar" class="rounded-md px-2 py-1 text-gray-500 hover:bg-gray-100">✕</button>
-      </div>
-      {
-        attention.length > 0 ? (
-          <>
-            <ul class="max-h-[60vh] space-y-3 overflow-y-auto">
-              {attention.map((a) => (
-                <li data-attention-dialog data-key={a.text} class="flex items-center gap-2">
-                  <a href={a.href} class={`flex min-w-0 flex-1 items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-opacity hover:opacity-80 ${a.tone}`}>
-                    <span>{a.text}</span>
-                  </a>
-                  <button
-                    type="button"
-                    data-mark-one
-                    aria-label="Marcar como leída"
-                    title="Marcar como leída"
-                    class="shrink-0 rounded-full border border-gray-200 p-1.5 text-gray-400 transition-colors hover:bg-gray-50 hover:text-green-600"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <div class="mt-4 border-t border-gray-100 pt-4">
-              <button
-                type="button"
-                data-mark-read
-                class="w-full rounded-lg border border-gray-200 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-50"
-              >
-                Marcar todas como leídas
-              </button>
-            </div>
-          </>
-        ) : (
-          <p class="rounded-lg bg-green-50 p-4 text-sm text-green-800">Todo en orden. No hay nada pendiente.</p>
-        )
-      }
-    </div>
-  </dialog>
-
   <LeadQuickview leads={quickLeads} showOpenLink />
   <LiveRefresh tables={["leads", "rooms", "flats"]} />
-  <script is:inline type="application/json" id="read-keys" set:html={JSON.stringify([...readKeys]).replace(/</g, "\\u003c")} />
 </LayoutAdmin>
 
 <script>
-  // Los avisos leídos se guardan por usuario en Supabase a través del servidor (RLS: cada uno solo ve los suyos)
-  const persist = {
-    add: (keys: string[]) => send("add", keys),
-    remove: (key: string) => send("remove", [key]),
-  }
-  async function send(action: "add" | "remove", keys: string[]) {
-    const res = await fetch("/api/admin/notification-reads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ action, keys }),
-    })
-    return { error: res.ok ? null : `HTTP ${res.status}` }
-  }
-  const report = (result: { error: unknown }) => {
-    if (result.error) console.error("No se pudo guardar el aviso leído:", result.error)
-  }
-  const failed = (error: unknown) => console.error("No se pudo guardar el aviso leído:", error)
-
-  const dialog = document.getElementById("avisos") as HTMLDialogElement | null
-  document.querySelectorAll("[data-open-avisos]").forEach((button) => {
-    button.addEventListener("click", () => dialog?.showModal())
-  })
-  dialog?.querySelector("[data-close-avisos]")?.addEventListener("click", () => dialog.close())
-  // Clic fuera del panel (sobre el fondo oscuro) lo cierra
-  dialog?.addEventListener("click", (e) => {
-    if (e.target === dialog) dialog.close()
-  })
-
-  // Marcar como leído solo quita el número de la campana; los avisos siguen mostrándose hasta que se resuelven. Un aviso se identifica por su texto: si cambia, vuelve a salir como no leído.
-  const cardItems = Array.from(document.querySelectorAll<HTMLElement>("[data-attention-card]"))
-  const keys = cardItems.map((li) => li.dataset.key ?? "")
-
-  let read = new Set<string>(JSON.parse(document.getElementById("read-keys")?.textContent ?? "[]"))
-
-  const show = (selector: string, visible: boolean) =>
-    document.querySelectorAll(selector).forEach((el) => el.classList.toggle("hidden", !visible))
-
-  function render() {
-    const unread = keys.filter((key) => !read.has(key))
-
-    const count = document.querySelector<HTMLElement>("[data-attention-count]")
-    if (count) {
-      count.textContent = String(unread.length)
-      count.classList.toggle("hidden", unread.length === 0)
-    }
-    // El botón de cada aviso se pinta en verde cuando está leído y sirve para volver a marcarlo como no leído
-    document.querySelectorAll<HTMLElement>("[data-attention-dialog]").forEach((li) => {
-      const isRead = read.has(li.dataset.key ?? "")
-      const button = li.querySelector<HTMLElement>("[data-mark-one]")
-      if (!button) return
-      button.classList.toggle("border-green-300", isRead)
-      button.classList.toggle("bg-green-100", isRead)
-      button.classList.toggle("text-green-700", isRead)
-      button.classList.toggle("border-gray-200", !isRead)
-      button.classList.toggle("text-gray-400", !isRead)
-      button.setAttribute("aria-pressed", String(isRead))
-      const label = isRead ? "Marcar como no leída" : "Marcar como leída"
-      button.setAttribute("aria-label", label)
-      button.setAttribute("title", label)
-    })
-    show("[data-mark-read]", unread.length > 0)
-  }
-
-  document.querySelectorAll("[data-mark-read]").forEach((button) => {
-    button.addEventListener("click", () => {
-      read = new Set(keys)
-      persist.add(keys).then(report, failed)
-      render()
-    })
-  })
-
-  // Pulsar el botón alterna leída / no leída
-  dialog?.addEventListener("click", (e) => {
-    const button = (e.target as HTMLElement).closest("[data-mark-one]")
-    const key = button?.closest<HTMLElement>("[data-attention-dialog]")?.dataset.key
-    if (!key) return
-    if (read.has(key)) {
-      read.delete(key)
-      persist.remove(key).then(report, failed)
-    } else {
-      read.add(key)
-      persist.add([key]).then(report, failed)
-    }
-    render()
-  })
-
-  // Abrir un aviso (en la tarjeta o en el panel) lo marca como leído
-  document.addEventListener("click", (e) => {
-    const link = (e.target as HTMLElement).closest("a")
-    const key = link?.closest<HTMLElement>("[data-attention-card], [data-attention-dialog]")?.dataset.key
-    if (!key || read.has(key)) return
-    read.add(key)
-    persist.add([key]).then(report, failed)
-    render()
-  })
-
-  render()
-
   // Al abrir una consulta nueva (pasa a Abierta), su fila baja justo debajo de las que siguen nuevas
   document.addEventListener("lead:status", (e) => {
     const { id, status, changed } = (e as CustomEvent<{ id: number; status: string; changed: boolean }>).detail
