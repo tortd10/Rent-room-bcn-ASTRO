@@ -1,9 +1,10 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import PendingBadge from "@/components/admin/PendingBadge.astro"
 import ApproveButton from "@/components/admin/ApproveButton.astro"
+import LeadQuickview from "@/components/admin/LeadQuickview.astro"
+import { toQuickLead } from "@/lib/leadStatus"
 import { getRoomBySlug } from "@/db/api/rooms"
 import { publicImageUrl } from "@/lib/images"
 
@@ -26,7 +27,7 @@ const [media, siblings, leads, newLeads] = room
       supabase.from("rooms").select("id, slug, name, available").eq("flat_id", room.flat_id).order("id"),
       supabase
         .from("leads")
-        .select("id, created_at, name, email, status, message")
+        .select("id, created_at, name, email, phone, delivery_date, lang, message, notes, status, room_slug")
         .eq("room_slug", room.slug)
         .order("created_at", { ascending: false })
         .limit(5),
@@ -56,6 +57,7 @@ const LEAD_STATUS: Record<string, { label: string; badge: string }> = {
   closed: { label: "Cerrado", badge: "bg-gray-100 text-gray-700" },
 }
 const fmt = new Intl.DateTimeFormat("es-ES", { dateStyle: "medium", timeStyle: "short" })
+const quickLeads = (leads?.data ?? []).map((l) => toQuickLead(l, fmt))
 
 // Qué falta por completar en la ficha
 const missing = room
@@ -101,7 +103,6 @@ const missing = room
             </div>
           </div>
           <div class="flex flex-wrap items-center gap-2 md:gap-3">
-            <ReadOnlyBadge />
             <ApproveButton action="/admin/rooms" id={room.id} name={room.name} approved={room.approved} variant="button" />
             <a href="/admin/rooms" class="btn-secondary">Listado de habitaciones</a>
             <a href={`/es/${room.slug}`} target="_blank" rel="noopener" class="btn-secondary">Ver en la web (ES)</a>
@@ -239,14 +240,15 @@ const missing = room
               {leads?.data && leads.data.length > 0 ? (
                 <ul class="space-y-3 text-sm">
                   {leads.data.map((l) => (
-                    <li class="space-y-1 border-b border-gray-100 pb-3 last:border-0 last:pb-0">
-                      <div class="flex items-center justify-between gap-2">
-                        <span class="font-medium">{l.name}</span>
-                        <span class={`badge ${LEAD_STATUS[l.status].badge}`}>{LEAD_STATUS[l.status].label}</span>
-                      </div>
-                      <p class="text-xs text-gray-500">{fmt.format(new Date(l.created_at))} ·
-                        <a href={`mailto:${l.email}`} class="hover:underline">{l.email}</a></p>
-                      <p class="line-clamp-2 text-gray-600">{l.message}</p>
+                    <li class="border-b border-gray-100 pb-3 last:border-0 last:pb-0">
+                      <button type="button" data-lead-open={l.id} data-lead-status={l.status} data-lead-plain class="w-full space-y-1 rounded text-left transition-colors hover:bg-gray-50">
+                        <span class="flex items-center justify-between gap-2">
+                          <span class="font-medium">{l.name}</span>
+                          <span data-lead-badge data-lead-label class={`badge ${LEAD_STATUS[l.status].badge}`}>{LEAD_STATUS[l.status].label}</span>
+                        </span>
+                        <span class="block text-xs text-gray-500">{fmt.format(new Date(l.created_at))} · {l.email}</span>
+                        <span class="line-clamp-2 block text-gray-600">{l.message}</span>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -259,6 +261,8 @@ const missing = room
       </div>
     )}
   </SectionContainer>
+
+  <LeadQuickview leads={quickLeads} showOpenLink />
 </LayoutAdmin>
 
 <style>

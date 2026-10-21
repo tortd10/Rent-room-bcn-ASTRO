@@ -1,4 +1,6 @@
 ---
+import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
+
 const { user } = Astro.locals
 const isLoggedIn = !!user
 // En el propio dashboard no hace falta el botón para ir a él
@@ -26,7 +28,7 @@ const showDashboardLink = isLoggedIn && Astro.url.pathname !== "/admin/dashboard
 	}
 
 	img {
-		width: 10rem;
+		width: 7.5rem;
 	}
 
 	@media (min-width: 640px) {
@@ -55,7 +57,8 @@ const showDashboardLink = isLoggedIn && Astro.url.pathname !== "/admin/dashboard
 			<img src="/logo.svg" alt="Logo RentRoomBcn" />
 		</a>
 
-		<div class="flex items-center gap-4 sm:gap-6">
+		<div class="flex items-center gap-2 sm:gap-6">
+		<ReadOnlyBadge />
 		{
 			showDashboardLink && (
 				<a href="/admin/dashboard" class="inline-flex items-center rounded-md border border-[#4B6A40] bg-[#587A4B] px-3 py-2 sm:px-4 text-sm font-semibold text-white shadow-sm hover:bg-[#4B6A40] focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">

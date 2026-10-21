@@ -1,7 +1,6 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import RoomForm from "@/components/admin/RoomForm.astro"
 import RoomImagesManager from "@/components/admin/RoomImagesManager.astro"
 import { getAvailableFlats, createRoom } from "@/db/api/rooms"
@@ -63,7 +62,6 @@ if (Astro.request.method === "POST") {
       <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <h1 class="text-2xl font-bold text-gray-800">Nueva Habitación</h1>
         <div class="flex flex-wrap items-center gap-3">
-        	<ReadOnlyBadge />
           {fromFlat && (
             <a href={`/admin/flats/view/${fromFlat}`} class="btn-secondary">Piso</a>
           )}

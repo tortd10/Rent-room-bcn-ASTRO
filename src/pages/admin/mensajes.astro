@@ -1,7 +1,6 @@
 ---
 import SectionContainer from "@/components/SectionContainer.astro"
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro"
-import ReadOnlyBadge from "@/components/admin/ReadOnlyBadge.astro"
 import LeadQuickview from "@/components/admin/LeadQuickview.astro"
 import LiveRefresh from "@/components/admin/LiveRefresh.astro"
 import { getLeadStatus, getLeads, getLeadsByIds, updateLeadNotes, updateLeadStatus } from "@/db/api/leads"
@@ -133,7 +132,6 @@ const pageButton =
 					<p class="text-sm text-gray-500">{total} mensaje{total === 1 ? "" : "s"}{hasFilters ? " con estos filtros" : ""}</p>
 				</div>
 				<div class="flex flex-wrap items-center gap-3">
-					<ReadOnlyBadge />
 				</div>
 			</div>
 
